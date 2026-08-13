@@ -141,7 +141,7 @@ def build_favicon():
 HEAD_EXTRA = """<title>{title}</title>
 <meta name="description" content="{desc}">
 <link rel="canonical" href="{canonical}">
-<meta name="theme-color" content="#EA215E">
+{robots}<meta name="theme-color" content="#EA215E">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_CO">
 <meta property="og:site_name" content="Interkont">
@@ -195,6 +195,8 @@ def transform_page(src_name, dst_name, title, desc, base_url):
         title=title, desc=desc, canonical=canonical,
         og_image=base_url + "assets/hero-poster.jpg",
         resources=RESOURCES_JSON,
+        robots="" if os.environ.get("INDEXABLE") else
+              '<meta name="robots" content="noindex, nofollow">\n',
     )
     anchor = '<meta name="viewport" content="width=device-width, initial-scale=1">'
     assert anchor in text, f"{src_name}: falta el meta viewport"
@@ -207,8 +209,15 @@ def transform_page(src_name, dst_name, title, desc, base_url):
 def write_extras(base_url):
     (OUT / ".nojekyll").write_text("", encoding="utf8")
 
-    (OUT / "robots.txt").write_text(
-        f"User-agent: *\nAllow: /\n\nSitemap: {base_url}sitemap.xml\n", encoding="utf8")
+    if os.environ.get("INDEXABLE"):
+        (OUT / "robots.txt").write_text(
+            f"User-agent: *\nAllow: /\n\nSitemap: {base_url}sitemap.xml\n", encoding="utf8")
+    else:
+        (OUT / "robots.txt").write_text(
+            "# Vista previa interna: el sitio no debe indexarse todavia.\n"
+            "# Para publicarlo, regenere con INDEXABLE=1.\n"
+            "User-agent: *\nDisallow: /\n\n"
+            f"# Sitemap: {base_url}sitemap.xml\n", encoding="utf8")
 
     urls = "\n".join(
         f"  <url><loc>{base_url}{'' if dst == 'index.html' else dst}</loc>"
@@ -255,6 +264,10 @@ a:hover{transform:translateY(-2px);box-shadow:0 14px 30px -10px rgba(19,17,23,.5
 
     (OUT / ".gitignore").write_text(
         ".DS_Store\nThumbs.db\n*.log\n.vscode/\n.idea/\n", encoding="utf8")
+
+    if not os.environ.get("WITH_WORKFLOW"):
+        log("extras escritos (.nojekyll, 404, robots, sitemap)")
+        return
 
     wf = OUT / ".github" / "workflows"
     wf.mkdir(parents=True, exist_ok=True)

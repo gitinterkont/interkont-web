@@ -1,4 +1,6 @@
+# Vista previa interna: el sitio no debe indexarse todavia.
+# Para publicarlo, reemplace por 'Allow: /' y descomente el sitemap.
 User-agent: *
-Allow: /
+Disallow: /
 
-Sitemap: sitemap.xml
+# Sitemap: https://TU-DOMINIO/sitemap.xml

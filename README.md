@@ -18,27 +18,47 @@ video) se sirve desde este mismo repositorio.
 | `/articulo.html` | `articulo.html` | Artículos |
 | `/catalogo-iad.html` | `catalogo-iad.html` | Catálogo IAD |
 
-## Publicar en GitHub Pages
+## Publicación
+
+El sitio se publica con **Deploy from a branch**: cada push a `main` republica el
+contenido de la raíz del repositorio. No hay paso de build. El archivo `.nojekyll` evita
+que Jekyll procese el sitio.
+
+Todos los enlaces son relativos, así que el sitio funciona igual bajo
+`https://<org>.github.io/<repo>/` que en la raíz de un dominio propio.
+
+> El repositorio es privado, pero **el sitio publicado es accesible en internet**: el
+> plan Team no incluye control de acceso en Pages (eso requiere Enterprise Cloud). Por
+> eso el sitio sale bloqueado para buscadores — ver *Indexación*.
+
+### Si más adelante prefiere desplegar con GitHub Actions
+
+Regenere con `WITH_WORKFLOW=1` para recrear `.github/workflows/deploy.yml` y cambie la
+fuente en **Settings → Pages** a *GitHub Actions*. Para hacer push de ese archivo, el
+token necesita el scope `workflow`:
 
 ```bash
-gh repo create interkont-govtech --public --source=. --remote=origin --push
+gh auth refresh -s workflow
 ```
 
-Luego, en **Settings → Pages → Build and deployment → Source**, elija **GitHub Actions**.
-El workflow `.github/workflows/deploy.yml` publica en cada push a `main`.
+## Indexación
 
-Alternativa sin Actions: en esa misma pantalla elija **Deploy from a branch** →
-`main` / `/ (root)`. El archivo `.nojekyll` ya evita que Jekyll procese el sitio.
+El sitio está **bloqueado para buscadores**: `robots.txt` con `Disallow: /` y
+`<meta name="robots" content="noindex, nofollow">` en las nueve páginas. Es lo correcto
+mientras la URL sea provisional — evita que Google indexe una dirección `github.io` que
+después será otro dominio.
 
-El sitio queda en `https://<usuario>.github.io/<repo>/`. Todos los enlaces son
-relativos, así que funciona igual en la raíz de un dominio propio.
+Para abrirlo a indexación, regenere con `INDEXABLE=1` y la URL definitiva:
 
-### Dominio propio
+```bash
+INDEXABLE=1 BASE_URL=https://www.interkont.co/ python3 tools/build.py
+```
+
+## Dominio propio
 
 1. Cree el archivo `CNAME` en la raíz con el dominio (por ejemplo `www.interkont.co`).
 2. Apunte el DNS a GitHub Pages.
-3. Regenere `sitemap.xml`, `robots.txt` y las etiquetas `canonical`/`og:` con la URL
-   real (ver *Regenerar* más abajo).
+3. Regenere con `BASE_URL` para que `canonical`, `og:` y `sitemap.xml` queden absolutos.
 
 ## Ver el sitio en local
 
@@ -61,6 +81,7 @@ docs/                   Guía de estilos de marca
 favicon.svg             Isotipo Interkont
 sitemap.xml robots.txt  SEO
 .nojekyll               Desactiva Jekyll en GitHub Pages
+tools/build.py          Regenera el sitio desde el export .dc.html original
 ```
 
 ## Cómo funciona una página
@@ -90,7 +111,9 @@ absolutos:
 BASE_URL=https://www.interkont.co/ python3 tools/build.py
 ```
 
-Sin `BASE_URL` las URLs quedan relativas, que es lo que hay ahora.
+Sin `BASE_URL` las URLs quedan relativas, que es lo que hay ahora. Variables disponibles:
+`BASE_URL` (URLs absolutas), `INDEXABLE=1` (permitir buscadores), `WITH_WORKFLOW=1`
+(generar el workflow de Actions).
 
 ## Notas
 
