@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Página no encontrada | Interkont</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/fonts/mulish.css">
+<style>
+:root{--mag:#EA215E;--ink:#131117;--ink-soft:#66646E}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Mulish',system-ui,sans-serif;color:var(--ink);background:#EFEEF2;
+  min-height:100vh;display:grid;place-items:center;padding:24px;text-align:center}
+.code{font-size:clamp(64px,14vw,132px);font-weight:900;line-height:1;color:var(--mag)}
+h1{font-size:clamp(22px,4vw,32px);font-weight:800;margin:12px 0 8px}
+p{color:var(--ink-soft);max-width:46ch;margin:0 auto 28px}
+a{display:inline-block;background:var(--ink);color:#fff;font-weight:700;text-decoration:none;
+  border-radius:100px;padding:14px 28px;transition:transform .2s,box-shadow .3s}
+a:hover{transform:translateY(-2px);box-shadow:0 14px 30px -10px rgba(19,17,23,.5)}
+</style>
+</head>
+<body>
+<main>
+  <div class="code">404</div>
+  <h1>Esta página no existe</h1>
+  <p>El enlace que seguiste no corresponde a ninguna página del sitio.</p>
+  <a id="home" href="./">Volver al inicio</a>
+</main>
+<script>
+// GitHub Pages sirve este 404 en cualquier ruta: reconstruye el enlace al inicio.
+(function () {
+  var seg = location.pathname.split('/').filter(Boolean);
+  var root = location.hostname.endsWith('github.io') && seg.length ? '/' + seg[0] + '/' : '/';
+  document.getElementById('home').setAttribute('href', root);
+})();
+</script>
+</body>
+</html>
