@@ -1,32 +1,14 @@
 ---
-const WP_GRAPHQL_ENDPOINT = import.meta.env.WP_GRAPHQL_ENDPOINT || "https://cms.interkont.co/graphql";
-
-const LIST_QUERY = `
-  query AllArticleSlugs {
-    posts(first: 100) {
-      nodes { slug title }
-    }
-  }
-`;
-
-const POST_QUERY = `
-  query ArticleBySlug($slug: ID!) {
-    post(id: $slug, idType: URI) {
-      title
-      date
-      categories { nodes { name } }
-      editorBlocks(flat: false) {
-        __typename
-        ... on CoreHeading { attributes { content level } }
-        ... on CoreParagraph { attributes { content } }
-        ... on CoreList { attributes { values } }
-        ... on CoreQuote { attributes { value } }
+export async function getStaticPaths() {
+  const WP_GRAPHQL_ENDPOINT = import.meta.env.WP_GRAPHQL_ENDPOINT || "https://cms.interkont.co/graphql";
+  const LIST_QUERY = `
+    query AllArticleSlugs {
+      posts(first: 100) {
+        nodes { slug title }
       }
     }
-  }
-`;
+  `;
 
-export async function getStaticPaths() {
   let allPosts = [];
   try {
     const res = await fetch(WP_GRAPHQL_ENDPOINT, {
@@ -47,6 +29,25 @@ export async function getStaticPaths() {
     },
   }));
 }
+
+const WP_GRAPHQL_ENDPOINT = import.meta.env.WP_GRAPHQL_ENDPOINT || "https://cms.interkont.co/graphql";
+
+const POST_QUERY = `
+  query ArticleBySlug($slug: ID!) {
+    post(id: $slug, idType: URI) {
+      title
+      date
+      categories { nodes { name } }
+      editorBlocks(flat: false) {
+        __typename
+        ... on CoreHeading { attributes { content level } }
+        ... on CoreParagraph { attributes { content } }
+        ... on CoreList { attributes { values } }
+        ... on CoreQuote { attributes { value } }
+      }
+    }
+  }
+`;
 
 const { slug } = Astro.params;
 const { related = [] } = Astro.props;
