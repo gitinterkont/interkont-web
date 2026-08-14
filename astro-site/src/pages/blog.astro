@@ -50,6 +50,10 @@ try {
   });
   const json = await res.json();
   posts = json?.data?.posts?.nodes ?? [];
+  // descarta posts sin categoria asignada (ej. el "Hola mundo" de ejemplo
+  // que trae WordPress instalado por defecto) -- todo el contenido real
+  // del blog tiene categoria, asi que esto no filtra articulos legitimos
+  posts = posts.filter((p) => (p.categories?.nodes?.length ?? 0) > 0);
 } catch (err) {
   console.error("No se pudo leer los posts de WPGraphQL para /blog:", err);
 }
