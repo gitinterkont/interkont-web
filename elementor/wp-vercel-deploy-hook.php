@@ -12,7 +12,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Pega aqui la URL del Deploy Hook de Vercel (Settings -> Git -> Deploy Hooks).
-define('VERCEL_DEPLOY_HOOK_URL', 'PASTE_URL_HERE');
+define('VERCEL_DEPLOY_HOOK_URL', 'https://api.vercel.com/v1/integrations/deploy/prj_FNbqG5CGH7SvKocPz4ytSLw4NvNf/yrhmpNq4JA');
 
 add_action('transition_post_status', function ($new_status, $old_status, $post) {
     // Solo paginas y posts, y solo cuando el resultado final es "publicado"
