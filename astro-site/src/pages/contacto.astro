@@ -56,7 +56,7 @@ const noindex = seo?.metaRobotsNoindex === "noindex";
 <meta property="og:description" content={pageDescription}>
 <meta property="og:image" content="https://interkont.co/assets/hero-poster.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/mulish-latin-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/mulish-latin-800.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/fonts/mulish.css">
@@ -142,6 +142,7 @@ header.scrolled .nav-dropbtn{color:var(--ink-soft)}
 .hero .eyebrow{color:var(--mag-lt); display:inline-flex; align-items:center; gap:9px}
 .hero .eyebrow::before{content:""; width:26px; height:1px; background:var(--mag-lt)}
 .hero h1{color:#fff; font-size:clamp(40px,6vw,80px); font-weight:800; letter-spacing:-.04em; line-height:1.0; margin:18px 0 22px}
+.hero h1 em{font-style:normal; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
 .hero .sub{color:rgba(255,255,255,.8); font-size:clamp(16px,1.5vw,20px); max-width:60ch}
 
 .sec{padding:clamp(56px,7vw,100px) 0}
@@ -477,7 +478,7 @@ class Component extends DCLogic {
         document.body.classList.add('ikmove');
         clearTimeout(idle); idle = setTimeout(() => document.body.classList.remove('ikmove'), 220);
         const el = e.target instanceof Element ? e.target : null;
-        const t = el && el.closest('a,button,.tab,input,textarea,select,[role="button"],.contact-form,.contact-info,.ci-item,svg');
+        const t = el && el.closest('a,button,.tab,input,textarea,select,[role="button"],.ci-item,svg');
         document.body.classList.toggle('ikhot', !!t);
       }, { passive: true });
       const loop = () => { bx += (mx - bx) * 0.16; by += (my - by) * 0.16; blur.style.transform = 'translate(' + bx + 'px,' + by + 'px)'; requestAnimationFrame(loop); };
