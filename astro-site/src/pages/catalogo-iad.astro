@@ -683,6 +683,8 @@ header nav .btn-dark .ico{color:currentColor}
 body.tp .hero{filter:none}
 
 /* === Catálogo y simulador === */
+/* Oculto por clase, no por [hidden]: el runtime no conserva los atributos booleanos vacíos. */
+.tabsec-hidden{display:none}
 .cat-tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:clamp(28px,4vw,44px)}
 .cat-tabs button{font-family:var(--sans); font-size:14.5px; font-weight:700; padding:12px 22px; border-radius:100px; border:none; cursor:pointer;
   background:#fff; color:var(--ink-soft); box-shadow:inset 0 0 0 1px var(--line); transition:.22s; display:inline-flex; align-items:center; gap:9px}
@@ -844,7 +846,7 @@ body.tp .hero{filter:none}
       </div>
     </div>
 
-    <div id="simulator-section" hidden>
+    <div id="simulator-section" class="tabsec-hidden">
       <div class="sim-grid">
         <div class="sim-panel">
           <h2>Arma tu cotización</h2>
@@ -1160,8 +1162,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!btn) return;
     mainTabs.querySelectorAll("button").forEach((b) => b.classList.toggle("on", b === btn));
     const showCatalog = btn.dataset.tab === "catalog";
-    catalogSection.hidden = !showCatalog;
-    simulatorSection.hidden = showCatalog;
+    catalogSection.classList.toggle("tabsec-hidden", !showCatalog);
+    simulatorSection.classList.toggle("tabsec-hidden", showCatalog);
   });
 
   exportExcelBtn.addEventListener("click", () => {
