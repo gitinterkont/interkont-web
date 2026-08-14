@@ -214,6 +214,7 @@ PAGES = [
         "slug": "articulo",
         "title": "Once años monitoreando lo público: lo que aprendimos sobre la inversión del Estado",
         "meta_description": "Artículos de Interkont sobre gestión pública, tecnología, datos y transparencia.",
+        "type": "post",
         "blocks": [
             {"tag": "h1", "text": "Once años monitoreando lo público: lo que aprendimos sobre la inversión del Estado"},
             {"tag": "p", "text": "Más de 50.000 proyectos y 6.500 millones de dólares supervisados nos dejaron una conclusión incómoda: el problema rara vez es la falta de datos, es la falta de visibilidad sobre ellos."},
@@ -247,6 +248,9 @@ PAGES = [
 
 
 def create_page(page):
+    kind = page.get("type", "page")
+    endpoint = "posts" if kind == "post" else "pages"
+
     body = json.dumps({
         "title": page["title"],
         "slug": page["slug"],
@@ -256,7 +260,7 @@ def create_page(page):
     }).encode("utf8")
 
     req = urllib.request.Request(
-        f"{WP_URL}/wp-json/wp/v2/pages",
+        f"{WP_URL}/wp-json/wp/v2/{endpoint}",
         data=body,
         method="POST",
         headers={"Content-Type": "application/json"},
@@ -268,9 +272,9 @@ def create_page(page):
     try:
         with urllib.request.urlopen(req) as resp:
             data = json.loads(resp.read())
-            print(f"OK  {page['slug']:16s} -> id={data['id']}  {data['link']}")
+            print(f"OK  [{kind:4s}] {page['slug']:16s} -> id={data['id']}  {data['link']}")
     except urllib.error.HTTPError as e:
-        print(f"ERROR {page['slug']:16s} -> HTTP {e.code}: {e.read().decode()[:300]}")
+        print(f"ERROR [{kind:4s}] {page['slug']:16s} -> HTTP {e.code}: {e.read().decode()[:300]}")
 
 
 if __name__ == "__main__":
