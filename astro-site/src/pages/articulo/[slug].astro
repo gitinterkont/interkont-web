@@ -862,11 +862,7 @@ body.tp .hero{filter:none}
               return <p class={i === 0 ? "lead" : undefined} set:html={b.attributes?.content ?? ""} />;
             }
             if (b.__typename === "CoreList") {
-              return (
-                <ul class="wp-block-list">
-                  {(b.attributes?.values ?? []).map((item) => <li set:html={item} />)}
-                </ul>
-              );
+              return <ul class="wp-block-list" set:html={b.attributes?.values ?? ""} />;
             }
             if (b.__typename === "CoreQuote") {
               return <blockquote class="wp-block-quote"><p set:html={b.attributes?.value ?? ""} /></blockquote>;
