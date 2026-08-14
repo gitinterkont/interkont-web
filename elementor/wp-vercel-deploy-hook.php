@@ -27,8 +27,19 @@ add_action('transition_post_status', function ($new_status, $old_status, $post) 
         return; // evita disparar con la URL de ejemplo sin configurar
     }
 
-    wp_remote_post(VERCEL_DEPLOY_HOOK_URL, [
-        'timeout'  => 5,
-        'blocking' => false, // no hace esperar al editor mientras guarda
+    // 'blocking' => true a proposito: en varios hostings compartidos una
+    // peticion no-bloqueante se corta antes de completarse porque PHP
+    // termina de procesar la pagina antes de que la peticion saliente
+    // realmente se envie. Cuesta un par de segundos extra al guardar,
+    // pero asegura que el webhook llegue.
+    $result = wp_remote_post(VERCEL_DEPLOY_HOOK_URL, [
+        'timeout'  => 8,
+        'blocking' => true,
     ]);
+
+    if (is_wp_error($result)) {
+        error_log('Vercel Deploy Hook error: ' . $result->get_error_message());
+    } else {
+        error_log('Vercel Deploy Hook: HTTP ' . wp_remote_retrieve_response_code($result));
+    }
 }, 10, 3);
