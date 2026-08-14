@@ -811,7 +811,7 @@ body.tp .hero{filter:none}
         <div class="bfeat-txt">
           <div class="tagrow"><span class="btag">Destacado</span><span class="bmeta">{monthYear(featured.date)}</span></div>
           <h2>{featured.title}</h2>
-          <p set:html={featured.excerpt ?? ""} />
+          <div set:html={featured.excerpt ?? ""} />
           <span class="more">Leer el artículo <span class="circ"><svg class="ico"><use href="#i-arrow-right"></use></svg></span></span>
         </div>
       </a>
@@ -833,7 +833,7 @@ body.tp .hero{filter:none}
             <div class="bi"><svg class="ico"><use href={`#${icon}`}></use></svg></div>
             <span class="cat">{cat}</span>
             <h3>{p.title}</h3>
-            <p set:html={p.excerpt ?? ""} />
+            <div set:html={p.excerpt ?? ""} />
             <div class="foot"><span class="m">{monthYear(p.date)}</span><span class="circ"><svg class="ico"><use href="#i-arrow-right"></use></svg></span></div>
           </a>
         );

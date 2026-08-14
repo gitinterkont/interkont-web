@@ -865,7 +865,7 @@ body.tp .hero{filter:none}
               return <ul class="wp-block-list" set:html={b.attributes?.values ?? ""} />;
             }
             if (b.__typename === "CoreQuote") {
-              return <blockquote class="wp-block-quote"><p set:html={b.attributes?.value ?? ""} /></blockquote>;
+              return <blockquote class="wp-block-quote" set:html={b.attributes?.value ?? ""} />;
             }
             return null;
           })}
