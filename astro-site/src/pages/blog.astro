@@ -810,8 +810,8 @@ body.tp .hero{filter:none}
   <div class="hero-inner">
     <div class="hero-content">
       <span class="eyebrow">Blog</span>
-      <h1>{blocks[0]}</h1>
-      <p class="sub">{blocks[1]}</p>
+      <h1 set:html={blocks[0]} />
+      <p class="sub" set:html={blocks[1]} />
     </div>
   </div>
 </section>

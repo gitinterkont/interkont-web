@@ -1002,8 +1002,8 @@ body.vmodal-open header{padding-right:var(--sbw,0px)}
   <div class="hero-inner">
     <div class="hero-content">
       <span class="eyebrow">Monitoreo de inversión pública</span>
-      <h1>{blocks[0]}</h1>
-      <p class="sub">{blocks[1]}</p>
+      <h1 set:html={blocks[0]} />
+      <p class="sub" set:html={blocks[1]} />
       <div class="hero-cta">
         <button type="button" class="btn btn-mag" data-video>Conócenos <svg class="ico"><use href="#i-play"></use></svg></button>
         <a href="#tablero" class="btn btn-glass">Ver el tablero</a>

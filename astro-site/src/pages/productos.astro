@@ -751,8 +751,8 @@ body.tp .hero{filter:none}
   <div class="hero-inner">
     <div class="hero-content">
       <span class="eyebrow">Descripción de productos Interkont</span>
-      <h1>{blocks[0]}</h1>
-      <p class="sub">{blocks[1]}</p>
+      <h1 set:html={blocks[0]} />
+      <p class="sub" set:html={blocks[1]} />
       <div class="hero-cta">
         <a href="#catalogo" class="btn btn-mag">Explorar productos <svg class="ico"><use href="#i-arrow-right"></use></svg></a>
         <a href="/cobra" class="btn btn-glass">Ver COBRA</a>
