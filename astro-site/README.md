@@ -1,10 +1,22 @@
 # Interkont — frontend Astro (WordPress headless)
 
-Piloto de la página Home consumiendo contenido real desde WordPress vía
+Las 9 páginas del sitio, consumiendo contenido real desde WordPress vía
 WPGraphQL. Mismo diseño y animaciones que el sitio estático original
-(`../index.html`) — el runtime `dc-runtime.js` no se tocó, solo se generó
-el mismo documento con los títulos/párrafos "planos" reemplazados por datos
-de WordPress.
+(`../index.html`, `../cobra.html`, etc.) — el runtime `dc-runtime.js` no se
+tocó, solo se generó el mismo documento con los títulos/párrafos "planos"
+reemplazados por datos de WordPress.
+
+| Ruta | Página | Origen WP |
+|---|---|---|
+| `/` | Home | page `home` |
+| `/cobra` | COBRA | page `cobra` |
+| `/panal` | PANAL | page `panal` |
+| `/ik-labs` | IK Labs | page `ik-labs` |
+| `/productos` | Nuestros productos | page `productos` |
+| `/nosotros` | Nosotros | page `nosotros` |
+| `/blog` | Blog | page `blog` |
+| `/articulo` | Artículo | **post** `articulo` |
+| `/catalogo-iad` | Catálogo IAD | page `catalogo-iad` |
 
 ## Desarrollo local
 
@@ -21,20 +33,27 @@ npm run build
 npm run preview
 ```
 
-## Cómo se generó `src/pages/index.astro`
+## Cómo se generaron las páginas
 
-No se escribió a mano: se generó con un script que parte del `index.html`
-original y reemplaza los 18 bloques de texto "planos" (títulos y párrafos
-sin ícono ni animación) por expresiones `{blocks[n]}` que leen la
-respuesta de WPGraphQL, en el mismo orden en que esos bloques se crearon
-en WordPress (ver `../elementor/create_wp_pages.py`). El resto del
-documento —header, tarjetas, tablero con parallax, marquesina, footer—
-queda exactamente igual al original.
+Ninguna se escribió a mano: cada una se generó con un script que parte del
+`.html` original correspondiente y reemplaza los bloques de texto "planos"
+(títulos y párrafos sin ícono ni animación) por expresiones `{blocks[n]}`
+que leen la respuesta de WPGraphQL, conservando la etiqueta y las clases
+originales (`<h2 class="h2">{blocks[n]}</h2>`, nunca el texto suelto). El
+orden coincide con el de creación en WordPress (ver
+`../elementor/create_wp_pages.py`). El resto del documento —header,
+tarjetas, tablero con parallax, marquesina, footer— queda exactamente
+igual al original.
+
+Nota de contenido: en `catalogo-iad`, el H1 en WordPress quedó como texto
+plano ("Esta sección está en obra"), sin el `<br><em>` que le da el salto
+de línea y la cursiva en el diseño original — se puede corregir editando
+ese heading en WordPress si se quiere recuperar el efecto visual exacto.
 
 ## Pendiente
 
-- Portar las otras 8 páginas con el mismo patrón.
-- Reemplazar el query hardcodeado de `id: "home"` por rutas dinámicas
-  (`src/pages/[slug].astro`) una vez estén todas.
+- Reemplazar los queries individuales por rutas dinámicas
+  (`src/pages/[slug].astro`), ahora que las 9 páginas siguen el mismo patrón.
 - Conectar a Vercel + webhook de WordPress para rebuild automático al
   publicar contenido.
+- Revisar visualmente cada página contra su versión estática original.

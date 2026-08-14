@@ -1,0 +1,1321 @@
+---
+const WP_GRAPHQL_ENDPOINT = import.meta.env.WP_GRAPHQL_ENDPOINT || "https://cms.interkont.co/graphql";
+
+const QUERY = `
+  query ArticuloPost {
+    post(id: "articulo", idType: URI) {
+      title
+      editorBlocks(flat: false) {
+        __typename
+        ... on CoreHeading { attributes { content level } }
+        ... on CoreParagraph { attributes { content } }
+      }
+    }
+  }
+`;
+
+let blocks = [];
+try {
+  const res = await fetch(WP_GRAPHQL_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query: QUERY }),
+  });
+  const json = await res.json();
+  blocks = (json?.data?.post?.editorBlocks ?? []).map((b) => b.attributes?.content ?? "");
+} catch (err) {
+  console.error("No se pudo leer WPGraphQL para /articulo:", err);
+}
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artículos | Interkont</title>
+<meta name="description" content="Artículos de Interkont sobre gestión pública, tecnología, datos y transparencia.">
+<link rel="canonical" href="/articulo">
+<meta name="theme-color" content="#EA215E">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_CO">
+<meta property="og:site_name" content="Interkont">
+<meta property="og:title" content="Artículos | Interkont">
+<meta property="og:description" content="Artículos de Interkont sobre gestión pública, tecnología, datos y transparencia.">
+<meta property="og:image" content="assets/hero-poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/assets/fonts/mulish-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/mulish-latin-800.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/fonts/mulish.css">
+<script is:inline>window.__resources={"https://unpkg.com/react@18.3.1/umd/react.production.min.js":"/vendor/react.production.min.js","https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js":"/vendor/react-dom.production.min.js"};</script>
+<script src="/vendor/dc-runtime.js" is:inline></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preload" as="image" href="/assets/hero-poster.jpg" fetchpriority="high">
+<style is:global>
+:root{
+  --sheet:#F4F3F5; --white:#FFF; --ink:#131117; --ink-soft:#66646E; --dark:#17151D; --dark-2:#221F2A;
+  --mag:#EA215E; --mag-lt:#FF5C86; --mag-tint:#FCE7EF; --line:#E8E6EB;
+  --g1:#E70147; --g2:#FFAA4A; --bgimg:url("/assets/img-fondo-eba0b50c.png");
+  --herobg:url("/assets/fondo-2.png");
+  --sans:'Mulish',sans-serif;
+  --r-xl:34px; --r-lg:26px; --r:18px;
+  --sh:0 2px 8px rgba(19,17,23,.04), 0 20px 44px -22px rgba(19,17,23,.16);
+  --sh-lg:0 8px 20px rgba(19,17,23,.06), 0 40px 80px -30px rgba(19,17,23,.28);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans); color:var(--ink); line-height:1.6; -webkit-font-smoothing:antialiased;
+  background:radial-gradient(80% 46% at 50% 30%, color-mix(in srgb, var(--mag) 8%, transparent), transparent 62%), #EFEEF2}
+a{color:inherit; text-decoration:none} a:hover{color:var(--mag)}
+.wrap{max-width:1360px; margin:0 auto; padding:0 clamp(16px,3vw,40px)}
+.eyebrow{font-size:13px; font-weight:700; color:var(--mag); letter-spacing:.01em}
+.btn{font-family:var(--sans); font-weight:700; font-size:15px; border:none; cursor:pointer; border-radius:100px; padding:14px 26px; display:inline-flex; align-items:center; gap:9px; transition:transform .2s, box-shadow .3s, background .25s}
+.btn .ico{width:17px;height:17px; transition:transform .25s}
+.btn-dark{background:var(--ink); color:#fff}
+.btn-dark:hover{transform:translateY(-2px); box-shadow:0 14px 30px -10px rgba(19,17,23,.5)} .btn-dark:hover .ico{transform:translateX(3px)}
+.btn-mag{background:var(--mag); color:#fff}
+.btn-mag:hover{transform:translateY(-2px); box-shadow:0 16px 34px -10px color-mix(in srgb, var(--mag) 60%, transparent)} .btn-mag:hover .ico{transform:translateX(3px)}
+.btn-light{background:#fff; color:var(--ink); box-shadow:inset 0 0 0 1px var(--line)}
+.btn-light:hover{transform:translateY(-2px); box-shadow:inset 0 0 0 1px var(--line), var(--sh)}
+.btn-glass{background:rgba(255,255,255,.14); color:#fff; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}
+.btn-glass:hover{background:rgba(255,255,255,.24); transform:translateY(-2px); color:#fff}
+.ico{width:1em; height:1em; display:inline-block; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; vertical-align:middle}
+
+header{position:fixed; top:0; left:0; right:0; z-index:80; transition:.35s}
+.hbar{max-width:1360px; margin:0 auto; padding:20px clamp(16px,3vw,40px); display:flex; align-items:center; justify-content:space-between; transition:.35s}
+header.scrolled{background:rgba(244,243,245,.8); -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px); box-shadow:0 1px 0 var(--line)}
+header.scrolled .hbar{padding-top:14px; padding-bottom:14px}
+.logo svg{height:27px; display:block}
+.logo .logo-c{display:none}
+header.scrolled .logo .logo-w{display:none}
+header.scrolled .logo .logo-c{display:block}
+nav{display:flex; gap:30px; align-items:center}
+nav a{font-size:15px; font-weight:600; color:rgba(255,255,255,.82); transition:.2s} nav a:hover{color:#fff}
+header.scrolled nav a{color:var(--ink-soft)} header.scrolled nav a:hover{color:var(--ink)}
+.menu-tog{display:none; background:none; border:none; font-size:26px; cursor:pointer; color:#fff}
+header.scrolled .menu-tog{color:var(--ink)}
+.nav-drop{position:relative;display:flex;align-items:center}
+.nav-dropbtn{font-family:var(--sans);font-size:15px;font-weight:600;color:rgba(255,255,255,.82);background:none;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:0;transition:.2s}
+.nav-dropbtn .ico{width:15px;height:15px;transition:transform .25s}
+header.scrolled .nav-dropbtn{color:var(--ink-soft)}
+.nav-drop:hover .nav-dropbtn,header.scrolled .nav-drop:hover .nav-dropbtn{color:var(--mag)}
+.nav-drop:hover .nav-dropbtn .ico{transform:rotate(180deg)}
+.drop{position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(14px);width:330px;background:#fff;border-radius:20px;box-shadow:var(--sh-lg);padding:10px;opacity:0;visibility:hidden;transition:.26s cubic-bezier(.2,.7,.3,1);z-index:60}
+.drop::before{content:"";position:absolute;top:-18px;left:0;right:0;height:18px}
+.nav-drop:hover .drop{opacity:1;visibility:visible;transform:translateX(-50%) translateY(6px)}
+.drop a{display:flex;gap:13px;align-items:flex-start;padding:13px;border-radius:14px;color:var(--ink)!important;transition:background .2s}
+.drop a:hover{background:var(--sheet);color:var(--ink)!important}
+.drop .di{width:40px;height:40px;border-radius:11px;flex:none;background:var(--mag-tint);color:var(--mag);display:grid;place-items:center}
+.drop .di .ico{width:20px;height:20px}
+.drop .dt{font-size:15px;font-weight:800;letter-spacing:-.01em;line-height:1.2;display:block}
+.drop .dd{font-size:12.5px;color:var(--ink-soft);margin-top:3px;line-height:1.4;display:block}
+@media (max-width:960px){
+  .nav-drop{width:100%;flex-direction:column;align-items:stretch}
+  .nav-dropbtn{color:var(--ink-soft);justify-content:space-between;width:100%}
+  .drop{position:static;transform:none!important;opacity:1;visibility:visible;width:auto;box-shadow:none;background:var(--sheet);margin-top:10px;padding:6px}
+  .drop::before{display:none}
+}
+
+.hero{position:relative; min-height:100vh; margin:0; border-radius:0; overflow:hidden; display:flex; align-items:center; background:#0c0a10; padding:130px 0 70px}
+.hero-bg{position:absolute; inset:0; z-index:0; background:radial-gradient(120% 120% at 15% 20%, color-mix(in srgb, var(--mag) 30%, transparent), transparent 55%), repeating-linear-gradient(115deg,#17131d 0 22px,#120f18 22px 44px)}
+.hero-grid{position:absolute; inset:0; z-index:1; background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px); background-size:46px 46px; -webkit-mask-image:radial-gradient(70% 70% at 55% 40%,#000,transparent); mask-image:radial-gradient(70% 70% at 55% 40%,#000,transparent)}
+.hero-inner{position:relative; z-index:2; width:100%; max-width:1360px; margin:0 auto; padding:0 clamp(24px,4vw,64px)}
+.hero-content{max-width:820px}
+.hero .eyebrow{color:var(--mag-lt); display:inline-flex; align-items:center; gap:9px}
+.hero .eyebrow::before{content:""; width:26px; height:1px; background:var(--mag-lt)}
+.hero h1{color:#fff; font-size:clamp(40px,6vw,80px); font-weight:800; letter-spacing:-.04em; line-height:1.0; margin:18px 0 22px}
+.hero .sub{color:rgba(255,255,255,.8); font-size:clamp(16px,1.5vw,20px); max-width:60ch}
+
+.sec{padding:clamp(56px,7vw,100px) 0}
+.split{display:grid; grid-template-columns:.85fr 1.15fr; gap:clamp(24px,5vw,60px); align-items:start}
+.h2{font-size:clamp(34px,5vw,60px); font-weight:800; letter-spacing:-.035em; line-height:1.0}
+.h2 .accent{color:var(--mag)}
+.big{font-size:clamp(17px,1.6vw,21px); color:var(--ink-soft); font-weight:500; line-height:1.6}
+.big+.big{margin-top:20px}
+
+.about{background:#fff; border-radius:var(--r-xl); padding:clamp(32px,5vw,64px); box-shadow:var(--sh); display:grid; grid-template-columns:.85fr 1.15fr; gap:clamp(24px,5vw,60px); align-items:start}
+
+.stat-band{position:relative; overflow:hidden; background:var(--dark); color:#fff; border-radius:var(--r-xl); padding:clamp(38px,5vw,60px); box-shadow:var(--sh-lg)}
+.stat-band::before{content:""; position:absolute; width:600px; height:600px; right:-160px; bottom:-300px; background:radial-gradient(circle, color-mix(in srgb, var(--mag) 40%, transparent), transparent 66%); filter:blur(24px)}
+.sb-head{position:relative; z-index:2; margin-bottom:40px}
+.sb-head .eyebrow{color:var(--mag-lt)}
+.sb-head .h2{color:#fff; margin-top:10px; font-size:clamp(30px,4vw,46px)}
+.sgrid{position:relative; z-index:2; display:grid; grid-template-columns:repeat(5,1fr); gap:20px}
+.sc{padding:24px; border-radius:var(--r); background:rgba(255,255,255,.05); box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.sc .si{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb, var(--mag) 18%, transparent);color:var(--mag-lt);margin-bottom:16px}
+.sc .si .ico{width:20px;height:20px}
+.sc .n{font-size:clamp(30px,3.4vw,42px); font-weight:900; letter-spacing:-.04em; line-height:1}
+.sc .n .u{color:var(--mag-lt)}
+.sc .l{font-size:11.5px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:rgba(255,255,255,.55); margin-top:10px; line-height:1.35}
+
+.ceo{display:grid; grid-template-columns:.8fr 1.2fr; gap:clamp(28px,5vw,64px); align-items:center}
+.ceo-card{background:var(--dark); color:#fff; border-radius:var(--r-xl); padding:clamp(30px,4vw,48px); box-shadow:var(--sh-lg); position:relative; overflow:hidden}
+.ceo-card::before{content:""; position:absolute; width:400px;height:400px; left:-140px; top:-160px; background:radial-gradient(circle,color-mix(in srgb, var(--mag) 38%, transparent),transparent 66%); filter:blur(20px)}
+.ceo-av{position:relative; z-index:2; width:110px;height:110px;border-radius:50%; background:linear-gradient(135deg,var(--mag),#b3164a); display:grid;place-items:center; font-size:38px;font-weight:900;color:#fff; margin-bottom:22px; box-shadow:0 16px 34px -12px color-mix(in srgb, var(--mag) 60%, transparent)}
+.ceo-card h3{position:relative;z-index:2;font-size:24px;font-weight:800;letter-spacing:-.02em}
+.ceo-card .role{position:relative;z-index:2;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mag-lt);margin-top:6px}
+.ceo-card .tags{position:relative;z-index:2;display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.ceo-card .tags span{font-size:12px;font-weight:700;padding:7px 13px;border-radius:100px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.75)}
+.ceo-quote .qi{width:44px;height:44px;color:var(--mag);margin-bottom:8px}
+.ceo-quote p{font-size:clamp(16px,1.4vw,19px); color:var(--ink); font-weight:500; line-height:1.6}
+.ceo-quote p+p{margin-top:18px; color:var(--ink-soft); font-size:16px; font-weight:400}
+
+.wow{display:inline-flex; align-items:center; gap:8px; margin-top:22px; font-weight:800; color:var(--mag); font-size:16px}
+.wow .ico{width:19px;height:19px}
+
+.final{text-align:center; padding:clamp(80px,10vw,130px) 0}
+.final .h2{max-width:18ch; margin:14px auto 18px}
+.final p{color:var(--ink-soft); font-size:18px; max-width:48ch; margin:0 auto 30px}
+.final-cta{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
+
+footer{background:var(--ink); color:#fff; padding:64px clamp(16px,3vw,40px) 34px; border-radius:0; margin:14px 0 0; max-width:none; display:flex; flex-direction:column; align-items:center}
+.fgrid,.fbot{width:100%; max-width:1360px}
+.fgrid{display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap; margin-bottom:38px}
+.fbrand{max-width:280px} .fbrand svg{height:27px; margin-bottom:15px} .fbrand p{color:rgba(255,255,255,.5); font-size:14px}
+.fcol h5{font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.4); margin-bottom:15px}
+.fcol a{display:block; color:rgba(255,255,255,.7); font-size:14.5px; margin-bottom:10px; transition:.2s} .fcol a:hover{color:#fff}
+.fbot{display:flex; justify-content:space-between; padding-top:24px; border-top:1px solid rgba(255,255,255,.12); color:rgba(255,255,255,.4); font-size:13px; flex-wrap:wrap; gap:10px}
+
+.rv{opacity:1; transform:none}
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion:no-preference){
+    @keyframes rv-in{from{opacity:0; transform:translateY(28px)} to{opacity:1; transform:none}}
+    .rv{animation:rv-in .8s cubic-bezier(.2,.7,.3,1) forwards; animation-timeline:view(); animation-range:entry 0% entry 55%}
+  }
+}
+
+@media (max-width:960px){
+  .split,.about,.ceo{grid-template-columns:1fr; gap:20px}
+  .sgrid{grid-template-columns:repeat(2,1fr)}
+  nav{position:fixed; inset:0 0 0 auto; width:min(80vw,300px); flex-direction:column; justify-content:center; background:#fff; transform:translateX(100%); transition:.4s; padding:40px; gap:24px; z-index:90}
+  nav.open{transform:none} nav a{color:var(--ink-soft)} .menu-tog{display:block; z-index:95}
+  .hero-content{max-width:none}
+}
+@media (max-width:560px){ .sgrid{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){*{animation:none;transition:none}.rv{opacity:1;transform:none}}
+
+/* === Gradiente de marca === */
+:root{ --grad:linear-gradient(92deg,var(--g1) 0%,var(--g2) 100%); --grad-r:linear-gradient(120deg,var(--g1) 0%,var(--g2) 100%); }
+.btn-mag{background:var(--grad)!important}
+.btn-mag:hover{box-shadow:0 16px 34px -10px color-mix(in srgb, var(--g1) 55%, transparent)!important}
+.eyebrow{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .eyebrow{background:none;-webkit-text-fill-color:initial;color:var(--g2)}
+.hero .eyebrow::before{background:linear-gradient(90deg,var(--g1),var(--g2))}
+
+.sc .si,.drop .di{background:var(--grad)!important;color:#fff!important}
+.ceo-av{background:var(--grad-r)!important;box-shadow:0 16px 34px -12px color-mix(in srgb, var(--g1) 60%, transparent)!important}
+.stat-band::before,.ceo-card::before{background:radial-gradient(circle,color-mix(in srgb, var(--g2) 36%, transparent),color-mix(in srgb, var(--g1) 36%, transparent) 45%,transparent 68%)!important}
+.ceo-quote .qi{color:var(--g1)}
+.wow{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.h2 .accent{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+footer{border-radius:0!important; margin:0!important; max-width:none!important; width:100%!important; padding:clamp(72px,9vw,120px) clamp(28px,4vw,56px) 44px!important; min-height:clamp(420px,44vw,560px)!important; display:flex!important; flex-direction:column!important; justify-content:space-between!important; background:#0b0910!important; background-image:var(--bgimg)!important; background-size:cover!important; background-position:center!important; background-attachment:fixed!important; position:relative}
+footer::before{content:""; position:absolute; inset:0; border-radius:inherit; background:none; pointer-events:none}
+.fgrid,.fbot{position:relative; z-index:2}
+.hero-bg{background:#0b0910 var(--herobg) center/cover no-repeat!important}
+.btn-dark:hover{box-shadow:0 14px 30px -10px color-mix(in srgb, var(--g1) 45%, transparent)!important}
+
+.stat-band{background:#0b0910!important; background-image:var(--bgimg)!important; background-size:cover!important; background-position:center!important; background-attachment:fixed!important; position:relative; overflow:hidden}
+.stat-band::before{content:""!important; position:absolute!important; inset:0!important; width:auto!important; height:auto!important; right:auto!important; bottom:auto!important; filter:none!important; border-radius:inherit; background:none!important; z-index:0}
+.sc{background:rgba(255,255,255,.07)!important; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px)}
+.ceo-card{background:#0b0910!important; background-image:var(--bgimg)!important; background-size:cover!important; background-position:center!important; background-attachment:fixed!important; position:relative; overflow:hidden}
+.ceo-card::before{content:""!important; position:absolute!important; inset:0!important; width:auto!important; height:auto!important; left:auto!important; top:auto!important; filter:none!important; border-radius:inherit; background:none!important; z-index:0}
+
+.hero{min-height:74vh!important}
+.bfeat{position:relative; display:grid; grid-template-columns:1.05fr .95fr; gap:0; border-radius:var(--r-xl); overflow:hidden; box-shadow:var(--sh-lg);
+  background:#0b0910; background-image:var(--bgimg); background-size:cover; background-position:center; background-attachment:fixed}
+.bfeat::before{content:""; position:absolute; inset:0; background:linear-gradient(120deg,rgba(11,9,16,.93) 0%,rgba(11,9,16,.66) 58%,rgba(11,9,16,.3) 100%)}
+.bfeat>*{position:relative; z-index:2}
+.bfeat-txt{padding:clamp(32px,4.5vw,56px); color:#fff; display:flex; flex-direction:column; justify-content:center}
+.bfeat .tagrow{display:flex; gap:9px; align-items:center; flex-wrap:wrap; margin-bottom:16px}
+.btag{font-size:11.5px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; padding:7px 13px; border-radius:100px; background:var(--grad); color:#fff}
+.bmeta{font-size:12.5px; color:rgba(255,255,255,.6); font-weight:600}
+.bfeat h2{font-size:clamp(28px,3.6vw,46px); font-weight:800; letter-spacing:-.035em; line-height:1.03; color:#fff}
+.bfeat p{color:rgba(255,255,255,.72); font-size:16px; margin-top:16px; max-width:48ch}
+.bfeat .more{margin-top:26px; display:inline-flex; align-items:center; gap:11px; font-weight:800; font-size:15px; color:#fff}
+.bfeat .more .circ{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--grad);color:#fff;transition:.25s}
+.bfeat .more .circ .ico{width:18px;height:18px}
+.bfeat:hover .more .circ{transform:translate(3px,-3px)}
+.bfeat-vis{min-height:320px; display:grid; place-items:center; padding:34px}
+.bfeat-chip{width:min(320px,100%); background:rgba(255,255,255,.08); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); box-shadow:inset 0 0 0 1px rgba(255,255,255,.14); border-radius:20px; padding:24px; color:#fff}
+.bfeat-chip .bn{font-size:38px; font-weight:900; letter-spacing:-.04em; line-height:1}
+.bfeat-chip .bn .u{color:var(--g2)}
+.bfeat-chip .bl{font-size:12px; color:rgba(255,255,255,.6); font-weight:700; text-transform:uppercase; letter-spacing:.07em; margin-top:8px}
+.bfeat-chip .bar{display:flex; align-items:flex-end; gap:6px; height:70px; margin-top:20px}
+.bfeat-chip .bar span{flex:1; border-radius:5px 5px 0 0; background:rgba(255,255,255,.18)}
+.bfeat-chip .bar span.hot{background:var(--grad)}
+
+.bfilters{display:flex; gap:8px; flex-wrap:wrap; margin:clamp(40px,5vw,64px) 0 26px}
+.bfilters button{font-family:var(--sans); font-size:13.5px; font-weight:700; padding:10px 18px; border-radius:100px; border:none; cursor:pointer; background:#fff; color:var(--ink-soft); box-shadow:inset 0 0 0 1px var(--line); transition:.22s}
+.bfilters button:hover{color:var(--ink); box-shadow:inset 0 0 0 1px var(--line), var(--sh)}
+.bfilters button.on{background:var(--grad); color:#fff; box-shadow:none}
+
+.bgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+.bcard{background:#fff; border-radius:var(--r-lg); padding:28px; box-shadow:var(--sh); display:flex; flex-direction:column; transition:transform .35s, box-shadow .35s}
+.bcard:hover{transform:translateY(-6px); box-shadow:var(--sh-lg)}
+.bcard .bi{width:48px;height:48px;border-radius:13px;background:var(--grad);color:#fff;display:grid;place-items:center;margin-bottom:20px}
+.bcard .bi .ico{width:22px;height:22px}
+.bcard .cat{font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.bcard h3{font-size:20px; font-weight:800; letter-spacing:-.02em; line-height:1.2; margin:8px 0 10px}
+.bcard p{font-size:14.5px; color:var(--ink-soft); line-height:1.55}
+.bcard .foot{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:22px; padding-top:18px; border-top:1px solid var(--line)}
+.bcard .foot .m{font-size:12.5px; color:var(--ink-soft); font-weight:600}
+.bcard .foot .circ{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;box-shadow:inset 0 0 0 1px var(--line);transition:.25s}
+.bcard .foot .circ .ico{width:15px;height:15px}
+.bcard:hover .foot .circ{background:var(--grad); color:#fff; box-shadow:none; transform:translate(2px,-2px)}
+.bcard[hidden]{display:none}
+
+.news{position:relative; overflow:hidden; border-radius:var(--r-xl); padding:clamp(34px,5vw,60px); margin-top:clamp(48px,6vw,80px); display:flex; align-items:center; justify-content:space-between; gap:26px; flex-wrap:wrap;
+  background:#0b0910; background-image:var(--bgimg); background-size:cover; background-position:center; background-attachment:fixed}
+.news::before{content:""; position:absolute; inset:0; background:linear-gradient(120deg,rgba(11,9,16,.92) 0%,rgba(11,9,16,.64) 60%,rgba(11,9,16,.3) 100%)}
+.news>*{position:relative; z-index:2}
+.news h3{font-size:clamp(24px,2.8vw,34px); font-weight:800; letter-spacing:-.03em; color:#fff}
+.news p{color:rgba(255,255,255,.66); font-size:15px; margin-top:8px; max-width:44ch}
+@media (max-width:960px){ .bfeat{grid-template-columns:1fr} .bgrid{grid-template-columns:1fr} .bfeat-vis{min-height:0} }
+
+/* Parallax fiable: sin transform en los contenedores con imagen */
+footer,.bfeat,.news{transform:none!important; animation-name:rv-fade!important; backdrop-filter:none!important; -webkit-backdrop-filter:none!important}
+footer,.bfeat,.news{background-attachment:fixed!important; background-size:cover!important; background-position:center center!important; background-repeat:no-repeat!important}
+@keyframes rv-fade{from{opacity:0} to{opacity:1}}
+footer:hover,.bfeat:hover,.news:hover{transform:none!important}
+footer *,.bfeat *,.news *{position:relative; z-index:2}
+
+.hero{min-height:0!important; padding:150px 0 70px!important}
+.hero h1{font-size:clamp(32px,4.6vw,62px)!important; max-width:22ch}
+.abar{display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-top:26px; color:rgba(255,255,255,.62); font-size:13.5px; font-weight:600}
+.abar .btag{font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:7px 13px;border-radius:100px;background:var(--grad);color:#fff}
+.alay{display:grid; grid-template-columns:1fr 300px; gap:clamp(28px,5vw,64px); align-items:start}
+.abody{background:#fff; border-radius:var(--r-xl); padding:clamp(30px,4.5vw,64px); box-shadow:var(--sh); max-width:none}
+.abody .lead{font-size:clamp(18px,1.8vw,23px); font-weight:600; line-height:1.5; color:var(--ink); margin-bottom:30px}
+.abody h2{font-size:clamp(24px,2.8vw,34px); font-weight:800; letter-spacing:-.03em; line-height:1.1; margin:44px 0 14px}
+.abody h3{font-size:20px; font-weight:800; letter-spacing:-.02em; margin:30px 0 10px}
+.abody p{font-size:16.5px; color:var(--ink-soft); line-height:1.75; margin-bottom:16px; text-wrap:pretty}
+.abody ul{list-style:none; display:flex; flex-direction:column; gap:11px; margin:18px 0 22px}
+.abody ul li{display:flex; gap:11px; font-size:16px; color:var(--ink-soft); line-height:1.6; align-items:flex-start}
+.abody ul .ico{width:18px;height:18px;color:var(--mag);flex:none;margin-top:5px}
+.abody b{color:var(--ink); font-weight:800}
+.pull{position:relative; overflow:hidden; border-radius:var(--r-lg); padding:32px; margin:34px 0; color:#fff;
+  background:#0b0910; background-image:var(--bgimg); background-size:cover; background-position:center; background-attachment:fixed}
+.pull p{color:#fff!important; font-size:clamp(18px,2vw,24px)!important; font-weight:700; letter-spacing:-.02em; line-height:1.4; margin:0}
+.pull .q{width:34px;height:34px;color:var(--g2);margin-bottom:10px}
+.kpirow{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:30px 0}
+.kpibox{background:var(--sheet); border-radius:var(--r); padding:22px}
+.kpibox .n{font-size:30px;font-weight:900;letter-spacing:-.03em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.kpibox .l{font-size:12px;color:var(--ink-soft);font-weight:700;margin-top:6px;line-height:1.35}
+.aside{position:sticky; top:100px; display:flex; flex-direction:column; gap:14px}
+.acard{background:#fff; border-radius:var(--r-lg); padding:24px; box-shadow:var(--sh)}
+.acard h4{font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px}
+.acard a{display:block; font-size:14.5px; font-weight:700; line-height:1.35; padding:11px 0; border-bottom:1px solid var(--line); color:var(--ink)}
+.acard a:last-child{border-bottom:none} .acard a:hover{color:var(--mag)}
+.acta{position:relative; overflow:hidden; border-radius:var(--r-lg); padding:26px; color:#fff;
+  background:#0b0910; background-image:var(--bgimg); background-size:cover; background-position:center; background-attachment:fixed}
+.acta h4{color:#fff; font-size:19px; font-weight:800; letter-spacing:-.02em; text-transform:none; letter-spacing:-.02em; margin-bottom:8px}
+.acta p{color:rgba(255,255,255,.68); font-size:13.5px; margin-bottom:18px}
+.aback{display:inline-flex; align-items:center; gap:9px; font-weight:700; font-size:14.5px; color:#fff; margin-bottom:8px}
+.aback .ico{width:16px;height:16px}
+.arts{display:none} .arts.on{display:block}
+@media (max-width:960px){ .alay{grid-template-columns:1fr} .aside{position:static} .kpirow{grid-template-columns:1fr} }
+
+/* Cursor personalizado con estela difuminada */
+@media (hover:hover) and (pointer:fine){
+  html,body{cursor:none}
+  a,button,.tab,.tabrail button,.bfilters button,input,textarea,select,[role="button"]{cursor:none}
+  #ikcur,#ikblur{position:fixed; top:0; left:0; pointer-events:none; z-index:9999; will-change:transform; opacity:0}
+  body.ikready #ikcur{opacity:1}
+  body.ikready #ikblur{opacity:.85}
+  #ikcur{width:9px;height:9px;border-radius:50%;background:var(--grad);margin:-4.5px 0 0 -4.5px;transition:width .22s,height .22s,margin .22s,opacity .3s}
+  #ikblur{width:52px;height:52px;border-radius:50%;margin:-26px 0 0 -26px;background:radial-gradient(circle,color-mix(in srgb, var(--g1) 50%, transparent),color-mix(in srgb, var(--g2) 34%, transparent) 55%,transparent 72%);filter:blur(11px);transition:width .3s,height .3s,margin .3s,opacity .3s}
+  body.ikhot #ikcur{width:0;height:0;margin:0}
+  body.ikhot #ikblur{width:82px;height:82px;margin:-41px 0 0 -41px;opacity:1}
+  body.ikready.ikmove #ikblur{opacity:1}
+}
+@media (prefers-reduced-motion:reduce){ html,body,a,button{cursor:auto!important} #ikcur,#ikblur{display:none!important} }
+
+/* === Navbar flotante === */
+header{background:none!important; box-shadow:none!important}
+header .hbar{position:relative; margin:14px auto 0; padding:10px 14px 10px 24px; border-radius:100px; background:none;
+  max-width:calc(1360px - 2*clamp(16px,2.6vw,34px)); width:calc(100% - 2*clamp(16px,2.6vw,34px)); transition:.35s}
+header .hbar::before{content:""; position:absolute; inset:0; z-index:-1; border-radius:inherit;
+  background:rgba(20,17,26,.42); -webkit-backdrop-filter:blur(18px) saturate(1.3); backdrop-filter:blur(18px) saturate(1.3);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.14), 0 18px 40px -22px rgba(0,0,0,.7); transition:.35s}
+header.scrolled{background:none!important; box-shadow:none!important}
+header.scrolled .hbar{background:none; padding-top:10px; padding-bottom:10px}
+header.scrolled .hbar::before{background:rgba(255,255,255,.82); -webkit-backdrop-filter:blur(20px) saturate(1.4); backdrop-filter:blur(20px) saturate(1.4);
+  box-shadow:inset 0 0 0 1px rgba(19,17,23,.07), 0 16px 40px -22px rgba(19,17,23,.4)}
+header.scrolled nav a{color:var(--ink-soft)} header.scrolled nav a:hover{color:var(--ink)}
+
+/* === Cursor: punto + anillo con blur === */
+@media (hover:hover) and (pointer:fine){
+  #ikring{position:fixed; top:0; left:0; pointer-events:none; z-index:9998; will-change:transform; opacity:0;
+    width:42px; height:42px; margin:-21px 0 0 -21px; border-radius:50%;
+    border:1.5px solid var(--mag); transition:width .3s cubic-bezier(.2,.7,.3,1), height .3s cubic-bezier(.2,.7,.3,1), margin .3s cubic-bezier(.2,.7,.3,1), background .3s, backdrop-filter .3s, opacity .3s}
+  #ikblur{width:0!important;height:0!important;margin:0!important;opacity:0!important}
+  body.ikhot #ikcur{width:6px;height:6px;margin:-3px 0 0 -3px}
+  body.ikhot #ikring{width:86px;height:86px;margin:-43px 0 0 -43px;border-color:var(--mag-lt);
+    background:radial-gradient(circle,color-mix(in srgb, var(--g1) 10%, transparent),color-mix(in srgb, var(--g2) 6%, transparent) 60%,transparent 72%);
+    -webkit-backdrop-filter:blur(6px) saturate(1.15); backdrop-filter:blur(6px) saturate(1.15)}
+  body.ikdown #ikring{width:32px;height:32px;margin:-16px 0 0 -16px}
+}
+
+@media (max-width:960px){
+  header .hbar{flex-wrap:wrap}
+  header nav{display:none!important; position:absolute!important; top:calc(100% + 10px)!important; left:0!important; right:0!important; bottom:auto!important;
+    width:auto!important; height:auto!important; max-height:70vh!important; transform:none!important; transition:none!important;
+    flex-direction:column!important; align-items:stretch!important; justify-content:flex-start!important; gap:2px!important;
+    background:#fff!important; border-radius:26px!important; padding:14px!important; overflow-y:auto!important;
+    box-shadow:0 26px 60px -28px rgba(19,17,23,.55), inset 0 0 0 1px rgba(19,17,23,.07)!important;
+    opacity:1!important; visibility:visible!important; z-index:95!important}
+  body.navopen header nav{display:flex!important}
+  header nav a{color:var(--ink-soft)!important; padding:13px 12px!important; border-radius:14px!important; font-size:16px!important}
+  header nav a:hover{color:var(--mag)!important; background:var(--sheet)!important}
+  header nav .btn-dark{color:#fff!important; justify-content:center; margin-top:8px}
+  header nav .drop{box-shadow:none!important; background:var(--sheet)!important}
+  header .menu-tog{display:block!important; z-index:96; color:#fff}
+  header.scrolled .menu-tog{color:var(--ink)}
+}
+
+/* ============ Capa de interacción ============ */
+@media (prefers-reduced-motion:no-preference){
+
+  /* --- Tarjetas claras: elevación con curva suave --- */
+  .card.lite,.prod.lite,.func,.fcard,.agent,.bcard,.step,.invc.lite,.svcx,.acard,.mv-card,.iad-item,.model,.plan,.kpibox,.sc{
+    transition:transform .45s cubic-bezier(.2,.7,.3,1), box-shadow .45s cubic-bezier(.2,.7,.3,1), background .3s !important}
+  .card.lite:hover,.prod.lite:hover,.func:hover,.fcard:hover,.agent:hover,.bcard:hover,.step:hover,.invc.lite:hover,.svcx:hover{
+    transform:translateY(-8px) !important}
+
+  /* --- Tile de icono: reacciona al hover de la tarjeta --- */
+  .cico,.fi,.ai,.bi,.ii,.ni,.p-badge,.si,.mv-ico,.chip-live,.di{
+    transition:transform .45s cubic-bezier(.2,.7,.3,1), box-shadow .35s, border-radius .35s}
+  .card:hover .cico,.func:hover .fi,.agent:hover .ai,.bcard:hover .bi,.iad-item:hover .ii,
+  .fcard:hover .fi,.mv-card:hover .mv-ico,.sc:hover .si{
+    transform:scale(1.09) rotate(-4deg); border-radius:50%;
+    box-shadow:0 14px 28px -12px color-mix(in srgb, var(--g1) 55%, transparent)}
+
+  /* --- Icono interno: micro-rebote --- */
+  .cico .ico,.fi .ico,.ai .ico,.bi .ico,.ii .ico,.mv-ico .ico,.si .ico{transition:transform .4s cubic-bezier(.34,1.56,.64,1)}
+  .card:hover .cico .ico,.func:hover .fi .ico,.agent:hover .ai .ico,.bcard:hover .bi .ico,
+  .iad-item:hover .ii .ico,.mv-card:hover .mv-ico .ico,.sc:hover .si .ico{transform:scale(1.14)}
+
+  /* --- Titulares: pasan al degradado de marca --- */
+  .func h4,.agent h4,.bcard h3,.step h4,.iad-item h4,.fcard h4{transition:color .35s}
+  .func:hover h4,.agent:hover h4,.bcard:hover h3,.step:hover h4,.fcard:hover h4{
+    background-image:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
+
+  /* --- Borde vivo en tarjetas claras --- */
+  .func,.agent,.bcard,.step,.fcard,.svcx{position:relative}
+  .func::after,.agent::after,.bcard::after,.step::after,.svcx::after{
+    content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+    box-shadow:inset 0 0 0 1.5px transparent; transition:box-shadow .45s}
+  .func:hover::after,.agent:hover::after,.bcard:hover::after,.step:hover::after,.svcx:hover::after{
+    box-shadow:inset 0 0 0 1.5px color-mix(in srgb, var(--g1) 28%, transparent)}
+
+  /* --- Contenedores con parallax: sin transform, brillo y borde --- */
+  .card.dk,.prod.dk,.invc.dk,.agent.count,.model.dk,.plan.hot,.fcard.tier.hot,.iad-item,.mv-card{
+    transition:box-shadow .45s, filter .45s !important}
+  .card.dk:hover,.prod.dk:hover,.invc.dk:hover,.agent.count:hover,.model.dk:hover,.plan.hot:hover,.fcard.tier.hot:hover{
+    filter:brightness(1.09) saturate(1.06);
+    box-shadow:var(--sh-lg), inset 0 0 0 1.5px color-mix(in srgb, var(--g2) 40%, transparent) !important}
+  .mv-card:hover,.iad-item:hover{box-shadow:inset 0 0 0 1.5px color-mix(in srgb, var(--g2) 38%, transparent), var(--sh-lg) !important}
+
+  /* --- Chips, píldoras y etiquetas --- */
+  .pchip,.mv-vals li,.srcs span,.ac,.pcard-wrap .p-sub,.partners .names span{transition:transform .3s cubic-bezier(.2,.7,.3,1), box-shadow .3s, color .3s}
+  .pchip:hover,.mv-vals li:hover,.srcs span:hover,.ac:hover{transform:translateY(-3px)}
+  .partners .names span:hover{transform:translateY(-2px) scale(1.03)}
+
+  /* --- Listas de verificación --- */
+  .chk li,.eye-caps li,.speclist li{transition:transform .3s cubic-bezier(.2,.7,.3,1)}
+  .chk li:hover,.eye-caps li:hover,.speclist li:hover{transform:translateX(4px)}
+  .eye-caps .ei{transition:transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .3s}
+  .eye-caps li:hover .ei{transform:scale(1.1) rotate(-5deg); box-shadow:0 12px 24px -12px color-mix(in srgb, var(--g2) 60%, transparent)}
+
+  /* --- Rail de pestañas y filtros --- */
+  .tabrail button,.bfilters button,.tab{transition:transform .3s cubic-bezier(.2,.7,.3,1), box-shadow .3s, color .25s, background .3s}
+  .tabrail button:not(.on):hover,.bfilters button:not(.on):hover{transform:translateX(4px)}
+  .tabrail button .ti{transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+  .tabrail button:hover .ti{transform:scale(1.08) rotate(-5deg)}
+
+  /* --- Enlaces con flecha --- */
+  .more,.bfeat .more{transition:gap .3s cubic-bezier(.2,.7,.3,1)}
+  .more:hover,.bfeat .more:hover{gap:15px}
+
+  /* --- Paneles del tablero --- */
+  .pz{transition:box-shadow .45s}
+  .pz:hover{box-shadow:0 12px 28px rgba(19,17,23,.1), 0 50px 90px -34px color-mix(in srgb, var(--g1) 40%, transparent) !important}
+  .alert{transition:transform .3s cubic-bezier(.2,.7,.3,1)}
+  .alert:hover{transform:translateX(5px)}
+
+  /* --- Burbujas de chat --- */
+  .msg{transition:transform .35s cubic-bezier(.2,.7,.3,1), box-shadow .35s}
+  .msg.q:hover{transform:translateX(-5px); box-shadow:0 12px 26px -12px color-mix(in srgb, var(--g1) 50%, transparent)}
+  .msg.a:hover{transform:translateX(5px)}
+
+  /* --- Enlaces del menú desplegable --- */
+  .drop a{transition:background .25s, transform .3s cubic-bezier(.2,.7,.3,1)}
+  .drop a:hover{transform:translateX(4px)}
+  .drop a:hover .di{transform:scale(1.08) rotate(-5deg)}
+
+  /* --- Enlaces del footer --- */
+  .fcol a{transition:color .25s, transform .3s cubic-bezier(.2,.7,.3,1); display:block}
+  .fcol a:hover{transform:translateX(5px)}
+}
+
+/* ============ Aparición al hacer scroll ============ */
+@supports (animation-timeline: view()){
+@media (prefers-reduced-motion:no-preference){
+
+  @keyframes ap-up{from{opacity:0; transform:translateY(38px)} to{opacity:1; transform:none}}
+  @keyframes ap-in{from{opacity:0} to{opacity:1}}
+  @keyframes ap-left{from{opacity:0; transform:translateX(-34px)} to{opacity:1; transform:none}}
+  @keyframes ap-right{from{opacity:0; transform:translateX(34px)} to{opacity:1; transform:none}}
+  @keyframes ap-scale{from{opacity:0; transform:scale(.94)} to{opacity:1; transform:none}}
+
+  /* --- Titulares y bloques de encabezado --- */
+  .sec-head,.func-head,.dash-head,.mv-head,.iad-head,.split>div,.sb-head{
+    animation:ap-up .85s cubic-bezier(.2,.7,.3,1) forwards;
+    animation-timeline:view(); animation-range:entry 0% entry 92%}
+
+  /* --- Tarjetas y bloques de contenido --- */
+  .card,.prod,.func,.fcard,.agent,.bcard,.step,.invc,.svcx,.iad-item,.mv-card,
+  .model,.plan,.kpibox,.sc,.pcard-wrap,.abody,.acard,.acta,.partners,.stat-band,
+  .eye,.ux,.bfeat,.news,.chat,.orbit,.tool>div,.prods>div,.cards>div{
+    animation:ap-up .9s cubic-bezier(.2,.7,.3,1) forwards;
+    animation-timeline:view(); animation-range:entry 0% entry 88%}
+
+  /* --- Escalonado por columna en grillas --- */
+  .funcs>*:nth-child(3n+2),.agents>*:nth-child(4n+2),.cards>*:nth-child(3n+2),
+  .feat>*:nth-child(2n),.steps>*:nth-child(3n+2),.iad-grid>*:nth-child(3n+2),
+  .bgrid>*:nth-child(3n+2),.svc>*:nth-child(3n+2){animation-range:entry 0% entry 100%}
+  .funcs>*:nth-child(3n),.agents>*:nth-child(4n),.cards>*:nth-child(3n),
+  .steps>*:nth-child(3n),.iad-grid>*:nth-child(3n),.bgrid>*:nth-child(3n),
+  .svc>*:nth-child(3n){animation-range:entry 0% entry 112%}
+  .agents>*:nth-child(4n+3){animation-range:entry 0% entry 106%}
+
+  /* --- Entradas laterales en bloques a dos columnas --- */
+  .eye>div:first-child,.ux-txt{animation-name:ap-left}
+  .eye>.scan,.ux-vis{animation-name:ap-right}
+  .ceo-card{animation-name:ap-left} .ceo-quote{animation-name:ap-right}
+
+  /* --- Elementos que no pueden transformarse (parallax) --- */
+  .stat-band,.eye,.ux,.bfeat,.news,.iad,.mv-band,.agent.count,.invc.dk,
+  .model.dk,.plan.hot,.fcard.tier.hot,.card.dk,.prod.dk,.ceo-card,.pull,.acta,footer{
+    animation-name:ap-in !important}
+
+  /* --- Listas y detalles --- */
+  .chk li,.eye-caps li,.speclist li,.mv-vals li,.srcs span,.pchip,.alerts .alert{
+    animation:ap-up .7s cubic-bezier(.2,.7,.3,1) forwards;
+    animation-timeline:view(); animation-range:entry 0% entry 96%}
+  .chk li:nth-child(even),.eye-caps li:nth-child(even),.speclist li:nth-child(even){
+    animation-range:entry 0% entry 110%}
+
+  /* --- Burbujas de chat, escalonadas --- */
+  .msg{animation:ap-scale .7s cubic-bezier(.34,1.56,.64,1) forwards; animation-timeline:view(); animation-range:entry 0% entry 94%}
+  .msg:nth-child(2){animation-range:entry 0% entry 104%}
+  .msg:nth-child(3){animation-range:entry 0% entry 114%}
+  .msg:nth-child(4){animation-range:entry 0% entry 124%}
+
+  /* --- CTA de cierre y footer --- */
+  .final>div,.iad-cta,.final-cta{animation:ap-up .9s cubic-bezier(.2,.7,.3,1) forwards; animation-timeline:view(); animation-range:entry 0% entry 90%}
+  .fgrid>div{animation:ap-up .8s cubic-bezier(.2,.7,.3,1) forwards; animation-timeline:view(); animation-range:entry 0% cover 30%}
+  .fgrid>div:nth-child(2){animation-range:entry 0% cover 38%}
+  .fgrid>div:nth-child(3){animation-range:entry 0% cover 46%}
+  .fgrid>div:nth-child(4){animation-range:entry 0% cover 54%}
+
+  /* --- El hero no se anima (ya es visible al cargar) --- */
+  .hero,.hero *{animation-name:none !important}
+}}
+/* Red de seguridad de impresión */
+@media print{ *{animation:none!important; opacity:1!important; transform:none!important; visibility:visible!important} }
+
+/* ===== Tema morado: solo variables ===== */
+body.tp{
+  --mag:#9A69DB; --mag-lt:#C4A0EE; --mag-tint:#F0E9FA;
+  --g1:#6E3BB5; --g2:#B98CE8; --bgimg:url("/assets/rectangle-943.png");
+  --herobg:url("/assets/slide-16-9-3.png");
+  --grad:linear-gradient(92deg,var(--g1) 0%,var(--g2) 100%);
+  --grad-r:linear-gradient(120deg,var(--g1) 0%,var(--g2) 100%);
+}
+body.tp .hero video{filter:grayscale(1) sepia(1) saturate(3.4) hue-rotate(212deg) brightness(.78) contrast(1.05)}
+#ik-color path:not([fill="#121212"]){fill:var(--mag)}
+#dl stop:first-child,#gg stop:first-child,#dg stop:first-child{stop-color:var(--g1)}
+#dl stop:last-child,#gg stop:last-child,#dg stop:nth-child(2),#dg stop:last-child{stop-color:var(--g2)}
+
+/* Selector de tema */
+.thm{display:none !important; align-items:center; gap:6px; background:rgba(255,255,255,.12); box-shadow:inset 0 0 0 1px rgba(255,255,255,.22);
+  border:none; cursor:pointer; padding:6px; border-radius:100px; transition:transform .3s, background .3s; margin-left:4px}
+header.scrolled .thm{background:rgba(19,17,23,.06); box-shadow:inset 0 0 0 1px rgba(19,17,23,.1)}
+.thm .sw{width:18px; height:18px; border-radius:50%; display:block; outline:2px solid transparent}
+.thm .sw-a{background:linear-gradient(120deg,#E70147,#FFAA4A)}
+.thm .sw-b{background:linear-gradient(120deg,#6E3BB5,#B98CE8)}
+#thm[data-theme="original"] .sw-a{outline-color:#fff}
+#thm[data-theme="purple"] .sw-b{outline-color:#fff}
+header.scrolled #thm[data-theme="original"] .sw-a{outline-color:#131117}
+header.scrolled #thm[data-theme="purple"] .sw-b{outline-color:#131117}
+.thm:hover{transform:scale(1.06)}
+html.notrans *,html.notrans *::before,html.notrans *::after{transition:none !important}
+@media (max-width:960px){ .thm{margin:0 10px 0 auto} }
+
+/* Video de fondo del hero */
+.hero-vid{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; pointer-events:none}
+.hero-bg{background:none!important; z-index:1!important}
+.hero-grid{z-index:1}
+.hero::after{content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:linear-gradient(90deg, rgba(10,8,14,.9) 0%, rgba(10,8,14,.62) 44%, rgba(10,8,14,.24) 78%, rgba(10,8,14,.42) 100%), linear-gradient(0deg, rgba(10,8,14,.55), transparent 42%)}
+.hero-inner{z-index:3!important}
+body.tp .hero-vid{filter:grayscale(1) sepia(1) saturate(3.4) hue-rotate(212deg) brightness(.78) contrast(1.05)}
+
+/* ===== Botón flotante de WhatsApp ===== */
+.wa-fab{position:fixed; right:clamp(16px,2.4vw,30px); bottom:clamp(16px,2.4vw,30px); z-index:70;
+  width:60px; height:60px; border-radius:50%; display:grid; place-items:center; color:#fff!important;
+  background:linear-gradient(135deg,#25D366,#128C7E);
+  box-shadow:0 12px 30px -8px rgba(18,140,126,.7), 0 0 0 0 rgba(37,211,102,.5);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .35s; animation:wapulse 2.6s ease-out infinite}
+.wa-fab .ico{width:30px;height:30px; fill:currentColor; stroke:none}
+.wa-fab:hover{transform:scale(1.09) translateY(-3px); color:#fff!important;
+  box-shadow:0 18px 40px -10px rgba(18,140,126,.85)}
+@keyframes wapulse{0%{box-shadow:0 12px 30px -8px rgba(18,140,126,.7), 0 0 0 0 rgba(37,211,102,.55)}
+  70%{box-shadow:0 12px 30px -8px rgba(18,140,126,.7), 0 0 0 18px rgba(37,211,102,0)}
+  100%{box-shadow:0 12px 30px -8px rgba(18,140,126,.7), 0 0 0 0 rgba(37,211,102,0)}}
+.wa-fab .tip{position:absolute; right:calc(100% + 12px); white-space:nowrap; font-size:13.5px; font-weight:700; color:var(--ink);
+  background:#fff; padding:10px 16px; border-radius:100px; box-shadow:var(--sh-lg);
+  opacity:0; transform:translateX(8px); pointer-events:none; transition:.3s cubic-bezier(.2,.7,.3,1)}
+.wa-fab:hover .tip{opacity:1; transform:translateX(0)}
+@media (max-width:600px){ .wa-fab{width:54px;height:54px} .wa-fab .ico{width:27px;height:27px} .wa-fab .tip{display:none} }
+@media (prefers-reduced-motion:reduce){ .wa-fab{animation:none} }
+
+/* ===== Más altura en las bandas con parallax ===== */
+.iad{padding:clamp(80px,10vw,150px) clamp(28px,4vw,64px)!important}
+.mv-band{padding:clamp(84px,10.5vw,158px) clamp(24px,4vw,56px)!important}
+.stat-band{padding:clamp(64px,8vw,110px) clamp(34px,5vw,60px)!important}
+.awards{padding:clamp(70px,8.5vw,124px) clamp(30px,4vw,58px)!important}
+.eye{padding:clamp(58px,7vw,104px) clamp(32px,4.5vw,58px)!important}
+.ux{min-height:clamp(430px,46vw,620px)}
+.ux-txt{padding:clamp(52px,6.5vw,88px) clamp(34px,4.5vw,58px)!important}
+.ux-vis{padding:clamp(40px,5vw,64px)!important}
+.cx{min-height:clamp(500px,52vw,660px)}
+.cx-in{padding:clamp(48px,6vw,86px) clamp(30px,4vw,60px)!important}
+.news{padding:clamp(52px,6.5vw,92px) clamp(30px,4vw,58px)!important}
+.bfeat-txt{padding:clamp(48px,5.5vw,80px) clamp(32px,4vw,58px)!important}
+.acta{padding:clamp(34px,4vw,52px)!important}
+.pull{padding:clamp(40px,4.5vw,58px)!important}
+.mband{padding:clamp(30px,3.6vw,50px) 0!important}
+footer{padding:clamp(88px,11vw,150px) clamp(28px,4vw,56px) 52px!important}
+@media (max-width:960px){
+  .ux,.cx{min-height:0}
+  .iad,.mv-band,.awards,.stat-band,.eye{padding-left:26px!important; padding-right:26px!important}
+}
+
+/* ===== Hover: header y contenidos ===== */
+@media (hover:hover) and (pointer:fine){
+
+  /* --- Enlaces del nav: subrayado que crece desde el centro --- */
+  header nav>a,.nav-dropbtn{position:relative}
+  header nav>a::after,.nav-dropbtn::after{content:""; position:absolute; left:50%; right:50%; bottom:-6px; height:2px;
+    background:var(--grad); border-radius:2px; transition:left .32s cubic-bezier(.2,.7,.3,1), right .32s cubic-bezier(.2,.7,.3,1)}
+  header nav>a:hover::after,.nav-drop:hover .nav-dropbtn::after{left:0; right:0}
+  header nav>a.btn::after{display:none}
+
+  /* --- Logo --- */
+  .logo{transition:transform .38s cubic-bezier(.34,1.56,.64,1); display:inline-block}
+  .logo:hover{transform:scale(1.045)}
+
+  /* --- La píldora del header reacciona --- */
+  header .hbar::before{transition:box-shadow .4s, background .35s}
+  header .hbar:hover::before{box-shadow:inset 0 0 0 1px rgba(255,170,74,.34), 0 22px 46px -22px rgba(0,0,0,.75)}
+  header.scrolled .hbar:hover::before{box-shadow:inset 0 0 0 1px rgba(231,1,71,.2), 0 20px 44px -22px rgba(19,17,23,.45)}
+
+  /* --- Botón del header --- */
+  header nav .btn-dark{transition:transform .3s cubic-bezier(.2,.7,.3,1), box-shadow .35s, background .3s}
+  header nav .btn-dark:hover{background:var(--grad); transform:translateY(-2px); box-shadow:0 14px 30px -10px rgba(231,1,71,.6)}
+
+  /* --- Párrafos y bloques de texto: aclarado sutil --- */
+  .big,.func p,.agent p,.step p,.bcard p,.cs p,.mv-card p,.iad-item p{transition:color .35s}
+  .func:hover p,.agent:hover p,.step:hover p,.bcard:hover p{color:var(--ink)}
+
+  /* --- Titulares de sección: barra de acento --- */
+  .func-head>div:first-child,.sec-head{position:relative}
+  .func-head>div:first-child::before,.sec-head::before{content:""; position:absolute; left:-18px; top:6px; bottom:6px; width:3px;
+    border-radius:3px; background:var(--grad); opacity:0; transform:scaleY(.4); transform-origin:top;
+    transition:opacity .4s, transform .5s cubic-bezier(.2,.7,.3,1)}
+  .func-head:hover>div:first-child::before,.sec-head:hover::before{opacity:1; transform:scaleY(1)}
+
+  /* --- Imágenes y logos --- */
+  .cx-logo img,.tst .foot img{transition:transform .4s cubic-bezier(.2,.7,.3,1), opacity .35s}
+  .cx:hover .cx-logo img{transform:scale(1.04)}
+  .tst:hover .foot img{opacity:1; transform:scale(1.05)}
+  .mset img{transition:opacity .35s, transform .35s cubic-bezier(.34,1.56,.64,1)}
+  .mset img:hover{opacity:1; transform:scale(1.12)}
+
+  /* --- Reconocimientos --- */
+  .aw{transition:transform .45s cubic-bezier(.2,.7,.3,1), box-shadow .45s, background .35s}
+  .aw:hover{transform:translateY(-6px)}
+  .aw .awi{transition:transform .42s cubic-bezier(.34,1.56,.64,1), border-radius .35s}
+  .aw:hover .awi{transform:scale(1.09) rotate(-5deg); border-radius:50%}
+
+  /* --- Hitos de trayectoria --- */
+  .tr{transition:transform .45s cubic-bezier(.2,.7,.3,1), box-shadow .45s}
+  .tr:hover{transform:translateY(-6px)}
+  .tr .yr,.trj .yr{transition:letter-spacing .35s}
+  .tr:hover .yr{letter-spacing:.13em}
+
+  /* --- Slider de casos --- */
+  .cx-dot{transition:transform .3s cubic-bezier(.34,1.56,.64,1), background .3s, width .35s}
+  .cx-dot:hover{transform:scale(1.35)}
+  .cx-nav button{transition:transform .32s cubic-bezier(.2,.7,.3,1), background .3s, box-shadow .3s}
+  .cx-nav button:hover{transform:scale(1.09)}
+
+  /* --- KPIs y cifras --- */
+  .cs-kpis>div,.sb,.kpi,.metric{transition:transform .38s cubic-bezier(.2,.7,.3,1)}
+  .cs-kpis>div:hover,.sb:hover,.metric:hover{transform:translateY(-4px)}
+
+  /* --- Testimonios --- */
+  .tst blockquote{transition:color .35s}
+  .tst .qm{transition:transform .42s cubic-bezier(.34,1.56,.64,1)}
+  .tst:hover .qm{transform:translateY(-3px) scale(1.08)}
+
+  /* --- Botones en general: brillo que barre --- */
+  .btn{position:relative; overflow:hidden}
+  .btn::before{content:""; position:absolute; inset:0;
+    background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.26) 50%,transparent 70%);
+    transform:translateX(-120%); transition:transform .65s cubic-bezier(.2,.7,.3,1); pointer-events:none}
+  .btn:hover::before{transform:translateX(120%)}
+
+  /* --- FAB de WhatsApp --- */
+  .wa-fab .ico{transition:transform .38s cubic-bezier(.34,1.56,.64,1)}
+  .wa-fab:hover .ico{transform:scale(1.1) rotate(-6deg)}
+
+  /* --- Selector de tema --- */
+  #thm{transition:transform .34s cubic-bezier(.34,1.56,.64,1), box-shadow .35s}
+  #thm:hover{transform:scale(1.06)}
+}
+@media (prefers-reduced-motion:reduce){ .btn::before{display:none} }
+
+/* ===== Cursor: luz exterior, sin desenfocar el contenido ===== */
+@media (hover:hover) and (pointer:fine){
+  #ikring{
+    -webkit-backdrop-filter:none!important; backdrop-filter:none!important;
+    background:none!important;
+    border:1.5px solid rgba(231,1,71,.5)!important;
+    box-shadow:0 0 18px 2px rgba(231,1,71,.28), inset 0 0 12px rgba(255,170,74,.18)!important;
+    transition:width .34s cubic-bezier(.2,.7,.3,1), height .34s cubic-bezier(.2,.7,.3,1),
+      margin .34s cubic-bezier(.2,.7,.3,1), border-color .3s, box-shadow .34s, opacity .3s!important}
+  body.ikhot #ikring{
+    -webkit-backdrop-filter:none!important; backdrop-filter:none!important;
+    background:radial-gradient(circle, rgba(255,170,74,.1) 0%, rgba(231,1,71,.06) 45%, transparent 70%)!important;
+    border-color:rgba(255,170,74,.85)!important;
+    box-shadow:0 0 34px 6px rgba(255,170,74,.4), 0 0 70px 16px rgba(231,1,71,.22), inset 0 0 22px rgba(255,170,74,.2)!important}
+  body.ikdown #ikring{box-shadow:0 0 22px 3px rgba(255,170,74,.5), inset 0 0 14px rgba(255,170,74,.26)!important}
+  #ikcur{box-shadow:0 0 12px 2px rgba(231,1,71,.55)}
+  body.ikhot #ikcur{box-shadow:0 0 16px 3px rgba(255,170,74,.7)}
+}
+
+/* ===== Luz del cursor sobre las tarjetas ===== */
+@media (hover:hover) and (pointer:fine){
+  .card,.prod,.func,.fcard,.agent,.bcard,.step,.invc,.svcx,.iad-item,.mv-card,.model,.plan,
+  .kpibox,.sc,.aw,.tr,.tst,.cs,.mt-card,.acard,.pcard-wrap,.chat{position:relative; isolation:isolate}
+  .card::before,.prod::before,.func::before,.fcard::before,.agent::before,.bcard::before,.step::before,
+  .invc::before,.svcx::before,.iad-item::before,.mv-card::before,.model::before,.plan::before,
+  .kpibox::before,.sc::before,.aw::before,.tr::before,.tst::before,.cs::before,.mt-card::before,
+  .acard::before,.chat::before{
+    content:""; position:absolute; inset:0; border-radius:inherit; z-index:0; pointer-events:none;
+    opacity:0; transition:opacity .45s cubic-bezier(.2,.7,.3,1);
+    background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%),
+      rgba(231,1,71,.13) 0%, rgba(255,170,74,.08) 34%, transparent 66%)}
+  .card:hover::before,.prod:hover::before,.func:hover::before,.fcard:hover::before,.agent:hover::before,
+  .bcard:hover::before,.step:hover::before,.invc:hover::before,.svcx:hover::before,.iad-item:hover::before,
+  .mv-card:hover::before,.model:hover::before,.plan:hover::before,.kpibox:hover::before,.sc:hover::before,
+  .aw:hover::before,.tr:hover::before,.tst:hover::before,.cs:hover::before,.mt-card:hover::before,
+  .acard:hover::before,.chat:hover::before{opacity:1}
+  /* Sobre fondos oscuros la luz es más cálida y visible */
+  .card.dk::before,.prod.dk::before,.invc.dk::before,.agent.count::before,.model.dk::before,
+  .plan.hot::before,.fcard.tier.hot::before,.mv-card::before,.iad-item::before,.sc::before,
+  .aw::before,.mt-card::before{
+    background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),
+      rgba(255,170,74,.2) 0%, rgba(231,1,71,.12) 36%, transparent 68%)}
+  /* El contenido se mantiene por encima de la luz */
+  .card>*,.prod>*,.func>*,.fcard>*,.agent>*,.bcard>*,.step>*,.invc>*,.svcx>*,.iad-item>*,
+  .mv-card>*,.model>*,.plan>*,.kpibox>*,.sc>*,.aw>*,.tr>*,.tst>*,.cs>*,.mt-card>*,
+  .acard>*,.chat>*{position:relative; z-index:1}
+}
+
+/* ===== Contraste del botón Contáctanos ===== */
+header nav .btn-dark{background:#fff!important; color:var(--ink)!important;
+  box-shadow:0 6px 18px -8px rgba(0,0,0,.5)!important; font-weight:800}
+header nav .btn-dark:hover{background:var(--grad)!important; color:#fff!important;
+  box-shadow:0 14px 32px -10px rgba(231,1,71,.65)!important}
+header.scrolled nav .btn-dark{background:var(--ink)!important; color:#fff!important;
+  box-shadow:0 6px 18px -8px rgba(19,17,23,.4)!important}
+header.scrolled nav .btn-dark:hover{background:var(--grad)!important; color:#fff!important}
+header nav .btn-dark .ico{color:currentColor}
+.hero-vid-global{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; pointer-events:none}
+.hero-vid-global[data-parked]{position:fixed; top:-9999px; left:-9999px; width:2px; height:2px; opacity:0}
+.arts:not(.on) .hero{display:none}
+
+.hero-vid{opacity:0; transition:opacity .6s ease}
+.hero-vid.ready{opacity:1}
+.hero{background-image:url("/assets/hero-poster.jpg"); background-size:cover; background-position:center}
+body.tp .hero{filter:none}
+</style>
+</helmet>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ik-color" viewBox="0 0 777 182"><path d="M145.891 14.9876C140.233 10.605 133.9 7.04828 127.077 4.50085C119.274 1.59003 110.833 0 102.019 0C93.2047 0 84.7632 1.59003 76.964 4.50085C70.1378 7.04707 63.8067 10.605 58.148 14.9876C41.2239 28.1002 30.3328 48.622 30.3328 71.6877C30.3328 94.5313 41.0175 114.877 57.6651 128.003L57.6675 128.006C57.6675 128.006 57.6711 128.006 57.6748 128.01C57.9657 128.125 66.4471 131.512 73.8998 140.543C74.7437 141.411 75.4959 142.389 76.1261 143.467C76.1297 143.467 76.1297 143.471 76.1297 143.471C76.5161 144.13 76.8589 144.828 77.1535 145.559C77.8127 147.21 78.1677 148.905 78.2413 150.585C78.2316 150.882 78.228 151.183 78.228 151.484C78.228 151.685 78.228 151.887 78.2316 152.089C78.3753 159.248 81.0531 165.787 85.4055 170.841C90.848 177.162 98.9129 181.168 107.911 181.168C124.303 181.168 137.595 167.875 137.595 151.484C137.595 150.972 137.582 150.462 137.558 149.96C137.506 148.963 137.407 147.98 137.26 147.012C136.329 144.04 133.552 141.881 130.27 141.881C126.559 141.881 123.495 144.637 123.011 148.214C123.193 149.161 123.289 150.14 123.289 151.138C123.289 151.234 123.286 151.327 123.286 151.422C123.132 159.785 116.309 166.516 107.911 166.516C106.094 166.516 104.354 166.202 102.735 165.624C102.595 165.569 102.448 165.514 102.301 165.46C101.361 165.091 100.468 164.634 99.63 164.097C93.3206 159.836 92.7616 150.924 92.7616 150.924C92.6759 149.286 92.4453 147.124 91.8948 144.666C91.4722 142.785 90.8637 140.73 89.9884 138.613C89.7192 137.967 89.4282 137.311 89.1083 136.656C88.8306 136.153 88.4684 135.558 88.1388 135.037C87.8503 134.585 87.5919 134.199 87.4181 133.971C87.435 133.961 87.4459 133.955 87.4628 133.945C82.9269 126.965 75.6009 122.246 75.6009 122.246C57.4019 112.716 44.9835 93.6536 44.9835 71.6865C44.9835 49.175 58.0261 29.7119 76.964 20.4349C82.7506 17.6002 89.0914 15.7168 95.7811 14.9863C97.8275 14.7654 99.9113 14.6507 102.019 14.6507C104.127 14.6507 106.21 14.7654 108.26 14.9863C114.946 15.7156 121.287 17.6002 127.077 20.4349C146.015 29.7119 159.054 49.175 159.054 71.6865C159.054 74.0698 158.91 76.418 158.625 78.7264C158.198 82.2143 157.452 85.6044 156.422 88.8702C156.409 88.9088 156.397 88.9499 156.381 88.9921C156.265 89.3543 156.147 89.7165 156.025 90.0763C156.015 90.1053 156.002 90.1378 155.993 90.1692C155.97 90.2332 155.949 90.2996 155.922 90.3672C155.212 92.4184 154.39 94.4141 153.459 96.3531C150.6 102.396 146.296 109.11 140.779 113.519C140.571 113.728 140.376 113.909 140.197 114.069C138.405 115.442 136.394 116.536 134.222 117.298C134.222 117.298 134.222 117.298 134.218 117.298C127.782 119.632 122.372 118.541 118.445 116.724C118.445 116.724 118.441 116.72 118.438 116.72C116.911 116.059 115.478 115.223 114.16 114.242C113.822 113.94 113.485 113.633 113.153 113.323C112.571 112.776 112.001 112.22 111.441 111.65C111.439 111.65 111.439 111.646 111.435 111.642C111.435 111.64 111.439 111.64 111.439 111.64C108.763 109.071 103.869 103.905 102.049 98.8969V98.8872C102.04 98.9078 102.03 98.9223 102.022 98.9428C101.136 97.3165 100.329 95.6481 99.6023 93.9337C99.5962 93.924 99.5926 93.9168 99.5902 93.9083C99.4743 93.6319 99.3596 93.3578 99.2473 93.0825C97.382 88.473 96.0999 83.5653 95.495 78.4499C95.2366 76.2598 95.1026 74.0323 95.099 71.7734V71.596C95.1473 67.8147 98.2283 64.7626 102.022 64.7626H102.049V50.1106H102.022C101.081 50.1106 100.156 50.1722 99.2473 50.2869C88.6906 51.6439 80.5207 60.6251 80.4471 71.5344V71.835C80.4784 86.132 84.6932 99.4486 91.9322 110.624C91.9455 110.643 91.96 110.661 91.9696 110.681C94.7984 114.76 99.3499 119.997 102.005 122.968C102.011 122.962 102.018 122.953 102.022 122.945C103.378 124.273 104.788 125.546 106.247 126.762C109.191 128.802 112.447 130.421 115.934 131.528C119.42 132.635 123.13 133.233 126.982 133.233C135.26 133.233 142.894 130.473 149.014 125.818C151.445 123.706 153.732 121.431 155.859 119.013C166.97 106.386 173.707 89.8216 173.707 71.6841C173.706 48.6221 162.812 28.1002 145.891 14.9876Z" fill="var(--mag)"></path><path d="M102.003 122.969C99.0981 127.573 92.9396 130.964 87.4632 133.946C82.9274 126.965 75.6014 122.247 75.6014 122.247C75.8513 122.378 76.1 122.507 76.3535 122.634C76.5552 122.736 76.7592 122.839 76.9644 122.938C77.294 122.775 77.6236 122.609 77.952 122.443C83.4079 119.637 88.3494 115.98 92.6076 111.646C92.3927 111.326 92.1802 111.007 91.9677 110.684C94.7964 114.761 99.348 119.998 102.003 122.969Z" fill="var(--mag)"></path><path d="M73.9008 140.544C73.7498 140.388 73.5929 140.237 73.4359 140.087C66.6412 142.224 59.4082 143.376 51.9108 143.376C33.1093 143.376 16.0053 136.14 3.21869 124.299C2.62711 123.756 2.04639 123.2 1.47533 122.633C0.546912 121.398 0 119.866 0 118.203C0 114.127 3.30441 110.822 7.38271 110.822C9.15263 110.822 10.7777 111.444 12.0466 112.483C12.3242 112.755 12.6068 113.023 12.8905 113.292C21.7497 121.6 33.2554 127.111 46.0143 128.424C47.952 128.622 49.9163 128.724 51.9108 128.724C54.0187 128.724 56.1014 128.608 58.149 128.385C57.9884 128.263 57.8314 128.139 57.6745 128.011C57.9666 128.125 66.4468 131.513 73.9008 140.544Z" fill="var(--mag)"></path><path d="M123.594 71.5357V71.8363C123.59 73.0774 123.559 74.3101 123.491 75.5343C122.787 88.8582 118.446 101.215 111.439 111.638C108.763 109.072 103.869 103.906 102.049 98.8982V98.8885C103.073 97.0136 103.986 95.0758 104.794 93.0825C107.462 86.4991 108.933 79.3072 108.943 71.7735C108.947 71.7458 108.947 71.7132 108.947 71.6854C108.947 71.6564 108.485 67.9741 106.665 66.547C105.367 65.5329 103.824 64.7711 102.049 64.7614V50.1095C102.98 50.1095 103.895 50.1711 104.794 50.2858C111.605 51.1586 117.42 55.2092 120.71 60.9004C122.522 64.0334 123.568 67.6614 123.594 71.5357Z" fill="var(--mag)"></path><path d="M216 38.668H233.908V140.547H216V38.668Z" fill="#121212"></path><path d="M290.018 68.6393C306.769 68.6393 315.144 78.264 315.144 97.5134V140.547H297.792V98.3463C297.792 92.7936 296.728 88.7679 294.599 86.2692C292.471 83.6779 289.185 82.3823 284.743 82.3823C279.468 82.3823 275.211 84.0944 271.972 87.5185C268.733 90.8502 267.113 95.2923 267.113 100.845V140.547H249.9V90.2949C249.9 82.8913 249.53 76.2743 248.789 70.4439H265.031L266.28 81.9658C268.687 77.7087 271.926 74.4234 275.998 72.1097C280.162 69.7961 284.836 68.6393 290.018 68.6393Z" fill="#121212"></path><path d="M353.451 83.4928V114.866C353.451 123.102 357.291 127.22 364.973 127.22C367.101 127.22 369.415 126.85 371.913 126.11V139.853C368.859 140.963 365.158 141.519 360.808 141.519C352.849 141.519 346.741 139.298 342.484 134.855C338.227 130.413 336.098 124.028 336.098 115.699V83.4928H322.633V70.4439H336.098V53.3693L353.451 47.5389V70.4439H372.052V83.4928H353.451Z" fill="#121212"></path><path d="M441.171 106.398H392.862C393.232 113.894 395.083 119.447 398.415 123.056C401.839 126.573 406.883 128.331 413.546 128.331C421.227 128.331 428.353 125.832 434.924 120.835L439.921 132.773C436.59 135.457 432.471 137.632 427.566 139.298C422.754 140.871 417.849 141.658 412.852 141.658C401.376 141.658 392.353 138.418 385.782 131.94C379.211 125.462 375.926 116.578 375.926 105.287C375.926 98.1613 377.361 91.8219 380.229 86.2692C383.098 80.7165 387.124 76.4131 392.307 73.3591C397.489 70.2126 403.366 68.6393 409.937 68.6393C419.561 68.6393 427.15 71.7858 432.703 78.0789C438.348 84.2795 441.171 92.8399 441.171 103.76V106.398ZM410.353 81.1329C405.726 81.1329 401.931 82.5211 398.97 85.2975C396.101 87.9813 394.25 91.9144 393.417 97.097H426.039C425.484 91.8219 423.865 87.8425 421.181 85.1586C418.59 82.4748 414.98 81.1329 410.353 81.1329Z" fill="#121212"></path><path d="M489.459 68.7781C492.142 68.7781 494.456 69.1483 496.4 69.8887L496.261 85.7139C493.299 84.5108 490.245 83.9093 487.099 83.9093C481.176 83.9093 476.641 85.6214 473.495 89.0455C470.441 92.4697 468.914 97.0044 468.914 102.65V140.547H451.7V90.2949C451.7 82.8913 451.33 76.2743 450.59 70.4439H466.831L468.219 82.7987C469.978 78.264 472.754 74.7936 476.549 72.3874C480.343 69.9812 484.646 68.7781 489.459 68.7781Z" fill="#121212"></path><path d="M550.789 140.547L520.11 108.202V140.547H502.897V38.377H520.11V101.4L548.985 70.5827H569.946L538.434 104.038L572.445 140.547H550.789Z" fill="#121212"></path><path d="M610.176 141.658C603.05 141.658 596.757 140.177 591.297 137.215C585.929 134.254 581.765 130.043 578.803 124.583C575.934 119.03 574.5 112.552 574.5 105.148C574.5 97.7448 575.934 91.3129 578.803 85.8527C581.765 80.3 585.929 76.0429 591.297 73.0815C596.757 70.12 603.05 68.6393 610.176 68.6393C617.21 68.6393 623.41 70.12 628.778 73.0815C634.145 76.0429 638.264 80.3 641.133 85.8527C644.094 91.3129 645.575 97.7448 645.575 105.148C645.575 112.552 644.094 119.03 641.133 124.583C638.264 130.043 634.145 134.254 628.778 137.215C623.41 140.177 617.21 141.658 610.176 141.658ZM610.037 128.053C615.96 128.053 620.449 126.156 623.503 122.362C626.649 118.475 628.223 112.737 628.223 105.148C628.223 97.6523 626.649 91.9607 623.503 88.0738C620.356 84.0944 615.914 82.1046 610.176 82.1046C604.346 82.1046 599.857 84.0944 596.711 88.0738C593.564 91.9607 591.991 97.6523 591.991 105.148C591.991 112.737 593.518 118.475 596.572 122.362C599.719 126.156 604.207 128.053 610.037 128.053Z" fill="#121212"></path><path d="M695.348 68.6393C712.098 68.6393 720.474 78.264 720.474 97.5134V140.547H703.122V98.3463C703.122 92.7936 702.057 88.7679 699.929 86.2692C697.8 83.6779 694.515 82.3823 690.073 82.3823C684.798 82.3823 680.541 84.0944 677.301 87.5185C674.062 90.8502 672.443 95.2923 672.443 100.845V140.547H655.229V90.2949C655.229 82.8913 654.859 76.2743 654.119 70.4439H670.361L671.61 81.9658C674.016 77.7087 677.255 74.4234 681.327 72.1097C685.492 69.7961 690.165 68.6393 695.348 68.6393Z" fill="#121212"></path><path d="M757.78 83.4928V114.866C757.78 123.102 761.621 127.22 769.302 127.22C771.431 127.22 773.744 126.85 776.243 126.11V139.853C773.189 140.963 769.487 141.519 765.138 141.519C757.179 141.519 751.071 139.298 746.814 134.855C742.556 130.413 740.428 124.028 740.428 115.699V83.4928H726.963V70.4439H740.428V53.3693L757.78 47.5389V70.4439H776.382V83.4928H757.78Z" fill="#121212"></path></symbol><symbol id="ik-white" viewBox="0 0 791 185"><path d="M148.609 15.2669C142.846 10.8026 136.394 7.17962 129.445 4.58473C121.497 1.61966 112.898 0 103.92 0C94.9413 0 86.3424 1.61966 78.3979 4.58473C71.4445 7.17839 64.9954 10.8026 59.2313 15.2669C41.9918 28.6238 30.8977 49.5281 30.8977 73.0236C30.8977 96.2928 41.7815 117.018 58.7394 130.388L58.7418 130.392C58.7418 130.392 58.7455 130.392 58.7492 130.395C59.0456 130.512 67.685 133.963 75.2766 143.162C76.1362 144.046 76.9024 145.042 77.5444 146.141C77.5481 146.141 77.5481 146.144 77.5481 146.144C77.9416 146.816 78.2909 147.527 78.591 148.272C79.2624 149.953 79.624 151.68 79.699 153.392C79.6892 153.694 79.6855 154 79.6855 154.307C79.6855 154.512 79.6855 154.717 79.6892 154.923C79.8355 162.215 82.5632 168.876 86.9967 174.024C92.5407 180.463 100.756 184.544 109.922 184.544C126.619 184.544 140.159 171.004 140.159 154.307C140.159 153.785 140.145 153.266 140.121 152.755C140.068 151.739 139.967 150.738 139.817 149.751C138.869 146.724 136.04 144.525 132.698 144.525C128.917 144.525 125.796 147.332 125.303 150.976C125.489 151.94 125.586 152.938 125.586 153.955C125.586 154.052 125.583 154.147 125.583 154.244C125.426 162.763 118.476 169.619 109.922 169.619C108.071 169.619 106.299 169.299 104.649 168.71C104.507 168.655 104.357 168.598 104.207 168.543C103.25 168.168 102.34 167.702 101.486 167.154C95.0593 162.814 94.4899 153.736 94.4899 153.736C94.4026 152.068 94.1677 149.866 93.6069 147.362C93.1765 145.446 92.5567 143.353 91.6651 141.196C91.3908 140.538 91.0944 139.87 90.7685 139.202C90.4857 138.691 90.1167 138.084 89.781 137.553C89.4871 137.093 89.2239 136.699 89.0468 136.467C89.064 136.457 89.0751 136.451 89.0923 136.441C84.4719 129.33 77.0094 124.524 77.0094 124.524C58.4713 114.816 45.8214 95.3988 45.8214 73.0224C45.8214 50.0914 59.1071 30.2656 78.3979 20.8157C84.2923 17.9282 90.7513 16.0097 97.5657 15.2656C99.6502 15.0406 101.773 14.9237 103.92 14.9237C106.067 14.9237 108.189 15.0406 110.277 15.2656C117.088 16.0084 123.547 17.9282 129.445 20.8157C148.736 30.2656 162.018 50.0914 162.018 73.0224C162.018 75.4501 161.871 77.842 161.581 80.1934C161.146 83.7463 160.386 87.1996 159.337 90.5263C159.323 90.5656 159.311 90.6074 159.295 90.6505C159.177 91.0194 159.056 91.3884 158.932 91.7549C158.922 91.7844 158.909 91.8175 158.9 91.8495C158.877 91.9147 158.854 91.9823 158.827 92.0512C158.104 94.1406 157.267 96.1735 156.319 98.1486C153.406 104.304 149.022 111.143 143.402 115.634C143.19 115.847 142.991 116.031 142.809 116.195C140.984 117.593 138.935 118.707 136.723 119.483C136.723 119.483 136.723 119.483 136.719 119.483C130.163 121.862 124.652 120.75 120.652 118.899C120.652 118.899 120.648 118.895 120.644 118.895C119.09 118.222 117.63 117.371 116.287 116.371C115.943 116.063 115.6 115.751 115.261 115.435C114.669 114.878 114.088 114.311 113.518 113.73C113.515 113.73 113.515 113.727 113.511 113.723C113.511 113.72 113.515 113.72 113.515 113.72C110.79 111.103 105.804 105.841 103.951 100.74V100.73C103.941 100.751 103.931 100.766 103.923 100.787C103.02 99.13 102.198 97.4304 101.458 95.6841C101.452 95.6743 101.448 95.6669 101.446 95.6583C101.328 95.3767 101.211 95.0975 101.096 94.8171C99.1964 90.1217 97.8904 85.1225 97.2742 79.9118C97.011 77.6809 96.8745 75.4119 96.8708 73.1109V72.9302C96.92 69.0784 100.058 65.9694 103.923 65.9694H103.951V51.0444H103.923C102.965 51.0444 102.022 51.1072 101.096 51.224C90.343 52.6063 82.0209 61.7548 81.9459 72.8674V73.1737C81.9778 87.7371 86.2711 101.302 93.645 112.685C93.6586 112.705 93.6733 112.723 93.6832 112.744C96.5646 116.898 101.201 122.233 103.905 125.26C103.911 125.254 103.919 125.244 103.923 125.236C105.304 126.589 106.74 127.885 108.227 129.124C111.225 131.202 114.542 132.851 118.094 133.979C121.645 135.107 125.425 135.716 129.348 135.716C137.78 135.716 145.557 132.904 151.79 128.162C154.267 126.011 156.597 123.694 158.763 121.231C170.081 108.368 176.944 91.4954 176.944 73.0199C176.942 49.5281 165.846 28.6238 148.609 15.2669Z" fill="white"></path><path d="M103.904 125.258C100.945 129.947 94.6717 133.402 89.0933 136.439C84.4729 129.329 77.0104 124.523 77.0104 124.523C77.2649 124.655 77.5183 124.787 77.7765 124.916C77.9819 125.021 78.1898 125.125 78.3988 125.226C78.7346 125.06 79.0703 124.891 79.4048 124.722C84.9623 121.864 89.9959 118.139 94.3335 113.724C94.1146 113.398 93.8981 113.073 93.6817 112.743C96.5631 116.896 101.2 122.231 103.904 125.258Z" fill="white"></path><path d="M75.2779 143.162C75.1241 143.004 74.9643 142.85 74.8044 142.697C67.883 144.874 60.5152 146.047 52.8781 146.047C33.7263 146.047 16.3036 138.676 3.27867 126.615C2.67607 126.062 2.08453 125.495 1.50283 124.918C0.557104 123.66 0 122.099 0 120.405C0 116.253 3.36599 112.887 7.52028 112.887C9.32318 112.887 10.9785 113.52 12.271 114.579C12.5539 114.856 12.8417 115.129 13.1307 115.403C22.155 123.865 33.8751 129.479 46.8717 130.816C48.8456 131.018 50.8465 131.123 52.8781 131.123C55.0254 131.123 57.1468 131.004 59.2325 130.777C59.069 130.653 58.9091 130.526 58.7492 130.396C59.0468 130.513 67.685 133.963 75.2779 143.162Z" fill="white"></path><path d="M125.897 72.8676V73.1738C125.893 74.4381 125.861 75.6937 125.792 76.9407C125.075 90.5129 120.653 103.1 113.515 113.717C110.79 111.104 105.804 105.841 103.951 100.74V100.73C104.994 98.8202 105.924 96.8464 106.746 94.816C109.464 88.1098 110.963 80.7839 110.973 73.1099C110.977 73.0816 110.977 73.0484 110.977 73.0201C110.977 72.9906 110.507 69.2396 108.653 67.786C107.331 66.7529 105.759 65.9769 103.951 65.9671V51.0421C104.899 51.0421 105.831 51.1048 106.746 51.2217C113.685 52.1108 119.608 56.2368 122.959 62.0342C124.805 65.2255 125.871 68.9211 125.897 72.8676Z" fill="white"></path><path d="M220.025 39.3879H238.266V143.165H220.025V39.3879Z" fill="white"></path><path d="M295.423 69.9178C312.486 69.9178 321.017 79.7218 321.017 99.33V143.165H303.341V100.178C303.341 94.5222 302.257 90.4215 300.089 87.8762C297.921 85.2366 294.574 83.9169 290.049 83.9169C284.676 83.9169 280.339 85.6609 277.04 89.1488C273.741 92.5426 272.091 97.0675 272.091 102.724V143.165H254.557V91.9769C254.557 84.4353 254.18 77.695 253.425 71.756H269.97L271.242 83.4926C273.693 79.1562 276.993 75.8096 281.141 73.4529C285.383 71.0961 290.144 69.9178 295.423 69.9178Z" fill="white"></path><path d="M360.037 85.0481V117.006C360.037 125.396 363.949 129.591 371.774 129.591C373.942 129.591 376.299 129.214 378.844 128.459V142.458C375.733 143.59 371.962 144.155 367.532 144.155C359.424 144.155 353.203 141.893 348.866 137.368C344.53 132.843 342.361 126.338 342.361 117.854V85.0481H328.645V71.756H342.361V54.3632L360.037 48.4242V71.756H378.985V85.0481H360.037Z" fill="white"></path><path d="M449.392 108.38H400.183C400.56 116.016 402.445 121.672 405.839 125.348C409.327 128.931 414.465 130.722 421.252 130.722C429.077 130.722 436.335 128.177 443.029 123.086L448.119 135.247C444.725 137.981 440.53 140.196 435.534 141.893C430.632 143.495 425.636 144.297 420.545 144.297C408.856 144.297 399.664 140.997 392.971 134.398C386.278 127.799 382.931 118.75 382.931 107.249C382.931 99.9899 384.393 93.5324 387.315 87.8762C390.237 82.22 394.338 77.8364 399.617 74.7255C404.896 71.5204 410.882 69.9178 417.576 69.9178C427.38 69.9178 435.11 73.123 440.766 79.5333C446.516 85.8494 449.392 94.5694 449.392 105.693V108.38ZM418 82.6442C413.286 82.6442 409.421 84.0583 406.405 86.8864C403.482 89.6202 401.597 93.6267 400.748 98.9058H433.979C433.413 93.5324 431.763 89.4788 429.029 86.745C426.39 84.0111 422.713 82.6442 418 82.6442Z" fill="white"></path><path d="M498.58 70.0592C501.313 70.0592 503.67 70.4363 505.65 71.1904L505.508 87.3106C502.492 86.0851 499.381 85.4723 496.176 85.4723C490.142 85.4723 485.523 87.2163 482.318 90.7043C479.207 94.1923 477.652 98.8115 477.652 104.562V143.165H460.117V91.9769C460.117 84.4353 459.74 77.695 458.986 71.756H475.531L476.945 84.3411C478.736 79.7218 481.564 76.1867 485.429 73.7357C489.294 71.2847 493.678 70.0592 498.58 70.0592Z" fill="white"></path><path d="M561.053 143.165L529.803 110.218V143.165H512.268V39.0915H529.803V103.289L559.215 71.8974H580.567L548.468 105.976L583.112 143.165H561.053Z" fill="white"></path><path d="M621.547 144.297C614.288 144.297 607.878 142.788 602.316 139.772C596.848 136.755 592.606 132.466 589.589 126.904C586.667 121.248 585.206 114.649 585.206 107.107C585.206 99.5657 586.667 93.0139 589.589 87.452C592.606 81.7958 596.848 77.4594 602.316 74.4427C607.878 71.4261 614.288 69.9178 621.547 69.9178C628.711 69.9178 635.027 71.4261 640.495 74.4427C645.963 77.4594 650.158 81.7958 653.08 87.452C656.097 93.0139 657.605 99.5657 657.605 107.107C657.605 114.649 656.097 121.248 653.08 126.904C650.158 132.466 645.963 136.755 640.495 139.772C635.027 142.788 628.711 144.297 621.547 144.297ZM621.405 130.439C627.439 130.439 632.011 128.507 635.122 124.641C638.327 120.682 639.929 114.837 639.929 107.107C639.929 99.4714 638.327 93.6738 635.122 89.7145C631.916 85.6608 627.391 83.634 621.547 83.634C615.608 83.634 611.036 85.6608 607.83 89.7145C604.625 93.6738 603.023 99.4714 603.023 107.107C603.023 114.837 604.578 120.682 607.689 124.641C610.894 128.507 615.466 130.439 621.405 130.439Z" fill="white"></path><path d="M708.305 69.9178C725.368 69.9178 733.9 79.7218 733.9 99.33V143.165H716.224V100.178C716.224 94.5222 715.14 90.4215 712.972 87.8762C710.804 85.2366 707.457 83.9169 702.932 83.9169C697.559 83.9169 693.222 85.6609 689.923 89.1488C686.623 92.5426 684.974 97.0675 684.974 102.724V143.165H667.439V91.9769C667.439 84.4353 667.062 77.695 666.308 71.756H682.853L684.125 83.4926C686.576 79.1562 689.876 75.8096 694.024 73.4529C698.266 71.0961 703.026 69.9178 708.305 69.9178Z" fill="white"></path><path d="M771.901 85.0481V117.006C771.901 125.396 775.813 129.591 783.638 129.591C785.806 129.591 788.163 129.214 790.708 128.459V142.458C787.597 143.59 783.826 144.155 779.396 144.155C771.288 144.155 765.067 141.893 760.73 137.368C756.394 132.843 754.226 126.338 754.226 117.854V85.0481H740.509V71.756H754.226V54.3632L771.901 48.4242V71.756H790.849V85.0481H771.901Z" fill="white"></path></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></symbol><symbol id="i-whatsapp" viewBox="0 0 24 24"><path d="M20.52 3.45A11.87 11.87 0 0 0 12.05 0C5.5 0 .17 5.31.17 11.85c0 2.09.55 4.13 1.6 5.93L0 24l6.37-1.67a11.9 11.9 0 0 0 5.68 1.44h.01c6.54 0 11.87-5.31 11.87-11.85 0-3.17-1.24-6.14-3.41-8.38zM12.06 21.78h-.01a9.9 9.9 0 0 1-5.03-1.37l-.36-.21-3.74.98 1-3.64-.24-.37a9.83 9.83 0 0 1-1.51-5.26c0-5.44 4.44-9.86 9.89-9.86a9.82 9.82 0 0 1 6.99 2.9 9.78 9.78 0 0 1 2.89 6.97c0 5.44-4.44 9.86-9.88 9.86z"></path><path d="M17.48 14.38c-.3-.15-1.76-.86-2.03-.96-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.39-1.47-.88-.78-1.48-1.75-1.65-2.05-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.01-1.04 2.47s1.06 2.86 1.21 3.06c.15.2 2.09 3.19 5.07 4.47.71.31 1.26.49 1.69.62.71.23 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35z"></path></symbol><symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></symbol><symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></symbol><symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9"></path></symbol><symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></symbol><symbol id="i-headset" viewBox="0 0 24 24"><path d="M3 11h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H4a1 1 0 0 1-1-1z"></path><path d="M21 11h-3a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h2a1 1 0 0 0 1-1z"></path><path d="M3 14a9 9 0 0 1 18 0"></path><path d="M18 19a3 3 0 0 1-3 3h-3"></path></symbol><symbol id="i-activity" viewBox="0 0 24 24"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></symbol><symbol id="i-dollar" viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></symbol><symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></symbol><symbol id="i-quote" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"></path></symbol></svg>
+
+<header id="header">
+  <div class="hbar">
+    <a href="/" class="logo" aria-label="Interkont"><svg class="logo-w" viewBox="0 0 791 185"><use href="#ik-white"></use></svg><svg class="logo-c" viewBox="0 0 777 182"><use href="#ik-color"></use></svg></a>
+    <nav id="nav">
+      <a href="/">Interkont</a>
+      <div class="nav-drop">
+        <button class="nav-dropbtn" type="button">Soluciones <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></button>
+        <div class="drop">
+          <a href="/cobra"><span class="di"><svg class="ico"><use href="#i-activity"></use></svg></span><span><span class="dt">COBRA</span><span class="dd">Monitoreo de inversión pública en tiempo real</span></span></a>
+          <a href="/panal"><span class="di"><svg class="ico"><use href="#i-users"></use></svg></span><span><span class="dt">PANAL</span><span class="dd">Asistencia a necesidades de ayudas localizadas</span></span></a>
+          <a href="/ik-labs"><span class="di"><svg class="ico"><use href="#i-sparkles"></use></svg></span><span><span class="dt">IK Labs</span><span class="dd">Agentes de inteligencia artificial</span></span></a>
+        </div>
+      </div>
+      <a href="/productos">Nuestros productos</a>
+      <a href="/blog">Blog</a>
+      <a href="/catalogo-iad">Catálogo IAD</a>
+      <a href="index.html#final" class="btn btn-dark" style="padding:11px 22px">Contáctanos</a>
+    </nav>
+    <button class="thm" id="thm" type="button" aria-label="Cambiar color de marca" title="Cambiar color de marca"><span class="sw sw-a"></span><span class="sw sw-b"></span></button>
+    <button class="menu-tog" id="tog" aria-label="Menú">≡</button>
+  </div>
+</header>
+<video class="hero-vid hero-vid-global" data-parked="" autoplay muted loop playsinline preload="metadata" poster="/assets/hero-poster.jpg"><source src="/assets/loop.mp4" type="video/mp4"></video>
+<div id="articles">
+<article class="arts" data-slug="once-anos">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <a href="/blog" class="aback"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>Volver al blog</a>
+        <h1>{blocks[0]}</h1>
+        <div class="abar"><span class="btag">GovTech</span><span>12 min de lectura · Julio 2026 · Equipo Interkont</span></div>
+      </div>
+    </div>
+  </section>
+  <div class="wrap">
+    <section class="sec">
+      <div class="alay">
+        <div class="abody rv">
+          <p class="lead">{blocks[1]}</p>
+          <div class="kpirow"><div class="kpibox"><div class="n">50K+</div><div class="l">Proyectos monitoreados</div></div><div class="kpibox"><div class="n">$6.5B</div><div class="l">Dólares controlados</div></div><div class="kpibox"><div class="n">11</div><div class="l">Años de operación</div></div></div>
+<h2>{blocks[2]}</h2>
+<p>{blocks[3]}</p>
+<p>{blocks[4]}</p>
+<div class="pull"><svg class="ico q"><use href="#i-quote"></use></svg><p>{blocks[5]}</p></div>
+<h2>{blocks[6]}</h2>
+<h3>{blocks[7]}</h3>
+<p>{blocks[8]}</p>
+<h3>{blocks[9]}</h3>
+<p>{blocks[10]}</p>
+<h3>{blocks[11]}</h3>
+<p>{blocks[12]}</p>
+<h2>{blocks[13]}</h2>
+<ul><li><svg class="ico"><use href="#i-check"></use></svg>Las decisiones dejan de basarse en la intuición y pasan a basarse en el estado real de ejecución.</li><li><svg class="ico"><use href="#i-check"></use></svg>Los desacuerdos entre contratista e interventor se resuelven con evidencia, no con versiones.</li><li><svg class="ico"><use href="#i-check"></use></svg>La alta gerencia deja de pedir informes y empieza a consultar el tablero directamente.</li><li><svg class="ico"><use href="#i-check"></use></svg>La ciudadanía puede verificar en qué se invirtió el presupuesto de su territorio.</li></ul>
+<h2>{blocks[14]}</h2>
+<p>{blocks[15]}</p>
+        </div>
+        <aside class="aside">
+          <div class="acard"><h4>Seguir leyendo</h4><a href="#eye-control">Cómo Eye Control detecta el incumplimiento de normas de seguridad en obra</a><a href="#trazabilidad">Trazabilidad total: qué significa realmente para una entidad pública</a><a href="#catalogo-iad">Cotizar en el Catálogo IAD: la ruta ágil para adquirir tecnología</a><a href="#ministerio-interior">Ministerio del Interior: monitoreo en vivo de la inversión</a></div>
+          <div class="acta">
+            <h4>Vea su inversión con claridad</h4>
+            <p>Conózcanos y descubra el monitoreo de COBRA en tiempo real.</p>
+            <a href="index.html#final" class="btn btn-mag">Conócenos <svg class="ico"><use href="#i-arrow-right"></use></svg></a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </div>
+</article>
+
+<article class="arts" data-slug="eye-control">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <a href="/blog" class="aback"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>Volver al blog</a>
+        <h1>Cómo Eye Control detecta el incumplimiento de normas de seguridad en obra</h1>
+        <div class="abar"><span class="btag">Inteligencia artificial</span><span>8 min de lectura · Julio 2026 · IK Labs</span></div>
+      </div>
+    </div>
+  </section>
+  <div class="wrap">
+    <section class="sec">
+      <div class="alay">
+        <div class="abody rv">
+          <p class="lead">El reconocimiento visual de IK Labs analiza el registro fotográfico de los interventores y valida cascos, chalecos y presencia de personal sin trabajo manual adicional.</p>
+          <h2>Del archivo fotográfico al dato</h2>
+<p>Cada obra genera miles de fotografías. Un interventor documenta el avance, sube las imágenes y ahí terminan: en una carpeta que nadie vuelve a abrir salvo cuando hay un problema. Eye Control parte de una idea simple: <b>esas fotos ya contienen la respuesta a preguntas que hoy se responden manualmente</b>.</p>
+<h2>Qué reconoce</h2>
+<ul><li><svg class="ico"><use href="#i-check"></use></svg><b>Elementos de protección personal:</b> cascos, chalecos reflectivos y demás dotación exigida por las normas de salud ocupacional.</li><li><svg class="ico"><use href="#i-check"></use></svg><b>Presencia de personal:</b> identifica los momentos en que hay trabajadores en el frente de obra, incluso a partir de cámaras IP.</li><li><svg class="ico"><use href="#i-check"></use></svg><b>Calidad del registro:</b> detecta automáticamente fotografías desenfocadas, mal encuadradas o que no aportan evidencia útil.</li></ul>
+<div class="pull"><svg class="ico q"><use href="#i-quote"></use></svg><p>Validar el cumplimiento de seguridad deja de ser una revisión muestral y pasa a ser una verificación sobre el cien por ciento del registro.</p></div>
+<h2>Por qué importa</h2>
+<p>La supervisión tradicional de seguridad industrial es muestral: alguien visita la obra, observa y consigna. Entre visita y visita hay un vacío. Con reconocimiento visual, cada fotografía cargada se convierte en un punto de control, y los incumplimientos recurrentes emergen como patrón, no como anécdota.</p>
+<h2>Cómo se integra</h2>
+<p>Eye Control opera sobre el registro que los interventores ya cargan en COBRA, sin exigir un proceso adicional en campo. El resultado se refleja en el tablero como una capa más de analítica: qué frentes concentran incumplimientos, en qué periodos y con qué contratistas.</p>
+<h3>Un matiz importante</h3>
+<p>La IA no reemplaza el criterio del interventor. Prioriza su atención: en vez de revisar mil imágenes, revisa las cuarenta que el sistema marcó como críticas.</p>
+        </div>
+        <aside class="aside">
+          <div class="acard"><h4>Seguir leyendo</h4><a href="#once-anos">Once años monitoreando lo público: lo que aprendimos sobre la inversión del Estado</a><a href="#trazabilidad">Trazabilidad total: qué significa realmente para una entidad pública</a><a href="#catalogo-iad">Cotizar en el Catálogo IAD: la ruta ágil para adquirir tecnología</a><a href="#ministerio-interior">Ministerio del Interior: monitoreo en vivo de la inversión</a></div>
+          <div class="acta">
+            <h4>Vea su inversión con claridad</h4>
+            <p>Conózcanos y descubra el monitoreo de COBRA en tiempo real.</p>
+            <a href="index.html#final" class="btn btn-mag">Conócenos <svg class="ico"><use href="#i-arrow-right"></use></svg></a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </div>
+</article>
+
+<article class="arts" data-slug="trazabilidad">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <a href="/blog" class="aback"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>Volver al blog</a>
+        <h1>Trazabilidad total: qué significa realmente para una entidad pública</h1>
+        <div class="abar"><span class="btag">GovTech</span><span>6 min de lectura · Julio 2026 · Equipo Interkont</span></div>
+      </div>
+    </div>
+  </section>
+  <div class="wrap">
+    <section class="sec">
+      <div class="alay">
+        <div class="abody rv">
+          <p class="lead">Más allá del discurso, la trazabilidad es poder responder tres preguntas sobre cada peso invertido: quién lo aprobó, en qué se ejecutó y con qué soporte.</p>
+          <h2>Una palabra desgastada</h2>
+<p>"Trazabilidad" aparece en casi todos los pliegos y en casi ninguna operación. Se ha vuelto una palabra que tranquiliza sin comprometer a nada concreto. Vale la pena volverla exigible.</p>
+<h2>Las tres preguntas</h2>
+<h3>¿Quién lo aprobó?</h3>
+<p>Cada movimiento —una adición, un cambio de cronograma, la aprobación de un avance— debe tener un responsable identificable y una fecha. Sin actor y sin momento, no hay trazabilidad; hay historial anónimo.</p>
+<h3>¿En qué se ejecutó?</h3>
+<p>El recurso debe poder seguirse hasta el entregable concreto: este tramo de vía, esta vivienda, este componente del contrato. La agregación presupuestal esconde; el detalle revela.</p>
+<h3>¿Con qué soporte?</h3>
+<p>Todo avance reportado necesita evidencia verificable: registro fotográfico con fecha y ubicación, acta firmada, documento cargado. Una afirmación sin soporte es una intención.</p>
+<div class="pull"><svg class="ico q"><use href="#i-quote"></use></svg><p>Si no puede responder las tres preguntas sobre un contrato en menos de cinco minutos, no tiene trazabilidad: tiene archivo.</p></div>
+<h2>La prueba práctica</h2>
+<ul><li><svg class="ico"><use href="#i-check"></use></svg>Tome un contrato al azar de hace dos años.</li><li><svg class="ico"><use href="#i-check"></use></svg>Identifique quién aprobó el último pago y con qué evidencia.</li><li><svg class="ico"><use href="#i-check"></use></svg>Mida cuánto tardó en obtener la respuesta.</li></ul>
+<p>Ese tiempo es el indicador real de madurez del control en su entidad.</p>
+        </div>
+        <aside class="aside">
+          <div class="acard"><h4>Seguir leyendo</h4><a href="#once-anos">Once años monitoreando lo público: lo que aprendimos sobre la inversión del Estado</a><a href="#eye-control">Cómo Eye Control detecta el incumplimiento de normas de seguridad en obra</a><a href="#catalogo-iad">Cotizar en el Catálogo IAD: la ruta ágil para adquirir tecnología</a><a href="#ministerio-interior">Ministerio del Interior: monitoreo en vivo de la inversión</a></div>
+          <div class="acta">
+            <h4>Vea su inversión con claridad</h4>
+            <p>Conózcanos y descubra el monitoreo de COBRA en tiempo real.</p>
+            <a href="index.html#final" class="btn btn-mag">Conócenos <svg class="ico"><use href="#i-arrow-right"></use></svg></a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </div>
+</article>
+
+<article class="arts" data-slug="catalogo-iad">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <a href="/blog" class="aback"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>Volver al blog</a>
+        <h1>Cotizar en el Catálogo IAD: la ruta ágil para adquirir tecnología</h1>
+        <div class="abar"><span class="btag">Compra pública</span><span>5 min de lectura · Junio 2026 · Equipo Interkont</span></div>
+      </div>
+    </div>
+  </section>
+  <div class="wrap">
+    <section class="sec">
+      <div class="alay">
+        <div class="abody rv">
+          <p class="lead">El Instrumento de Agregación de Demanda de Colombia Compra Eficiente permite adquirir soluciones desde la Tienda Virtual del Estado sin proceso licitatorio largo.</p>
+          <h2>El problema de tiempo</h2>
+<p>Una entidad identifica una necesidad tecnológica en marzo y contrata en diciembre. No por negligencia: por la duración natural de un proceso licitatorio. Para entonces, la necesidad cambió.</p>
+<h2>Qué es el IAD</h2>
+<p>El Instrumento de Agregación de Demanda es un mecanismo de Colombia Compra Eficiente que agrupa la demanda del Estado y deja proveedores y condiciones ya negociados en un catálogo. La entidad no vuelve a estructurar un proceso: cotiza y emite orden de compra desde la <b>Tienda Virtual del Estado Colombiano</b>.</p>
+<h2>La ruta, paso a paso</h2>
+<ul><li><svg class="ico"><use href="#i-check"></use></svg>Ingrese a la Tienda Virtual del Estado Colombiano con las credenciales de su entidad.</li><li><svg class="ico"><use href="#i-check"></use></svg>Ubique el catálogo correspondiente y las soluciones habilitadas.</li><li><svg class="ico"><use href="#i-check"></use></svg>Solicite cotización con el alcance que su entidad necesita.</li><li><svg class="ico"><use href="#i-check"></use></svg>Emita la orden de compra y comience la implementación.</li></ul>
+<div class="pull"><svg class="ico q"><use href="#i-quote"></use></svg><p>Semanas en lugar de meses, con las condiciones ya negociadas por Colombia Compra Eficiente.</p></div>
+<h2>Qué se puede cotizar de Interkont</h2>
+<p>Tanto los agentes de inteligencia artificial de IK Labs como los servicios de implementación y monitoreo de COBRA están disponibles por esta vía. La entidad elige el nivel de implementación que corresponde a su madurez y alcance.</p>
+        </div>
+        <aside class="aside">
+          <div class="acard"><h4>Seguir leyendo</h4><a href="#once-anos">Once años monitoreando lo público: lo que aprendimos sobre la inversión del Estado</a><a href="#eye-control">Cómo Eye Control detecta el incumplimiento de normas de seguridad en obra</a><a href="#trazabilidad">Trazabilidad total: qué significa realmente para una entidad pública</a><a href="#ministerio-interior">Ministerio del Interior: monitoreo en vivo de la inversión</a></div>
+          <div class="acta">
+            <h4>Vea su inversión con claridad</h4>
+            <p>Conózcanos y descubra el monitoreo de COBRA en tiempo real.</p>
+            <a href="index.html#final" class="btn btn-mag">Conócenos <svg class="ico"><use href="#i-arrow-right"></use></svg></a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </div>
+</article>
+
+<article class="arts" data-slug="ministerio-interior">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <a href="/blog" class="aback"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>Volver al blog</a>
+        <h1>Ministerio del Interior: monitoreo en vivo de la inversión</h1>
+        <div class="abar"><span class="btag">Casos de éxito</span><span>9 min de lectura · Junio 2026 · Equipo Interkont</span></div>
+      </div>
+    </div>
+  </section>
+  <div class="wrap">
+    <section class="sec">
+      <div class="alay">
+        <div class="abody rv">
+          <p class="lead">Cómo una entidad nacional pasó de reportes mensuales en hojas de cálculo a un tablero de control con alertas en tiempo real sobre proyectos y contratos.</p>
+          <h2>El punto de partida</h2>
+<p>La operación se sostenía en un ciclo mensual: cada área consolidaba su información, alguien la unificaba y se producía un informe. El documento describía con precisión un estado que ya había cambiado.</p>
+<h2>Qué se implementó</h2>
+<ul><li><svg class="ico"><use href="#i-check"></use></svg>Consolidación de proyectos y contratos en un único tablero de control.</li><li><svg class="ico"><use href="#i-check"></use></svg>Reporte de avance directamente desde el frente de obra, con evidencia.</li><li><svg class="ico"><use href="#i-check"></use></svg>Alertas automáticas ante desviaciones de cronograma y contratos sin soporte.</li><li><svg class="ico"><use href="#i-check"></use></svg>Acceso diferenciado por rol: contratista, interventor, supervisor y alta gerencia.</li></ul>
+<div class="pull"><svg class="ico q"><use href="#i-quote"></use></svg><p>El cambio de fondo no fue tecnológico: fue que la conversación dejó de ser sobre qué pasó y pasó a ser sobre qué hacemos.</p></div>
+<h2>Resultados observables</h2>
+<div class="kpirow"><div class="kpibox"><div class="n">87%</div><div class="l">Ejecución con seguimiento en vivo</div></div><div class="kpibox"><div class="n">+412</div><div class="l">Alertas gestionadas por periodo</div></div><div class="kpibox"><div class="n">98.4%</div><div class="l">Trazabilidad documental</div></div></div>
+<h2>La lección</h2>
+<p>La adopción no depende del software sino del compromiso de todos los actores en alimentarlo. Cuando el contratista entiende que reportar bien acelera su propio pago, el sistema se sostiene solo.</p>
+        </div>
+        <aside class="aside">
+          <div class="acard"><h4>Seguir leyendo</h4><a href="#once-anos">Once años monitoreando lo público: lo que aprendimos sobre la inversión del Estado</a><a href="#eye-control">Cómo Eye Control detecta el incumplimiento de normas de seguridad en obra</a><a href="#trazabilidad">Trazabilidad total: qué significa realmente para una entidad pública</a><a href="#catalogo-iad">Cotizar en el Catálogo IAD: la ruta ágil para adquirir tecnología</a></div>
+          <div class="acta">
+            <h4>Vea su inversión con claridad</h4>
+            <p>Conózcanos y descubra el monitoreo de COBRA en tiempo real.</p>
+            <a href="index.html#final" class="btn btn-mag">Conócenos <svg class="ico"><use href="#i-arrow-right"></use></svg></a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </div>
+</article>
+
+<article class="arts" data-slug="onpremise-saas">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <a href="/blog" class="aback"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>Volver al blog</a>
+        <h1>On-Premise o SaaS: cómo elegir el modelo de licenciamiento de COBRA</h1>
+        <div class="abar"><span class="btag">Producto</span><span>7 min de lectura · Junio 2026 · Equipo Interkont</span></div>
+      </div>
+    </div>
+  </section>
+  <div class="wrap">
+    <section class="sec">
+      <div class="alay">
+        <div class="abody rv">
+          <p class="lead">Soberanía de datos, costos predecibles y escalabilidad. Una guía práctica para decidir qué modalidad se ajusta mejor a la realidad de su entidad.</p>
+          <h2>No hay una respuesta universal</h2>
+<p>La decisión no es técnica sino institucional: depende de la política de datos de la entidad, de su capacidad de infraestructura y de cómo estén estructurados sus presupuestos.</p>
+<h2>Licencia perpetua On-Premise</h2>
+<p>Con un pago único la entidad adquiere el derecho de uso indefinido y el software se instala en su propia infraestructura. No hay costos recurrentes de licenciamiento.</p>
+<ul><li><svg class="ico"><use href="#i-check"></use></svg>Control total y soberanía sobre los datos.</li><li><svg class="ico"><use href="#i-check"></use></svg>Costos fijos y predecibles, sin renovación anual.</li><li><svg class="ico"><use href="#i-check"></use></svg>Requiere infraestructura propia y equipo técnico para operarla.</li><li><svg class="ico"><use href="#i-check"></use></svg>Incluye actualizaciones menores y parches de seguridad.</li></ul>
+<h2>SaaS en nube dedicada</h2>
+<p>Un ambiente aislado con infraestructura dedicada, gestionado íntegramente por Interkont.</p>
+<ul><li><svg class="ico"><use href="#i-check"></use></svg>Almacenamiento y usuarios ilimitados.</li><li><svg class="ico"><use href="#i-check"></use></svg>Escalabilidad de decenas a miles de proyectos.</li><li><svg class="ico"><use href="#i-check"></use></svg>Soporte 24/7 y disponibilidad garantizada del 99.9%.</li><li><svg class="ico"><use href="#i-check"></use></svg>Sin inversión en servidores ni administración de infraestructura.</li></ul>
+<div class="pull"><svg class="ico q"><use href="#i-quote"></use></svg><p>Si su política de datos exige que la información no salga de la entidad, la decisión ya está tomada. Si su prioridad es empezar rápido, también.</p></div>
+<h2>Tres preguntas para decidir</h2>
+<ul><li><svg class="ico"><use href="#i-check"></use></svg>¿Su marco normativo interno permite alojar la información fuera de la entidad?</li><li><svg class="ico"><use href="#i-check"></use></svg>¿Cuenta con equipo técnico para administrar servidores y respaldos?</li><li><svg class="ico"><use href="#i-check"></use></svg>¿Su presupuesto favorece una inversión única o un gasto recurrente?</li></ul>
+        </div>
+        <aside class="aside">
+          <div class="acard"><h4>Seguir leyendo</h4><a href="#once-anos">Once años monitoreando lo público: lo que aprendimos sobre la inversión del Estado</a><a href="#eye-control">Cómo Eye Control detecta el incumplimiento de normas de seguridad en obra</a><a href="#trazabilidad">Trazabilidad total: qué significa realmente para una entidad pública</a><a href="#catalogo-iad">Cotizar en el Catálogo IAD: la ruta ágil para adquirir tecnología</a></div>
+          <div class="acta">
+            <h4>Vea su inversión con claridad</h4>
+            <p>Conózcanos y descubra el monitoreo de COBRA en tiempo real.</p>
+            <a href="index.html#final" class="btn btn-mag">Conócenos <svg class="ico"><use href="#i-arrow-right"></use></svg></a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </div>
+</article>
+
+<article class="arts" data-slug="datawiz">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <a href="/blog" class="aback"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>Volver al blog</a>
+        <h1>DataWiz AI: preguntarle a sus datos en lenguaje natural</h1>
+        <div class="abar"><span class="btag">Inteligencia artificial</span><span>6 min de lectura · Mayo 2026 · IK Labs</span></div>
+      </div>
+    </div>
+  </section>
+  <div class="wrap">
+    <section class="sec">
+      <div class="alay">
+        <div class="abody rv">
+          <p class="lead">La IA conversacional empresarial elimina la dependencia de equipos técnicos para obtener respuestas sobre proyectos, contratos y ejecución presupuestal.</p>
+          <h2>El cuello de botella invisible</h2>
+<p>En casi toda entidad hay dos o tres personas que saben construir la consulta correcta. Toda pregunta relevante pasa por ellas. No es un problema de talento: es un cuello de botella estructural que ralentiza cada decisión.</p>
+<h2>Qué hace DataWiz</h2>
+<p>Conecta de forma segura los datos estructurados y no estructurados de la organización con modelos avanzados de lenguaje natural, para que cualquier persona autorizada pueda preguntar sin conocimientos técnicos y obtener respuestas en texto, tablas o gráficos.</p>
+<div class="kpirow"><div class="kpibox"><div class="n">500M</div><div class="l">Tokens de escalabilidad</div></div><div class="kpibox"><div class="n">50K</div><div class="l">Consultas mensuales</div></div><div class="kpibox"><div class="n">99.5%</div><div class="l">Disponibilidad (ANS)</div></div></div>
+<h2>Seguridad primero</h2>
+<ul><li><svg class="ico"><use href="#i-check"></use></svg>Control granular RBAC/ABAC: cada usuario consulta solo lo que le corresponde.</li><li><svg class="ico"><use href="#i-check"></use></svg>Cifrado TLS 1.3 en tránsito y AES-256 en reposo.</li><li><svg class="ico"><use href="#i-check"></use></svg>Sus datos <b>no</b> se usan para entrenar modelos públicos.</li><li><svg class="ico"><use href="#i-check"></use></svg>Modelos empresariales vía API, con posibilidad de integrar otros proveedores.</li></ul>
+<div class="pull"><svg class="ico q"><use href="#i-quote"></use></svg><p>La pregunta correcta ya no requiere saber SQL. Requiere saber qué se quiere entender.</p></div>
+<h2>COBRA IA</h2>
+<p>El mismo motor, integrado directamente en COBRA Corporate y aplicado a los datos de proyectos, contratos y ejecución que la plataforma ya administra.</p>
+        </div>
+        <aside class="aside">
+          <div class="acard"><h4>Seguir leyendo</h4><a href="#once-anos">Once años monitoreando lo público: lo que aprendimos sobre la inversión del Estado</a><a href="#eye-control">Cómo Eye Control detecta el incumplimiento de normas de seguridad en obra</a><a href="#trazabilidad">Trazabilidad total: qué significa realmente para una entidad pública</a><a href="#catalogo-iad">Cotizar en el Catálogo IAD: la ruta ágil para adquirir tecnología</a></div>
+          <div class="acta">
+            <h4>Vea su inversión con claridad</h4>
+            <p>Conózcanos y descubra el monitoreo de COBRA en tiempo real.</p>
+            <a href="index.html#final" class="btn btn-mag">Conócenos <svg class="ico"><use href="#i-arrow-right"></use></svg></a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </div>
+</article>
+
+<article class="arts" data-slug="vivienda">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <a href="/blog" class="aback"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>Volver al blog</a>
+        <h1>Vivienda: seguimiento unidad por unidad con evidencia en sitio</h1>
+        <div class="abar"><span class="btag">Casos de éxito</span><span>7 min de lectura · Mayo 2026 · Equipo Interkont</span></div>
+      </div>
+    </div>
+  </section>
+  <div class="wrap">
+    <section class="sec">
+      <div class="alay">
+        <div class="abody rv">
+          <p class="lead">COBRA Housing permite verificar el avance de cada mejoramiento de vivienda con registro fotográfico georreferenciado y control de subsidios.</p>
+          <h2>El reto de la escala menuda</h2>
+<p>Un programa de mejoramiento de vivienda no es una obra grande: son miles de obras pequeñas, dispersas geográficamente, cada una con su beneficiario y su subsidio. El control agregado no sirve; hay que poder mirar una casa concreta.</p>
+<h2>Cómo se resuelve</h2>
+<ul><li><svg class="ico"><use href="#i-check"></use></svg>Avance registrado por unidad: cada vivienda, torre o etapa tiene su propio estado.</li><li><svg class="ico"><use href="#i-check"></use></svg>Georreferenciación: cada intervención ubicada sobre el mapa.</li><li><svg class="ico"><use href="#i-check"></use></svg>Evidencia fotográfica con fecha y responsable.</li><li><svg class="ico"><use href="#i-check"></use></svg>Trazabilidad de subsidios y desembolsos por beneficiario.</li></ul>
+<div class="pull"><svg class="ico q"><use href="#i-quote"></use></svg><p>Cuando cada vivienda tiene su expediente digital, la pregunta "¿en qué se gastó el subsidio?" tiene respuesta inmediata.</p></div>
+<h2>Modo offline</h2>
+<p>Buena parte de estos programas ocurre donde no hay señal. Las aplicaciones móviles capturan el avance sin conexión y sincronizan automáticamente al recuperarla, para que la falta de red no se convierta en falta de evidencia.</p>
+<h2>Impacto en la relación con el beneficiario</h2>
+<p>La transparencia también es hacia abajo: cuando la familia beneficiaria puede verificar el estado de su intervención, disminuye la desconfianza y las reclamaciones se vuelven concretas y resolubles.</p>
+        </div>
+        <aside class="aside">
+          <div class="acard"><h4>Seguir leyendo</h4><a href="#once-anos">Once años monitoreando lo público: lo que aprendimos sobre la inversión del Estado</a><a href="#eye-control">Cómo Eye Control detecta el incumplimiento de normas de seguridad en obra</a><a href="#trazabilidad">Trazabilidad total: qué significa realmente para una entidad pública</a><a href="#catalogo-iad">Cotizar en el Catálogo IAD: la ruta ágil para adquirir tecnología</a></div>
+          <div class="acta">
+            <h4>Vea su inversión con claridad</h4>
+            <p>Conózcanos y descubra el monitoreo de COBRA en tiempo real.</p>
+            <a href="index.html#final" class="btn btn-mag">Conócenos <svg class="ico"><use href="#i-arrow-right"></use></svg></a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </div>
+</article>
+
+<article class="arts" data-slug="bpm">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <a href="/blog" class="aback"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>Volver al blog</a>
+        <h1>De trámite en papel a proceso digital trazable con COBRA BPM</h1>
+        <div class="abar"><span class="btag">Producto</span><span>5 min de lectura · Mayo 2026 · Equipo Interkont</span></div>
+      </div>
+    </div>
+  </section>
+  <div class="wrap">
+    <section class="sec">
+      <div class="alay">
+        <div class="abody rv">
+          <p class="lead">Automatizar flujos precontractuales reduce tiempos, elimina errores y deja registro de quién hizo qué en cada etapa del proceso.</p>
+          <h2>El trámite invisible</h2>
+<p>Antes de que exista un contrato hay decenas de pasos: estudios previos, revisiones, aprobaciones, firmas. Ese recorrido rara vez está medido. Nadie sabe con precisión dónde se demora el proceso, solo que se demora.</p>
+<h2>Qué permite COBRA BPM</h2>
+<ul><li><svg class="ico"><use href="#i-check"></use></svg>Modelar flujos de aprobación y trámites a la medida de la entidad.</li><li><svg class="ico"><use href="#i-check"></use></svg>Automatizar tareas repetitivas para reducir tiempos y errores.</li><li><svg class="ico"><use href="#i-check"></use></svg>Registrar quién hizo qué y cuándo en cada etapa.</li><li><svg class="ico"><use href="#i-check"></use></svg>Medir cuellos de botella con indicadores de desempeño reales.</li></ul>
+<div class="pull"><svg class="ico q"><use href="#i-quote"></use></svg><p>Digitalizar un proceso no es escanear el papel: es que el proceso deje rastro medible.</p></div>
+<h2>Por dónde empezar</h2>
+<p>Recomendamos comenzar por un solo flujo de alto volumen —normalmente el precontractual— medirlo durante un trimestre y expandir a partir de esa evidencia. La automatización total desde el primer día suele fracasar por resistencia organizacional.</p>
+        </div>
+        <aside class="aside">
+          <div class="acard"><h4>Seguir leyendo</h4><a href="#once-anos">Once años monitoreando lo público: lo que aprendimos sobre la inversión del Estado</a><a href="#eye-control">Cómo Eye Control detecta el incumplimiento de normas de seguridad en obra</a><a href="#trazabilidad">Trazabilidad total: qué significa realmente para una entidad pública</a><a href="#catalogo-iad">Cotizar en el Catálogo IAD: la ruta ágil para adquirir tecnología</a></div>
+          <div class="acta">
+            <h4>Vea su inversión con claridad</h4>
+            <p>Conózcanos y descubra el monitoreo de COBRA en tiempo real.</p>
+            <a href="index.html#final" class="btn btn-mag">Conócenos <svg class="ico"><use href="#i-arrow-right"></use></svg></a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </div>
+</article>
+
+<article class="arts" data-slug="participacion">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <a href="/blog" class="aback"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>Volver al blog</a>
+        <h1>Participación ciudadana: la vigilancia que multiplica la transparencia</h1>
+        <div class="abar"><span class="btag">GovTech</span><span>6 min de lectura · Abril 2026 · Equipo Interkont</span></div>
+      </div>
+    </div>
+  </section>
+  <div class="wrap">
+    <section class="sec">
+      <div class="alay">
+        <div class="abody rv">
+          <p class="lead">Cuando la ciudadanía puede consultar el avance de las obras de su territorio, el control deja de ser exclusivo del Estado y se vuelve colectivo.</p>
+          <h2>El control no escala solo desde adentro</h2>
+<p>Ninguna entidad tiene supervisores suficientes para vigilar cada obra todos los días. Pero cada obra tiene vecinos que pasan frente a ella a diario. Esa asimetría es una oportunidad.</p>
+<h2>Qué significa habilitar la participación</h2>
+<ul><li><svg class="ico"><use href="#i-check"></use></svg>Publicar el estado real de avance de las obras del territorio.</li><li><svg class="ico"><use href="#i-check"></use></svg>Permitir que la ciudadanía reporte observaciones asociadas a un proyecto concreto.</li><li><svg class="ico"><use href="#i-check"></use></svg>Cerrar el ciclo: que cada observación tenga respuesta trazable.</li></ul>
+<div class="pull"><svg class="ico q"><use href="#i-quote"></use></svg><p>La transparencia que no se puede consultar no es transparencia: es publicación.</p></div>
+<h2>Las condiciones para que funcione</h2>
+<p>La participación exige información comprensible. Publicar un CDP y un número de contrato no informa a nadie. Publicar "esta vía, este avance, esta fecha prevista, esta evidencia" sí. La calidad del dato determina si el mecanismo se usa o se abandona.</p>
+<h2>El efecto secundario</h2>
+<p>Cuando el contratista sabe que su avance es público, la calidad del reporte mejora sin necesidad de sanción. La visibilidad es, en sí misma, un incentivo.</p>
+        </div>
+        <aside class="aside">
+          <div class="acard"><h4>Seguir leyendo</h4><a href="#once-anos">Once años monitoreando lo público: lo que aprendimos sobre la inversión del Estado</a><a href="#eye-control">Cómo Eye Control detecta el incumplimiento de normas de seguridad en obra</a><a href="#trazabilidad">Trazabilidad total: qué significa realmente para una entidad pública</a><a href="#catalogo-iad">Cotizar en el Catálogo IAD: la ruta ágil para adquirir tecnología</a></div>
+          <div class="acta">
+            <h4>Vea su inversión con claridad</h4>
+            <p>Conózcanos y descubra el monitoreo de COBRA en tiempo real.</p>
+            <a href="index.html#final" class="btn btn-mag">Conócenos <svg class="ico"><use href="#i-arrow-right"></use></svg></a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </div>
+</article>
+</div>
+<footer>
+  <div class="fgrid">
+    <div class="fbrand"><svg viewBox="0 0 791 185"><use href="#ik-white"></use></svg><p>El brazo tecnológico profesional, creativo e innovador para la transparencia del sector público.</p></div>
+    <div class="fcol"><h5>Productos</h5><a href="/cobra">COBRA</a><a href="/panal">PANAL</a><a href="/ik-labs">IK Labs</a></div>
+    <div class="fcol"><h5>Empresa</h5><a href="/nosotros">Nosotros</a><a href="/blog">Blog</a><a href="#">Contacto</a></div>
+    <div class="fcol"><h5>Comercial</h5><a href="/catalogo-iad">Catálogo IAD</a><a href="index.html#final">Conócenos</a><a href="#">Colombia Compra</a></div>
+  </div>
+  <div class="fbot"><span>© 2026 Interkont · Powerful Technology</span><span>Política de Tratamiento de Datos Personales</span></div>
+</footer>
+<a class="wa-fab" href="https://wa.me/573008506232" target="_blank" rel="noopener" aria-label="Escríbanos por WhatsApp"><span class="tip">Hablemos por WhatsApp</span><svg class="ico"><use href="#i-whatsapp"></use></svg></a>
+</x-dc>
+<script is:inline type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() { this.init(); window.addEventListener('hashchange', () => this.route()); }
+  componentDidUpdate() { this.applyTheme(); }
+  route() {
+    const slug = (location.hash || '').replace('#', '') || 'once-anos';
+    const all = document.querySelectorAll('.arts');
+    let found = false;
+    all.forEach(el => { const on = el.dataset.slug === slug; el.classList.toggle('on', on); if (on) found = true; });
+    if (!found && all[0]) all[0].classList.add('on');
+    const vid = document.querySelector('.hero-vid-global');
+    const hero = document.querySelector('.arts.on .hero');
+    if (vid && hero && vid.parentElement !== hero) {
+      vid.removeAttribute('data-parked');
+      hero.insertBefore(vid, hero.firstChild);
+      const p = vid.play(); if (p && p.catch) p.catch(() => {});
+    }
+    window.scrollTo(0, 0);
+  }
+  applyTheme() {
+    const t = localStorage.getItem('ik-theme') === 'purple';
+    document.body.classList.toggle('tp', t);
+    const b = document.getElementById('thm');
+    if (b) b.setAttribute('data-theme', t ? 'purple' : 'original');
+    document.documentElement.classList.add('notrans');
+    void document.body.offsetWidth;
+    setTimeout(() => document.documentElement.classList.remove('notrans'), 60);
+  }
+  init() {
+
+    (() => {
+      if (!matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+      const SEL = '.card,.prod,.func,.fcard,.agent,.bcard,.step,.invc,.svcx,.iad-item,.mv-card,.model,.plan,.kpibox,.sc,.aw,.tr,.tst,.cs,.mt-card,.acard,.chat';
+      let last = null;
+      addEventListener('mousemove', (e) => {
+        const el = e.target instanceof Element ? e.target.closest(SEL) : null;
+        if (el !== last && last) { last.style.removeProperty('--mx'); last.style.removeProperty('--my'); }
+        last = el;
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+        el.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+      }, { passive: true });
+    })();
+
+    document.querySelectorAll('.hero-vid').forEach(v => {
+      v.muted = true; v.defaultMuted = true; v.loop = true; v.playsInline = true;
+      v.setAttribute('muted',''); v.setAttribute('loop','');
+      const show = () => v.classList.add('ready');
+      const p = () => { const r = v.play(); if (r && r.catch) r.catch(() => {}); };
+      v.addEventListener('loadeddata', () => { show(); p(); }, { once: true });
+      v.addEventListener('canplay', p, { once: true });
+      v.addEventListener('playing', show, { once: true });
+      document.addEventListener('click', p, { once: true });
+      if (v.readyState >= 2) { show(); p(); } else { p(); }
+    });
+    this.applyTheme();
+    const thm = document.getElementById('thm');
+    if (thm) thm.addEventListener('click', () => {
+      const next = localStorage.getItem('ik-theme') === 'purple' ? 'original' : 'purple';
+      localStorage.setItem('ik-theme', next);
+      this.applyTheme();
+    });
+
+    if (matchMedia('(hover:hover) and (pointer:fine)').matches && !matchMedia('(prefers-reduced-motion:reduce)').matches && !document.getElementById('ikcur')) {
+      const dot = document.createElement('div'); dot.id = 'ikcur';
+      const blur = document.createElement('div'); blur.id = 'ikring';
+      document.body.append(blur, dot);
+      addEventListener('mousedown', () => document.body.classList.add('ikdown'));
+      addEventListener('mouseup', () => document.body.classList.remove('ikdown'));
+      let mx = innerWidth / 2, my = innerHeight / 2, bx = mx, by = my, idle;
+      addEventListener('mousemove', (e) => {
+        if (!document.body.classList.contains('ikready')) { bx = mx = e.clientX; by = my = e.clientY; document.body.classList.add('ikready'); dot.style.opacity = '1'; blur.style.opacity = '1'; }
+        mx = e.clientX; my = e.clientY;
+        dot.style.transform = 'translate(' + mx + 'px,' + my + 'px)';
+        document.body.classList.add('ikmove');
+        clearTimeout(idle); idle = setTimeout(() => document.body.classList.remove('ikmove'), 220);
+        const el = e.target instanceof Element ? e.target : null;
+        const t = el && el.closest('a,button,.tab,input,textarea,select,[role="button"],.card,.prod,.func,.fcard,.agent,.bcard,.mv-card,.iad-item,.step,.invc,.svcx,.sc,.plan,.model,.kpibox,svg,.chat,.mock,.scan,.panel,.pz');
+        document.body.classList.toggle('ikhot', !!t);
+      }, { passive: true });
+      const loop = () => { bx += (mx - bx) * 0.16; by += (my - by) * 0.16; blur.style.transform = 'translate(' + bx + 'px,' + by + 'px)'; requestAnimationFrame(loop); };
+      loop();
+    }
+    this.route();
+    const header = document.getElementById('header');
+    const onScroll = () => {
+      const hero = document.querySelector('.arts.on .hero');
+      header.classList.toggle('scrolled', !hero || hero.getBoundingClientRect().bottom < 70);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    const tog = document.getElementById('tog'), nav = document.getElementById('nav');
+    if (tog && nav) {
+      const setNav = (open) => document.body.classList.toggle('navopen', open);
+      tog.addEventListener('click', () => setNav(!document.body.classList.contains('navopen')));
+      document.addEventListener('click', (e) => {
+        const el = e.target instanceof Element ? e.target : null;
+        if (el && el.closest('#nav a')) setNav(false);
+      });
+      addEventListener('resize', () => setNav(false));
+      setNav(false);
+    }
+  }
+}
+</script>
+</body>
+</html>
