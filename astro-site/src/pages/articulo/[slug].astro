@@ -835,7 +835,7 @@ body.tp .hero{filter:none}
     <div class="hero-grid"></div>
     <div class="hero-inner">
       <div class="hero-content">
-        <a href="/blog" class="aback"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>Volver al blog</a>
+        <a href="/blog/" class="aback"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>Volver al blog</a>
         <h1>{title}</h1>
         <div class="abar">{category && <span class="btag">{category}</span>}{dateLabel && <span>{dateLabel}</span>}</div>
       </div>
@@ -867,7 +867,7 @@ body.tp .hero{filter:none}
           {related.length > 0 && (
             <div class="acard">
               <h4>Seguir leyendo</h4>
-              {related.map((r) => <a href={`/articulo/${r.slug}`}>{r.title}</a>)}
+              {related.map((r) => <a href={`/articulo/${r.slug}/`}>{r.title}</a>)}
             </div>
           )}
           <div class="acta">
@@ -885,9 +885,9 @@ body.tp .hero{filter:none}
 <footer>
   <div class="fgrid">
     <div class="fbrand"><svg viewBox="0 0 791 185"><use href="#ik-white"></use></svg><p>El brazo tecnológico profesional, creativo e innovador para la transparencia del sector público.</p></div>
-    <div class="fcol"><h5>Productos</h5><a href="/cobra">COBRA</a><a href="/panal">PANAL</a><a href="/ik-labs">IK Labs</a></div>
-    <div class="fcol"><h5>Empresa</h5><a href="/nosotros">Nosotros</a><a href="/blog">Blog</a><a href="/contacto">Contacto</a></div>
-    <div class="fcol"><h5>Comercial</h5><a href="/catalogo-iad">Catálogo IAD</a><a href="/#final">Conócenos</a><a href="#">Colombia Compra</a></div>
+    <div class="fcol"><h5>Productos</h5><a href="/cobra/">COBRA</a><a href="/panal/">PANAL</a><a href="/ik-labs/">IK Labs</a></div>
+    <div class="fcol"><h5>Empresa</h5><a href="/nosotros/">Nosotros</a><a href="/blog/">Blog</a><a href="/contacto/">Contacto</a></div>
+    <div class="fcol"><h5>Comercial</h5><a href="/catalogo-iad/">Catálogo IAD</a><a href="/#final">Conócenos</a><a href="#">Colombia Compra</a></div>
   </div>
   <div class="fbot"><span>© 2026 Interkont · Powerful Technology</span><span>Política de Tratamiento de Datos Personales</span></div>
 </footer>

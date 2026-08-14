@@ -30,21 +30,24 @@ const ICONS_BY_PATH = {
   "/ik-labs": "i-sparkles",
 };
 const DEFAULT_ICON = "i-grid";
-const iconFor = (url) => ICONS_BY_PATH[url] ?? DEFAULT_ICON;
+const iconFor = (url) => {
+  const path = (url || "").replace(/\/$/, "");
+  return ICONS_BY_PATH[path] ?? DEFAULT_ICON;
+};
 
 // Se usa si el menú "Menú principal" todavía no existe en WordPress, o si
 // la consulta a WPGraphQL falla -- así el header nunca se queda vacío.
 const FALLBACK_LINKS = [
   { id: "fallback-home", label: "Interkont", url: "/", target: null, cssClasses: [] },
-  { id: "fallback-productos", label: "Nuestros productos", url: "/productos", target: null, cssClasses: [] },
-  { id: "fallback-blog", label: "Blog", url: "/blog", target: null, cssClasses: [] },
-  { id: "fallback-catalogo", label: "Catálogo IAD", url: "/catalogo-iad", target: null, cssClasses: [] },
+  { id: "fallback-productos", label: "Nuestros productos", url: "/productos/", target: null, cssClasses: [] },
+  { id: "fallback-blog", label: "Blog", url: "/blog/", target: null, cssClasses: [] },
+  { id: "fallback-catalogo", label: "Catálogo IAD", url: "/catalogo-iad/", target: null, cssClasses: [] },
   { id: "fallback-cta", label: "Contáctanos", url: "/#final", target: null, cssClasses: ["btn", "btn-dark"] },
 ];
 const FALLBACK_DROPDOWN = [
-  { id: "fallback-cobra", label: "COBRA", url: "/cobra", description: "Monitoreo de inversión pública en tiempo real" },
-  { id: "fallback-panal", label: "PANAL", url: "/panal", description: "Asistencia a necesidades de ayudas localizadas" },
-  { id: "fallback-ik-labs", label: "IK Labs", url: "/ik-labs", description: "Agentes de inteligencia artificial" },
+  { id: "fallback-cobra", label: "COBRA", url: "/cobra/", description: "Monitoreo de inversión pública en tiempo real" },
+  { id: "fallback-panal", label: "PANAL", url: "/panal/", description: "Asistencia a necesidades de ayudas localizadas" },
+  { id: "fallback-ik-labs", label: "IK Labs", url: "/ik-labs/", description: "Agentes de inteligencia artificial" },
 ];
 
 let allItems = [];
