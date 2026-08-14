@@ -1,14 +1,65 @@
 ---
 const { isHome = false } = Astro.props;
 const logoHref = isHome ? "#" : "/";
-const ctaHref = isHome ? "#final" : "/#final";
+
+const WP_GRAPHQL_ENDPOINT = import.meta.env.WP_GRAPHQL_ENDPOINT || "https://cms.interkont.co/graphql";
+
+const MENU_QUERY = `
+  query PrimaryMenu {
+    menuItems(where: { location: PRIMARY }, first: 20) {
+      nodes {
+        id
+        label
+        url
+        target
+        cssClasses
+        parentId
+        order
+      }
+    }
+  }
+`;
+
+// Se usa si el menú "Menú principal" todavía no existe en WordPress, o si
+// la consulta a WPGraphQL falla -- así el header nunca se queda vacío.
+const FALLBACK_LINKS = [
+  { id: "fallback-home", label: "Interkont", url: "/", target: null, cssClasses: [] },
+  { id: "fallback-productos", label: "Nuestros productos", url: "/productos", target: null, cssClasses: [] },
+  { id: "fallback-blog", label: "Blog", url: "/blog", target: null, cssClasses: [] },
+  { id: "fallback-catalogo", label: "Catálogo IAD", url: "/catalogo-iad", target: null, cssClasses: [] },
+  { id: "fallback-cta", label: "Contáctanos", url: "/#final", target: null, cssClasses: ["btn", "btn-dark"] },
+];
+
+let links = FALLBACK_LINKS;
+try {
+  const res = await fetch(WP_GRAPHQL_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query: MENU_QUERY }),
+  });
+  const json = await res.json();
+  const items = (json?.data?.menuItems?.nodes ?? [])
+    .filter((item) => !item.parentId)
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  if (items.length > 0) links = items;
+} catch (err) {
+  console.error("No se pudo leer el menú principal de WPGraphQL:", err);
+}
+
+// El submenú "Soluciones" se inserta justo después del primer enlace del
+// menú de WordPress (por convención, "Inicio"/"Interkont") -- no es parte
+// del menú editable, queda fijo en código.
+const [firstLink, ...restLinks] = links;
+const ctaStyle = (item) => ((item.cssClasses ?? []).includes("btn-dark") ? "padding:11px 22px" : undefined);
 ---
 
 <header id="header">
   <div class="hbar">
     <a href={logoHref} class="logo" aria-label="Interkont"><svg class="logo-w" viewBox="0 0 791 185"><use href="#ik-white"></use></svg><svg class="logo-c" viewBox="0 0 777 182"><use href="#ik-color"></use></svg></a>
     <nav id="nav">
-      <a href="/">Interkont</a>
+      {firstLink && (
+        <a href={firstLink.url} class={(firstLink.cssClasses ?? []).join(" ") || undefined} style={ctaStyle(firstLink)} target={firstLink.target || undefined} rel={firstLink.target === "_blank" ? "noopener noreferrer" : undefined}>{firstLink.label}</a>
+      )}
       <div class="nav-drop">
         <button class="nav-dropbtn" type="button">Soluciones <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></button>
         <div class="drop">
@@ -17,10 +68,9 @@ const ctaHref = isHome ? "#final" : "/#final";
           <a href="/ik-labs"><span class="di"><svg class="ico"><use href="#i-sparkles"></use></svg></span><span><span class="dt">IK Labs</span><span class="dd">Agentes de inteligencia artificial</span></span></a>
         </div>
       </div>
-      <a href="/productos">Nuestros productos</a>
-      <a href="/blog">Blog</a>
-      <a href="/catalogo-iad">Catálogo IAD</a>
-      <a href={ctaHref} class="btn btn-dark" style="padding:11px 22px">Contáctanos</a>
+      {restLinks.map((item) => (
+        <a href={item.url} class={(item.cssClasses ?? []).join(" ") || undefined} style={ctaStyle(item)} target={item.target || undefined} rel={item.target === "_blank" ? "noopener noreferrer" : undefined}>{item.label}</a>
+      ))}
     </nav>
     <button class="thm" id="thm" type="button" aria-label="Cambiar color de marca" title="Cambiar color de marca"><span class="sw sw-a"></span><span class="sw sw-b"></span></button>
     <button class="menu-tog" id="tog" aria-label="Menú">≡</button>
