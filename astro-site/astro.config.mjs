@@ -1,6 +1,8 @@
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: process.env.SITE_URL || 'https://www.interkont.co',
+  site: process.env.SITE_URL || 'https://interkont.co',
   output: 'static',
+  integrations: [sitemap()],
 });

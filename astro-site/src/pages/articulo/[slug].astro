@@ -37,6 +37,7 @@ const POST_QUERY = `
     post(id: $slug, idType: URI) {
       title
       date
+      excerpt
       categories { nodes { name } }
       editorBlocks(flat: false) {
         __typename
@@ -78,6 +79,11 @@ const blocks = post?.editorBlocks ?? [];
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title} | Interkont</title>
+<meta name="description" content={post?.excerpt?.replace(/<[^>]+>/g, "") ?? ""}>
+<link rel="canonical" href={`https://interkont.co/articulo/${slug}`}>
+<meta property="og:type" content="article">
+<meta property="og:title" content={`${title} | Interkont`}>
+<meta property="og:image" content="https://interkont.co/assets/hero-poster.jpg">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/mulish-latin-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/mulish-latin-800.woff2" as="font" type="font/woff2" crossorigin>
