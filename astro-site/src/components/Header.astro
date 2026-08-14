@@ -6,12 +6,13 @@ const WP_GRAPHQL_ENDPOINT = import.meta.env.WP_GRAPHQL_ENDPOINT || "https://cms.
 
 const MENU_QUERY = `
   query PrimaryMenu {
-    menuItems(where: { location: PRIMARY }, first: 20) {
+    menuItems(where: { location: PRIMARY }, first: 30) {
       nodes {
         id
         label
         url
         target
+        description
         cssClasses
         parentId
         order
@@ -19,6 +20,17 @@ const MENU_QUERY = `
     }
   }
 `;
+
+// WordPress no tiene un campo nativo para "ícono" en un ítem de menú, así
+// que el ícono del submenú "Soluciones" se resuelve por la ruta del enlace.
+// Cualquier ruta nueva que no esté aquí usa el ícono genérico de respaldo.
+const ICONS_BY_PATH = {
+  "/cobra": "i-activity",
+  "/panal": "i-users",
+  "/ik-labs": "i-sparkles",
+};
+const DEFAULT_ICON = "i-grid";
+const iconFor = (url) => ICONS_BY_PATH[url] ?? DEFAULT_ICON;
 
 // Se usa si el menú "Menú principal" todavía no existe en WordPress, o si
 // la consulta a WPGraphQL falla -- así el header nunca se queda vacío.
@@ -29,8 +41,13 @@ const FALLBACK_LINKS = [
   { id: "fallback-catalogo", label: "Catálogo IAD", url: "/catalogo-iad", target: null, cssClasses: [] },
   { id: "fallback-cta", label: "Contáctanos", url: "/#final", target: null, cssClasses: ["btn", "btn-dark"] },
 ];
+const FALLBACK_DROPDOWN = [
+  { id: "fallback-cobra", label: "COBRA", url: "/cobra", description: "Monitoreo de inversión pública en tiempo real" },
+  { id: "fallback-panal", label: "PANAL", url: "/panal", description: "Asistencia a necesidades de ayudas localizadas" },
+  { id: "fallback-ik-labs", label: "IK Labs", url: "/ik-labs", description: "Agentes de inteligencia artificial" },
+];
 
-let links = FALLBACK_LINKS;
+let allItems = [];
 try {
   const res = await fetch(WP_GRAPHQL_ENDPOINT, {
     method: "POST",
@@ -38,17 +55,29 @@ try {
     body: JSON.stringify({ query: MENU_QUERY }),
   });
   const json = await res.json();
-  const items = (json?.data?.menuItems?.nodes ?? [])
-    .filter((item) => !item.parentId)
-    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-  if (items.length > 0) links = items;
+  allItems = json?.data?.menuItems?.nodes ?? [];
 } catch (err) {
   console.error("No se pudo leer el menú principal de WPGraphQL:", err);
 }
 
-// El submenú "Soluciones" se inserta justo después del primer enlace del
-// menú de WordPress (por convención, "Inicio"/"Interkont") -- no es parte
-// del menú editable, queda fijo en código.
+const byOrder = (a, b) => (a.order ?? 0) - (b.order ?? 0);
+const topLevel = allItems.filter((item) => !item.parentId).sort(byOrder);
+
+// El ítem "Soluciones" (por label, sin importar mayúsculas) actúa como
+// disparador del dropdown -- sus hijos anidados en Apariencia > Menús son
+// las tarjetas del submenú. El resto de ítems de primer nivel son enlaces
+// normales del nav.
+const solucionesNode = topLevel.find((item) => item.label?.trim().toLowerCase() === "soluciones");
+
+const links = topLevel.length > 0
+  ? topLevel.filter((item) => item !== solucionesNode)
+  : FALLBACK_LINKS;
+
+let dropdownItems = solucionesNode
+  ? allItems.filter((item) => item.parentId === solucionesNode.id).sort(byOrder)
+  : [];
+if (dropdownItems.length === 0) dropdownItems = FALLBACK_DROPDOWN;
+
 const [firstLink, ...restLinks] = links;
 const ctaStyle = (item) => ((item.cssClasses ?? []).includes("btn-dark") ? "padding:11px 22px" : undefined);
 ---
@@ -63,9 +92,9 @@ const ctaStyle = (item) => ((item.cssClasses ?? []).includes("btn-dark") ? "padd
       <div class="nav-drop">
         <button class="nav-dropbtn" type="button">Soluciones <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></button>
         <div class="drop">
-          <a href="/cobra"><span class="di"><svg class="ico"><use href="#i-activity"></use></svg></span><span><span class="dt">COBRA</span><span class="dd">Monitoreo de inversión pública en tiempo real</span></span></a>
-          <a href="/panal"><span class="di"><svg class="ico"><use href="#i-users"></use></svg></span><span><span class="dt">PANAL</span><span class="dd">Asistencia a necesidades de ayudas localizadas</span></span></a>
-          <a href="/ik-labs"><span class="di"><svg class="ico"><use href="#i-sparkles"></use></svg></span><span><span class="dt">IK Labs</span><span class="dd">Agentes de inteligencia artificial</span></span></a>
+          {dropdownItems.map((item) => (
+            <a href={item.url}><span class="di"><svg class="ico"><use href={`#${iconFor(item.url)}`}></use></svg></span><span><span class="dt">{item.label}</span><span class="dd">{item.description}</span></span></a>
+          ))}
         </div>
       </div>
       {restLinks.map((item) => (
