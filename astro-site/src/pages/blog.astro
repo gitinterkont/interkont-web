@@ -26,6 +26,49 @@ try {
 } catch (err) {
   console.error("No se pudo leer WPGraphQL para /blog:", err);
 }
+
+const POSTS_QUERY = `
+  query BlogPosts {
+    posts(first: 50) {
+      nodes {
+        slug
+        title
+        date
+        excerpt
+        categories { nodes { name } }
+      }
+    }
+  }
+`;
+
+let posts = [];
+try {
+  const res = await fetch(WP_GRAPHQL_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query: POSTS_QUERY }),
+  });
+  const json = await res.json();
+  posts = json?.data?.posts?.nodes ?? [];
+} catch (err) {
+  console.error("No se pudo leer los posts de WPGraphQL para /blog:", err);
+}
+
+const CATEGORY_META = {
+  "GovTech": { icon: "i-shield-check", filter: "govtech" },
+  "Inteligencia artificial": { icon: "i-sparkles", filter: "ia" },
+  "Producto": { icon: "i-cloud", filter: "producto" },
+  "Casos de éxito": { icon: "i-activity", filter: "casos" },
+  "Compra pública": { icon: "i-dollar", filter: "compra-publica" },
+};
+const metaFor = (name) => CATEGORY_META[name] ?? { icon: "i-book", filter: (name || "otros").toLowerCase().replace(/[^a-z0-9]+/g, "-") };
+
+const monthYear = (iso) =>
+  iso ? new Date(iso).toLocaleDateString("es-CO", { year: "numeric", month: "long" }) : "";
+
+const featured = posts.find((p) => p.slug === "once-anos") ?? posts[0] ?? null;
+const gridPosts = posts.filter((p) => p !== featured);
+const usedCategories = [...new Set(posts.flatMap((p) => p.categories?.nodes?.map((c) => c.name) ?? []))];
 ---
 
 <!DOCTYPE html>
@@ -741,7 +784,7 @@ body.tp .hero{filter:none}
       <a href="/productos">Nuestros productos</a>
       <a href="/blog">Blog</a>
       <a href="/catalogo-iad">Catálogo IAD</a>
-      <a href="index.html#final" class="btn btn-dark" style="padding:11px 22px">Contáctanos</a>
+      <a href="/#final" class="btn btn-dark" style="padding:11px 22px">Contáctanos</a>
     </nav>
     <button class="thm" id="thm" type="button" aria-label="Cambiar color de marca" title="Cambiar color de marca"><span class="sw sw-a"></span><span class="sw sw-b"></span></button>
     <button class="menu-tog" id="tog" aria-label="Menú">≡</button>
@@ -763,102 +806,47 @@ body.tp .hero{filter:none}
 
 <div class="wrap">
   <section class="sec">
-    <a href="/articulo/once-anos" class="bfeat rv">
-      <div class="bfeat-txt">
-        <div class="tagrow"><span class="btag">Destacado</span><span class="bmeta">12 min · Julio 2026</span></div>
-        <h2>Once años monitoreando lo público: lo que aprendimos sobre la inversión del Estado</h2>
-        <p>Más de 50.000 proyectos y 6.500 millones de dólares supervisados nos dejaron una conclusión incómoda: el problema rara vez es la falta de datos, es la falta de visibilidad sobre ellos.</p>
-        <span class="more">Leer el artículo <span class="circ"><svg class="ico"><use href="#i-arrow-right"></use></svg></span></span>
-      </div>
-      <div class="bfeat-vis">
-        <div class="bfeat-chip">
-          <div class="bn">50<span class="u">K+</span></div>
-          <div class="bl">Proyectos analizados</div>
-          <div class="bar"><span style="height:38%"></span><span style="height:56%"></span><span style="height:45%"></span><span style="height:72%"></span><span style="height:60%"></span><span class="hot" style="height:100%"></span><span style="height:78%"></span></div>
+    {featured && (
+      <a href={`/articulo/${featured.slug}`} class="bfeat rv">
+        <div class="bfeat-txt">
+          <div class="tagrow"><span class="btag">Destacado</span><span class="bmeta">{monthYear(featured.date)}</span></div>
+          <h2>{featured.title}</h2>
+          <p set:html={featured.excerpt ?? ""} />
+          <span class="more">Leer el artículo <span class="circ"><svg class="ico"><use href="#i-arrow-right"></use></svg></span></span>
         </div>
-      </div>
-    </a>
+      </a>
+    )}
 
     <div class="bfilters rv" id="bfilters">
       <button class="on" data-f="all">Todos</button>
-      <button data-f="govtech">GovTech</button>
-      <button data-f="ia">Inteligencia artificial</button>
-      <button data-f="producto">Producto</button>
-      <button data-f="casos">Casos de éxito</button>
+      {usedCategories.map((name) => (
+        <button data-f={metaFor(name).filter}>{name}</button>
+      ))}
     </div>
 
     <div class="bgrid" id="bgrid">
-        <a href="/articulo/eye-control" class="bcard rv" data-cat="ia">
-          <div class="bi"><svg class="ico"><use href="#i-sparkles"></use></svg></div>
-          <span class="cat">Inteligencia artificial</span>
-          <h3>Cómo Eye Control detecta el incumplimiento de normas de seguridad en obra</h3>
-          <p>El reconocimiento visual de IK Labs analiza el registro fotográfico de los interventores y valida cascos, chalecos y presencia de personal sin trabajo manual adicional.</p>
-          <div class="foot"><span class="m">8 min · Julio 2026</span><span class="circ"><svg class="ico"><use href="#i-arrow-right"></use></svg></span></div>
-        </a>
-        <a href="/articulo/trazabilidad" class="bcard rv" data-cat="govtech">
-          <div class="bi"><svg class="ico"><use href="#i-shield-check"></use></svg></div>
-          <span class="cat">GovTech</span>
-          <h3>Trazabilidad total: qué significa realmente para una entidad pública</h3>
-          <p>Más allá del discurso, la trazabilidad es poder responder tres preguntas sobre cada peso invertido: quién lo aprobó, en qué se ejecutó y con qué soporte.</p>
-          <div class="foot"><span class="m">6 min · Julio 2026</span><span class="circ"><svg class="ico"><use href="#i-arrow-right"></use></svg></span></div>
-        </a>
-        <a href="/articulo/catalogo-iad" class="bcard rv" data-cat="govtech">
-          <div class="bi"><svg class="ico"><use href="#i-dollar"></use></svg></div>
-          <span class="cat">Compra pública</span>
-          <h3>Cotizar en el Catálogo IAD: la ruta ágil para adquirir tecnología</h3>
-          <p>El Instrumento de Agregación de Demanda de Colombia Compra Eficiente permite adquirir soluciones desde la Tienda Virtual del Estado sin proceso licitatorio largo.</p>
-          <div class="foot"><span class="m">5 min · Junio 2026</span><span class="circ"><svg class="ico"><use href="#i-arrow-right"></use></svg></span></div>
-        </a>
-        <a href="/articulo/ministerio-interior" class="bcard rv" data-cat="casos">
-          <div class="bi"><svg class="ico"><use href="#i-activity"></use></svg></div>
-          <span class="cat">Casos de éxito</span>
-          <h3>Ministerio del Interior: monitoreo en vivo de la inversión</h3>
-          <p>Cómo una entidad nacional pasó de reportes mensuales en hojas de cálculo a un tablero de control con alertas en tiempo real sobre proyectos y contratos.</p>
-          <div class="foot"><span class="m">9 min · Junio 2026</span><span class="circ"><svg class="ico"><use href="#i-arrow-right"></use></svg></span></div>
-        </a>
-        <a href="/articulo/onpremise-saas" class="bcard rv" data-cat="producto">
-          <div class="bi"><svg class="ico"><use href="#i-cloud"></use></svg></div>
-          <span class="cat">Producto</span>
-          <h3>On-Premise o SaaS: cómo elegir el modelo de licenciamiento de COBRA</h3>
-          <p>Soberanía de datos, costos predecibles y escalabilidad. Una guía práctica para decidir qué modalidad se ajusta mejor a la realidad de su entidad.</p>
-          <div class="foot"><span class="m">7 min · Junio 2026</span><span class="circ"><svg class="ico"><use href="#i-arrow-right"></use></svg></span></div>
-        </a>
-        <a href="/articulo/datawiz" class="bcard rv" data-cat="ia">
-          <div class="bi"><svg class="ico"><use href="#i-cpu"></use></svg></div>
-          <span class="cat">Inteligencia artificial</span>
-          <h3>DataWiz AI: preguntarle a sus datos en lenguaje natural</h3>
-          <p>La IA conversacional empresarial elimina la dependencia de equipos técnicos para obtener respuestas sobre proyectos, contratos y ejecución presupuestal.</p>
-          <div class="foot"><span class="m">6 min · Mayo 2026</span><span class="circ"><svg class="ico"><use href="#i-arrow-right"></use></svg></span></div>
-        </a>
-        <a href="/articulo/vivienda" class="bcard rv" data-cat="casos">
-          <div class="bi"><svg class="ico"><use href="#i-home"></use></svg></div>
-          <span class="cat">Casos de éxito</span>
-          <h3>Vivienda: seguimiento unidad por unidad con evidencia en sitio</h3>
-          <p>COBRA Housing permite verificar el avance de cada mejoramiento de vivienda con registro fotográfico georreferenciado y control de subsidios.</p>
-          <div class="foot"><span class="m">7 min · Mayo 2026</span><span class="circ"><svg class="ico"><use href="#i-arrow-right"></use></svg></span></div>
-        </a>
-        <a href="/articulo/bpm" class="bcard rv" data-cat="producto">
-          <div class="bi"><svg class="ico"><use href="#i-workflow"></use></svg></div>
-          <span class="cat">Producto</span>
-          <h3>De trámite en papel a proceso digital trazable con COBRA BPM</h3>
-          <p>Automatizar flujos precontractuales reduce tiempos, elimina errores y deja registro de quién hizo qué en cada etapa del proceso.</p>
-          <div class="foot"><span class="m">5 min · Mayo 2026</span><span class="circ"><svg class="ico"><use href="#i-arrow-right"></use></svg></span></div>
-        </a>
-        <a href="/articulo/participacion" class="bcard rv" data-cat="govtech">
-          <div class="bi"><svg class="ico"><use href="#i-users"></use></svg></div>
-          <span class="cat">GovTech</span>
-          <h3>Participación ciudadana: la vigilancia que multiplica la transparencia</h3>
-          <p>Cuando la ciudadanía puede consultar el avance de las obras de su territorio, el control deja de ser exclusivo del Estado y se vuelve colectivo.</p>
-          <div class="foot"><span class="m">6 min · Abril 2026</span><span class="circ"><svg class="ico"><use href="#i-arrow-right"></use></svg></span></div>
-        </a>
+      {gridPosts.map((p) => {
+        const cat = p.categories?.nodes?.[0]?.name ?? "";
+        const { icon, filter } = metaFor(cat);
+        return (
+          <a href={`/articulo/${p.slug}`} class="bcard rv" data-cat={filter}>
+            <div class="bi"><svg class="ico"><use href={`#${icon}`}></use></svg></div>
+            <span class="cat">{cat}</span>
+            <h3>{p.title}</h3>
+            <p set:html={p.excerpt ?? ""} />
+            <div class="foot"><span class="m">{monthYear(p.date)}</span><span class="circ"><svg class="ico"><use href="#i-arrow-right"></use></svg></span></div>
+          </a>
+        );
+      })}
     </div>
+
 
     <div class="news rv">
       <div>
         <h3>{blocks[2]}</h3>
         <p>{blocks[3]}</p>
       </div>
-      <a href="index.html#final" class="btn btn-mag">Suscribirme <svg class="ico"><use href="#i-arrow-right"></use></svg></a>
+      <a href="/#final" class="btn btn-mag">Suscribirme <svg class="ico"><use href="#i-arrow-right"></use></svg></a>
     </div>
   </section>
 </div>
@@ -868,7 +856,7 @@ body.tp .hero{filter:none}
     <div class="fbrand"><svg viewBox="0 0 791 185"><use href="#ik-white"></use></svg><p>{blocks[4]}</p></div>
     <div class="fcol"><h5>Productos</h5><a href="/cobra">COBRA</a><a href="/panal">PANAL</a><a href="/ik-labs">IK Labs</a></div>
     <div class="fcol"><h5>Empresa</h5><a href="/nosotros">Nosotros</a><a href="/blog">Blog</a><a href="#">Contacto</a></div>
-    <div class="fcol"><h5>Comercial</h5><a href="/catalogo-iad">Catálogo IAD</a><a href="index.html#final">Conócenos</a><a href="#">Colombia Compra</a></div>
+    <div class="fcol"><h5>Comercial</h5><a href="/catalogo-iad">Catálogo IAD</a><a href="/#final">Conócenos</a><a href="#">Colombia Compra</a></div>
   </div>
   <div class="fbot"><span>© 2026 Interkont · Powerful Technology</span><span>Política de Tratamiento de Datos Personales</span></div>
 </footer>
