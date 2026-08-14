@@ -1,13 +1,15 @@
-name: Deploy preview to GitHub Pages
+name: Deploy interkont.co to GitHub Pages
 
-# Despliegue en paralelo al de Vercel, sin reemplazarlo. Sirve el mismo
-# sitio Astro en https://gh-preview.interkont.co para validar que GitHub
-# Actions + GitHub Pages puede desplegar correctamente antes de
-# considerar un cambio real de hosting. No toca nada de lo que usa Vercel.
+# Pipeline de produccion: sirve el sitio Astro (contenido de WordPress via
+# WPGraphQL) en https://interkont.co. Se dispara en cada push a main, o via
+# repository_dispatch (event_type: wordpress-published) cuando se publica
+# contenido en WordPress -- ver elementor/wp-vercel-deploy-hook.php.
 
 on:
   push:
     branches: [main]
+  repository_dispatch:
+    types: [wordpress-published]
   workflow_dispatch:
 
 permissions:
@@ -39,17 +41,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Evita que Google indexe el sitio de prueba
-        run: |
-          printf 'User-agent: *\nDisallow: /\n' > public/robots.txt
-
       - name: Build
         env:
-          SITE_URL: https://gh-preview.interkont.co
+          SITE_URL: https://interkont.co
         run: npm run build
 
       - name: Configura el dominio personalizado de Pages
-        run: echo 'gh-preview.interkont.co' > dist/CNAME
+        run: echo 'interkont.co' > dist/CNAME
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

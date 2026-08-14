@@ -54,6 +54,7 @@ ese heading en WordPress si se quiere recuperar el efecto visual exacto.
 
 - Reemplazar los queries individuales por rutas dinámicas
   (`src/pages/[slug].astro`), ahora que las 9 páginas siguen el mismo patrón.
-- Conectar a Vercel + webhook de WordPress para rebuild automático al
-  publicar contenido.
+- ~~Conectar a Vercel + webhook de WordPress para rebuild automático al
+  publicar contenido.~~ Hecho: `elementor/wp-vercel-deploy-hook.php` dispara
+  Vercel (preview) y GitHub Pages (producción, interkont.co) al publicar.
 - Revisar visualmente cada página contra su versión estática original.
