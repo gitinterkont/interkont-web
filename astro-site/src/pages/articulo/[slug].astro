@@ -38,6 +38,7 @@ const POST_QUERY = `
       title
       date
       excerpt
+      seo { title metaDesc metaRobotsNoindex }
       categories { nodes { name } }
       editorBlocks(flat: false) {
         __typename
@@ -67,6 +68,9 @@ try {
 }
 
 const title = post?.title ?? "";
+const pageTitle = post?.seo?.title || (title ? `${title} | Interkont` : "Interkont");
+const pageDescription = post?.seo?.metaDesc || (post?.excerpt?.replace(/<[^>]+>/g, "") ?? "");
+const noindex = post?.seo?.metaRobotsNoindex === "noindex";
 const category = post?.categories?.nodes?.[0]?.name ?? "";
 const dateLabel = post?.date
   ? new Date(post.date).toLocaleDateString("es-CO", { year: "numeric", month: "long" })
@@ -78,11 +82,13 @@ const blocks = post?.editorBlocks ?? [];
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title} | Interkont</title>
-<meta name="description" content={post?.excerpt?.replace(/<[^>]+>/g, "") ?? ""}>
+<title>{pageTitle}</title>
+<meta name="description" content={pageDescription}>
+{noindex && <meta name="robots" content="noindex, nofollow">}
 <link rel="canonical" href={`https://interkont.co/articulo/${slug}`}>
 <meta property="og:type" content="article">
-<meta property="og:title" content={`${title} | Interkont`}>
+<meta property="og:title" content={pageTitle}>
+<meta property="og:description" content={pageDescription}>
 <meta property="og:image" content="https://interkont.co/assets/hero-poster.jpg">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/mulish-latin-400.woff2" as="font" type="font/woff2" crossorigin>

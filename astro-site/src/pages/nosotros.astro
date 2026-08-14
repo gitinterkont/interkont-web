@@ -5,6 +5,7 @@ const QUERY = `
   query NosotrosPage {
     page(id: "nosotros", idType: URI) {
       title
+      seo { title metaDesc metaRobotsNoindex }
       editorBlocks(flat: false) {
         __typename
         ... on CoreHeading { attributes { content level } }
@@ -15,6 +16,7 @@ const QUERY = `
 `;
 
 let blocks = [];
+let seo = null;
 try {
   const res = await fetch(WP_GRAPHQL_ENDPOINT, {
     method: "POST",
@@ -23,9 +25,14 @@ try {
   });
   const json = await res.json();
   blocks = (json?.data?.page?.editorBlocks ?? []).map((b) => b.attributes?.content ?? "");
+  seo = json?.data?.page?.seo ?? null;
 } catch (err) {
   console.error("No se pudo leer WPGraphQL para /nosotros:", err);
 }
+
+const pageTitle = seo?.title || "Nosotros — Tecnología enfocada en la transparencia | Interkont";
+const pageDescription = seo?.metaDesc || "Somos amantes de la tecnología enfocada en la transparencia. Más de once años apoyando el control de lo público.";
+const noindex = seo?.metaRobotsNoindex === "noindex";
 ---
 
 <!DOCTYPE html>
@@ -33,15 +40,16 @@ try {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nosotros — Tecnología enfocada en la transparencia | Interkont</title>
-<meta name="description" content="Somos amantes de la tecnología enfocada en la transparencia. Más de once años apoyando el control de lo público.">
+<title>{pageTitle}</title>
+<meta name="description" content={pageDescription}>
+{noindex && <meta name="robots" content="noindex, nofollow">}
 <link rel="canonical" href="https://interkont.co/nosotros">
 <meta name="theme-color" content="#EA215E">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_CO">
 <meta property="og:site_name" content="Interkont">
-<meta property="og:title" content="Nosotros — Tecnología enfocada en la transparencia | Interkont">
-<meta property="og:description" content="Somos amantes de la tecnología enfocada en la transparencia. Más de once años apoyando el control de lo público.">
+<meta property="og:title" content={pageTitle}>
+<meta property="og:description" content={pageDescription}>
 <meta property="og:image" content="https://interkont.co/assets/hero-poster.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
