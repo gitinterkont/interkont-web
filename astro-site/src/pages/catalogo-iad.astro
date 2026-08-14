@@ -487,41 +487,31 @@ html.notrans *,html.notrans *::before,html.notrans *::after{transition:none !imp
 body.tp .hero-vid{filter:grayscale(1) sepia(1) saturate(3.4) hue-rotate(212deg) brightness(.78) contrast(1.05)}
 
 /* ===== Página en construcción ===== */
-.mt-hero{position:relative; min-height:100vh; display:flex; align-items:center; overflow:hidden; background:#0b0910}
+.mt-hero{position:relative; min-height:clamp(440px,56vh,660px); display:flex; align-items:center; overflow:hidden; background:#0b0910}
 .mt-hero .hero-vid{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0}
 .mt-hero::after{content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
   background:linear-gradient(90deg,rgba(10,8,14,.92) 0%,rgba(10,8,14,.68) 46%,rgba(10,8,14,.34) 100%), linear-gradient(0deg,rgba(10,8,14,.6),transparent 44%)}
-.mt-in{position:relative; z-index:3; width:100%; max-width:1360px; margin:0 auto; padding:150px clamp(24px,4vw,64px) 90px}
+.mt-in{position:relative; z-index:3; width:100%; max-width:1360px; margin:0 auto; padding:96px clamp(24px,4vw,64px) 56px}
 .mt-grid{display:grid; grid-template-columns:1.15fr .85fr; gap:clamp(34px,5vw,70px); align-items:center}
 .mt-txt{max-width:660px}
-.mt-badge{display:inline-flex; align-items:center; gap:11px; font-size:12px; font-weight:800; letter-spacing:.11em; text-transform:uppercase; color:#fff;
-  background:rgba(255,255,255,.1); box-shadow:inset 0 0 0 1px rgba(255,255,255,.2); padding:10px 18px; border-radius:100px; -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)}
-.mt-badge i{width:8px;height:8px;border-radius:50%;background:var(--grad);display:block;animation:mtp 1.8s infinite}
-@keyframes mtp{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.5}}
-.mt-txt h1{color:#fff; font-size:clamp(38px,5.6vw,74px); font-weight:800; letter-spacing:-.042em; line-height:1; margin:22px 0 20px}
+.mt-txt h1{color:#fff; font-size:clamp(34px,4.8vw,62px); font-weight:800; letter-spacing:-.042em; line-height:1; margin:0 0 18px}
 .mt-txt h1 em{font-style:normal; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
 .mt-txt>p{color:rgba(255,255,255,.76); font-size:clamp(16px,1.5vw,19px); line-height:1.62; max-width:52ch}
-.mt-bar{margin-top:34px; max-width:430px}
-.mt-bar .lbl{display:flex; justify-content:space-between; font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:10px}
-.mt-bar .lbl b{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:900}
-.mt-bar .rail{height:7px; border-radius:100px; background:rgba(255,255,255,.14); overflow:hidden}
-.mt-bar .fill{height:100%; border-radius:100px; background:var(--grad); width:0; animation:mtf 1.9s cubic-bezier(.2,.7,.3,1) .35s forwards}
-@keyframes mtf{to{width:68%}}
-.mt-cta{display:flex; gap:12px; flex-wrap:wrap; margin-top:38px}
-.mt-side{display:flex; flex-direction:column; gap:12px}
+.mt-cta{display:flex; gap:12px; flex-wrap:wrap; margin-top:26px}
+.mt-side{display:flex; flex-direction:column; gap:10px}
 .mt-card{background:rgba(255,255,255,.08); -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.14); border-radius:var(--r-lg); padding:24px; color:#fff; display:flex; gap:15px; align-items:flex-start;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.14); border-radius:var(--r-lg); padding:15px; color:#fff; display:flex; gap:12px; align-items:flex-start;
   transition:transform .4s cubic-bezier(.2,.7,.3,1), box-shadow .4s}
 .mt-card:hover{transform:translateY(-5px); box-shadow:inset 0 0 0 1px rgba(255,170,74,.42), 0 26px 50px -26px rgba(0,0,0,.7)}
-.mt-card .mi{width:44px;height:44px;border-radius:12px;background:var(--grad);display:grid;place-items:center;flex:none;transition:transform .4s cubic-bezier(.34,1.56,.64,1), border-radius .35s}
+.mt-card .mi{width:34px;height:34px;border-radius:10px;background:var(--grad);display:grid;place-items:center;flex:none;transition:transform .4s cubic-bezier(.34,1.56,.64,1), border-radius .35s}
 .mt-card:hover .mi{transform:scale(1.08) rotate(-5deg); border-radius:50%}
-.mt-card .mi .ico{width:21px;height:21px;color:#fff}
-.mt-card h4{font-size:16px; font-weight:800; letter-spacing:-.015em; line-height:1.25}
-.mt-card p{font-size:13.5px; color:rgba(255,255,255,.66); margin-top:5px; line-height:1.5}
-.mt-card .go{font-size:12.5px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; margin-top:10px; display:inline-flex; align-items:center; gap:7px; color:#FFAA4A}
-.mt-card .go .ico{width:14px;height:14px; transition:transform .3s}
+.mt-card .mi .ico{width:16px;height:16px;color:#fff}
+.mt-card h4{font-size:14px; font-weight:800; letter-spacing:-.015em; line-height:1.25}
+.mt-card p{font-size:12px; color:rgba(255,255,255,.66); margin-top:4px; line-height:1.45}
+.mt-card .go{font-size:11.5px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; margin-top:8px; display:inline-flex; align-items:center; gap:7px; color:#FFAA4A}
+.mt-card .go .ico{width:13px;height:13px; transition:transform .3s}
 .mt-card:hover .go .ico{transform:translateX(4px)}
-@media (max-width:960px){ .mt-grid{grid-template-columns:1fr; gap:34px} .mt-in{padding-top:130px} }
+@media (max-width:960px){ .mt-grid{grid-template-columns:1fr; gap:28px} .mt-in{padding-top:76px} }
 
 /* ===== Botón flotante de WhatsApp ===== */
 .wa-fab{position:fixed; right:clamp(16px,2.4vw,30px); bottom:clamp(16px,2.4vw,30px); z-index:70;
@@ -795,16 +785,10 @@ body.tp .hero{filter:none}
   <div class="mt-in">
     <div class="mt-grid">
       <div class="mt-txt">
-        <span class="mt-badge"><i></i>En construcción</span>
         <h1>{blocks[0]}</h1>
         <p>{blocks[1]}</p>
-        <div class="mt-bar">
-          <div class="lbl"><span>Avance de la sección</span><b>68%</b></div>
-          <div class="rail"><div class="fill"></div></div>
-        </div>
         <div class="mt-cta">
           <a href="https://wa.me/573008506232" target="_blank" rel="noopener" class="btn btn-mag">Escríbanos por WhatsApp <svg class="ico"><use href="#i-arrow-right"></use></svg></a>
-          <a href="/" class="btn btn-glass">Volver al inicio</a>
         </div>
       </div>
       <div class="mt-side">
