@@ -1,7 +1,7 @@
 name: Deploy preview to GitHub Pages
 
 # Despliegue en paralelo al de Vercel, sin reemplazarlo. Sirve el mismo
-# sitio Astro en https://preview.interkont.co para validar que GitHub
+# sitio Astro en https://gh-preview.interkont.co para validar que GitHub
 # Actions + GitHub Pages puede desplegar correctamente antes de
 # considerar un cambio real de hosting. No toca nada de lo que usa Vercel.
 
@@ -45,11 +45,11 @@ jobs:
 
       - name: Build
         env:
-          SITE_URL: https://preview.interkont.co
+          SITE_URL: https://gh-preview.interkont.co
         run: npm run build
 
       - name: Configura el dominio personalizado de Pages
-        run: echo 'preview.interkont.co' > dist/CNAME
+        run: echo 'gh-preview.interkont.co' > dist/CNAME
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
