@@ -40,7 +40,8 @@ jobs:
         run: npm ci
 
       - name: Evita que Google indexe el sitio de prueba
-        run: printf 'User-agent: *\nDisallow: /\n' > public/robots.txt
+        run: |
+          printf 'User-agent: *\nDisallow: /\n' > public/robots.txt
 
       - name: Build
         env:
