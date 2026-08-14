@@ -681,6 +681,78 @@ header nav .btn-dark .ico{color:currentColor}
 .hero-vid.ready{opacity:1}
 .hero{background-image:url("/assets/hero-poster.jpg"); background-size:cover; background-position:center}
 body.tp .hero{filter:none}
+
+/* === Catálogo y simulador === */
+.cat-tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:clamp(28px,4vw,44px)}
+.cat-tabs button{font-family:var(--sans); font-size:14.5px; font-weight:700; padding:12px 22px; border-radius:100px; border:none; cursor:pointer;
+  background:#fff; color:var(--ink-soft); box-shadow:inset 0 0 0 1px var(--line); transition:.22s; display:inline-flex; align-items:center; gap:9px}
+.cat-tabs button:hover{color:var(--ink); box-shadow:inset 0 0 0 1px var(--line), var(--sh)}
+.cat-tabs button.on{background:var(--grad); color:#fff; box-shadow:none}
+.cat-tabs button .ico{width:18px;height:18px}
+
+.cat-toolbar{display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-bottom:32px}
+.cat-search{position:relative; flex:1 1 320px}
+.cat-search .ico{position:absolute; left:18px; top:50%; transform:translateY(-50%); width:18px; height:18px; color:var(--ink-soft); pointer-events:none}
+.cat-search input{width:100%; padding:14px 20px 14px 48px; border-radius:100px; border:none; background:#fff; box-shadow:inset 0 0 0 1px var(--line);
+  font-family:var(--sans); font-size:15px; color:var(--ink); transition:.2s}
+.cat-search input:focus{outline:none; box-shadow:inset 0 0 0 1.5px var(--mag)}
+.cat-viewtoggle{display:flex; align-items:center; background:#fff; border-radius:100px; padding:5px; box-shadow:inset 0 0 0 1px var(--line); flex:none}
+.cat-viewtoggle button{background:none; border:none; cursor:pointer; padding:9px; border-radius:100px; color:var(--ink-soft); display:grid; place-items:center; transition:.2s}
+.cat-viewtoggle button.on{background:var(--grad); color:#fff}
+.cat-viewtoggle .ico{width:19px;height:19px}
+
+.cat-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px}
+.cat-card{background:#fff; border-radius:var(--r-lg); box-shadow:var(--sh); padding:26px; display:flex; flex-direction:column; transition:transform .35s, box-shadow .35s}
+.cat-card:hover{transform:translateY(-6px); box-shadow:var(--sh-lg)}
+.cat-card .tag{font-size:12px; font-weight:700; color:var(--mag); letter-spacing:.04em; margin-bottom:8px; display:block}
+.cat-card h3{font-size:18px; font-weight:800; letter-spacing:-.01em; line-height:1.25; margin-bottom:8px}
+.cat-card p{font-size:14px; color:var(--ink-soft); line-height:1.55; flex-grow:1}
+.cat-card .foot{display:flex; justify-content:space-between; align-items:center; margin-top:18px; padding-top:16px; border-top:1px solid var(--line); font-size:12.5px; color:var(--ink-soft)}
+.cat-card .price{font-size:17px; font-weight:800; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; margin-top:14px}
+.cat-card .sku{font-family:ui-monospace,monospace; font-size:12px; color:var(--ink-soft)}
+
+.cat-table-wrap{background:#fff; border-radius:var(--r-lg); box-shadow:var(--sh); overflow:hidden; overflow-x:auto}
+.cat-table{width:100%; border-collapse:collapse; font-size:14px}
+.cat-table th{text-align:left; padding:16px 20px; font-size:12px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-soft); background:var(--sheet); white-space:nowrap; cursor:pointer; user-select:none}
+.cat-table th.num{text-align:right}
+.cat-table td{padding:14px 20px; border-top:1px solid var(--line); color:var(--ink); white-space:nowrap}
+.cat-table td.num{text-align:right; font-weight:700; color:var(--mag)}
+.cat-table tr:hover td{background:var(--sheet)}
+
+.cat-empty{text-align:center; padding:80px 20px; color:var(--ink-soft)}
+.cat-empty .ico{width:52px; height:52px; margin:0 auto 18px; opacity:.4}
+
+.sim-grid{display:grid; grid-template-columns:1.4fr 1fr; gap:24px; align-items:start}
+.sim-panel{background:#fff; border-radius:var(--r-xl); box-shadow:var(--sh); padding:clamp(26px,3.5vw,40px)}
+.sim-panel h2{font-size:22px; font-weight:800; letter-spacing:-.02em; margin-bottom:20px}
+.sim-field{margin-bottom:18px; position:relative}
+.sim-field label{display:block; font-size:13px; font-weight:700; color:var(--ink-soft); margin-bottom:8px}
+.sim-field input{width:100%; padding:13px 16px; border-radius:var(--r); border:none; background:var(--sheet); box-shadow:inset 0 0 0 1px var(--line);
+  font-family:var(--sans); font-size:15px; color:var(--ink)}
+.sim-field input:focus{outline:none; box-shadow:inset 0 0 0 1.5px var(--mag)}
+.sim-suggestions{position:absolute; top:100%; left:0; right:0; margin-top:6px; background:#fff; border-radius:var(--r); box-shadow:var(--sh-lg); z-index:20; overflow:hidden}
+.sim-suggestions button{display:block; width:100%; text-align:left; padding:12px 16px; border:none; background:none; cursor:pointer; font-family:var(--sans); font-size:14px; color:var(--ink); border-bottom:1px solid var(--line)}
+.sim-suggestions button:last-child{border-bottom:none}
+.sim-suggestions button:hover{background:var(--sheet); color:var(--mag)}
+.sim-subtotal{background:var(--sheet); border-radius:var(--r); padding:18px; text-align:center; margin-bottom:20px}
+.sim-subtotal .l{font-size:13px; color:var(--ink-soft)}
+.sim-subtotal .n{font-size:26px; font-weight:800; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; margin-top:4px}
+.sim-cart{display:flex; flex-direction:column; gap:10px; max-height:320px; overflow-y:auto; margin-bottom:18px}
+.sim-cart-item{display:flex; justify-content:space-between; align-items:center; gap:12px; background:var(--sheet); border-radius:var(--r); padding:13px 16px}
+.sim-cart-item .name{font-size:14px; font-weight:700; color:var(--ink)}
+.sim-cart-item .qty{font-size:12.5px; color:var(--ink-soft); margin-top:2px}
+.sim-cart-item .sub{font-size:14px; font-weight:700; color:var(--ink); white-space:nowrap}
+.sim-cart-item button{background:none; border:none; color:var(--ink-soft); cursor:pointer; padding:6px; flex:none}
+.sim-cart-item button:hover{color:var(--mag)}
+.sim-cart-item button .ico{width:17px;height:17px}
+.sim-empty{text-align:center; color:var(--ink-soft); font-size:14px; padding:30px 0}
+.sim-total{display:flex; justify-content:space-between; align-items:center; padding-top:18px; border-top:2px dashed var(--line); margin-bottom:18px}
+.sim-total .l{font-size:17px; font-weight:800}
+.sim-total .n{font-size:26px; font-weight:900; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
+.sim-actions{display:flex; gap:10px; flex-wrap:wrap}
+.sim-actions .btn{flex:1}
+.sim-actions .btn:disabled{opacity:.4; cursor:not-allowed; transform:none!important}
+@media (max-width:900px){ .sim-grid{grid-template-columns:1fr} }
 </style>
 </helmet>
 
@@ -708,40 +780,81 @@ body.tp .hero{filter:none}
     <button class="menu-tog" id="tog" aria-label="Menú">≡</button>
   </div>
 </header>
-<section class="mt-hero">
-  <video class="hero-vid" autoplay muted loop playsinline preload="metadata" poster="/assets/hero-poster.jpg"><source src="/assets/loop.mp4" type="video/mp4"></video>
-  <div class="mt-in">
-    <div class="mt-grid">
-      <div class="mt-txt">
-        <span class="mt-badge"><i></i>En construcción</span>
-        <h1>{blocks[0]}</h1>
-        <p>{blocks[1]}</p>
-        <div class="mt-bar">
-          <div class="lbl"><span>Avance de la sección</span><b>68%</b></div>
-          <div class="rail"><div class="fill"></div></div>
-        </div>
-        <div class="mt-cta">
-          <a href="https://wa.me/573008506232" target="_blank" rel="noopener" class="btn btn-mag">Escríbanos por WhatsApp <svg class="ico"><use href="#i-arrow-right"></use></svg></a>
-          <a href="/" class="btn btn-glass">Volver al inicio</a>
-        </div>
-      </div>
-      <div class="mt-side">
-        <a href="/cobra" class="mt-card">
-          <span class="mi"><svg class="ico"><use href="#i-activity"></use></svg></span>
-          <span><h4>COBRA</h4><p>Monitoreo de inversión pública en tiempo real, con trazabilidad total.</p><span class="go">Ver producto <svg class="ico"><use href="#i-arrow-right"></use></svg></span></span>
-        </a>
-        <a href="/ik-labs" class="mt-card">
-          <span class="mi"><svg class="ico"><use href="#i-sparkles"></use></svg></span>
-          <span><h4>IK Labs</h4><p>Agentes de inteligencia artificial y software a la medida.</p><span class="go">Ver producto <svg class="ico"><use href="#i-arrow-right"></use></svg></span></span>
-        </a>
-        <a href="/productos" class="mt-card">
-          <span class="mi"><svg class="ico"><use href="#i-grid"></use></svg></span>
-          <span><h4>Catálogo completo</h4><p>Los nueve productos y servicios de Interkont, con sus especificaciones.</p><span class="go">Explorar <svg class="ico"><use href="#i-arrow-right"></use></svg></span></span>
-        </a>
-      </div>
+<section class="hero" style="min-height:56vh">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <span class="eyebrow">Colombia Compra Eficiente</span>
+      <h1>{blocks[0]}</h1>
+      <p class="sub">{blocks[1]}</p>
     </div>
   </div>
 </section>
+
+<div class="wrap">
+  <section class="sec">
+    <div class="cat-tabs" id="mainTabs">
+      <button class="on" data-tab="catalog"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>Catálogo</button>
+      <button data-tab="simulator"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7.5h6m-6 3h6m-6 3h3M4.5 3.75h15a.75.75 0 0 1 .75.75v15a.75.75 0 0 1-.75.75h-15a.75.75 0 0 1-.75-.75v-15a.75.75 0 0 1 .75-.75Z"/></svg>Simulador</button>
+    </div>
+
+    <div id="catalog-section">
+      <div class="cat-toolbar">
+        <div class="cat-search">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
+          <input type="text" id="searchInput" placeholder="Buscar por código o producto...">
+        </div>
+        <div class="cat-viewtoggle">
+          <button id="cardViewBtn" class="on" type="button" aria-label="Vista de tarjetas"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"/></svg></button>
+          <button id="tableViewBtn" type="button" aria-label="Vista de tabla"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 0 1 0 3.75H5.625a1.875 1.875 0 0 1 0-3.75Z"/></svg></button>
+        </div>
+        <button id="exportExcelBtn" class="btn btn-dark" type="button">Exportar Excel <svg class="ico"><use href="#i-arrow-right"></use></svg></button>
+      </div>
+      <div id="results-container" class="cat-grid">
+        <div class="cat-empty"><p>Cargando catálogo…</p></div>
+      </div>
+      <div id="no-results" class="cat-empty" hidden>
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
+        <h3>No se encontraron resultados</h3>
+        <p>Intente con otros términos de búsqueda.</p>
+      </div>
+    </div>
+
+    <div id="simulator-section" hidden>
+      <div class="sim-grid">
+        <div class="sim-panel">
+          <h2>Arma tu cotización</h2>
+          <div class="sim-field">
+            <label for="productSearchInput">1. Busca un producto</label>
+            <input type="text" id="productSearchInput" placeholder="Escribe para buscar...">
+            <div id="autocomplete-container" class="sim-suggestions" hidden></div>
+          </div>
+          <div class="sim-field">
+            <label for="quantityInput">2. Ingresa la cantidad</label>
+            <input type="number" id="quantityInput" min="1" value="1">
+          </div>
+          <div class="sim-subtotal">
+            <div class="l">Subtotal del producto</div>
+            <div class="n" id="lineItemTotal">$0</div>
+          </div>
+          <button id="addToCartBtn" class="btn btn-mag" type="button" style="width:100%; justify-content:center" disabled>Agregar a la cotización <svg class="ico"><use href="#i-arrow-right"></use></svg></button>
+        </div>
+        <div class="sim-panel">
+          <h2>Resumen</h2>
+          <div id="cartItemsContainer" class="sim-cart">
+            <p class="sim-empty" id="emptyCartMessage">Tu cotización está vacía.</p>
+          </div>
+          <div class="sim-total"><span class="l">Total</span><span class="n" id="grandTotal">$0</span></div>
+          <div class="sim-actions">
+            <button id="downloadPdfBtn" class="btn btn-dark" type="button" disabled>Descargar PDF</button>
+            <button id="clearCartBtn" class="btn btn-light" type="button" disabled>Limpiar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
 <footer>
   <div class="fgrid">
     <div class="fbrand"><svg viewBox="0 0 791 185"><use href="#ik-white"></use></svg><p>{blocks[2]}</p></div>
@@ -872,6 +985,322 @@ class Component extends DCLogic {
     setTimeout(tickAll, 500);
   }
 }
+</script>
+
+<script>
+import { jsPDF } from "jspdf";
+import * as XLSX from "xlsx";
+
+// URL PERMANENTE del despliegue de Apps Script (termina en /exec).
+// NO reemplazar por una URL de googleusercontent.com/.../echo: esas caducan.
+const CATALOG_API_URL = "https://script.google.com/macros/s/AKfycbwXG6YOPlTmkRIdbHgnDJHBWFzrWaDHjPrqIg8yzQAFgghtbi6fiV2WkqhypjdBedDZAQ/exec";
+
+async function fetchCatalogData() {
+  try {
+    const res = await fetch(CATALOG_API_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    return data.data || [];
+  } catch (err) {
+    console.error("No se pudo cargar el catálogo IAD:", err);
+    const results = document.getElementById("results-container");
+    if (results) {
+      results.innerHTML = `<div class="cat-empty"><h3>Error al cargar el catálogo</h3><p>No se pudo conectar con el servidor. Intente más tarde.</p></div>`;
+    }
+    return [];
+  }
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const catalogData = await fetchCatalogData();
+
+  const mainTabs = document.getElementById("mainTabs");
+  const catalogSection = document.getElementById("catalog-section");
+  const simulatorSection = document.getElementById("simulator-section");
+  const searchInput = document.getElementById("searchInput");
+  const cardViewBtn = document.getElementById("cardViewBtn");
+  const tableViewBtn = document.getElementById("tableViewBtn");
+  const resultsContainer = document.getElementById("results-container");
+  const noResultsMessage = document.getElementById("no-results");
+  const exportExcelBtn = document.getElementById("exportExcelBtn");
+
+  const productSearchInput = document.getElementById("productSearchInput");
+  const autocompleteContainer = document.getElementById("autocomplete-container");
+  const quantityInput = document.getElementById("quantityInput");
+  const lineItemTotal = document.getElementById("lineItemTotal");
+  const addToCartBtn = document.getElementById("addToCartBtn");
+  const cartItemsContainer = document.getElementById("cartItemsContainer");
+  const grandTotal = document.getElementById("grandTotal");
+  const downloadPdfBtn = document.getElementById("downloadPdfBtn");
+  const clearCartBtn = document.getElementById("clearCartBtn");
+
+  let currentView = "cards";
+  let cartItems = [];
+  let selectedProductForSimulator = null;
+  let sortState = { column: null, direction: "asc" };
+
+  const formatCurrency = (value) => {
+    const number = Number(String(value).replace(/[^0-9.-]+/g, ""));
+    if (isNaN(number)) return value;
+    return new Intl.NumberFormat("es-CO", { style: "currency", currency: "COP", minimumFractionDigits: 0 }).format(number);
+  };
+  const getPriceAsNumber = (price) => Number(String(price).replace(/[^0-9.-]+/g, ""));
+
+  const renderCardView = (data) => {
+    resultsContainer.className = "cat-grid";
+    resultsContainer.innerHTML = data.map((item) => `
+      <div class="cat-card">
+        <span class="tag">${item["Propósito"] ?? ""}</span>
+        <h3>${item["Producto/Servicio"] ?? ""}</h3>
+        <p>${item["Descripción"] ?? ""}</p>
+        <div class="price">${formatCurrency(item["Precio"])}</div>
+        <div class="foot"><span class="sku">${item["Codigo/SKU"] ?? ""}</span><span>${item["Unidad de medida"] ?? ""}</span></div>
+      </div>
+    `).join("");
+  };
+
+  const sortIcon = (columnKey) => {
+    if (sortState.column !== columnKey) return "⇅";
+    return sortState.direction === "asc" ? "↑" : "↓";
+  };
+
+  const renderTableView = (data) => {
+    resultsContainer.className = "cat-table-wrap";
+    const head = `<table class="cat-table"><thead><tr>
+      <th data-sort="Codigo/SKU">Código/SKU ${sortIcon("Codigo/SKU")}</th>
+      <th data-sort="Producto/Servicio">Producto/Servicio ${sortIcon("Producto/Servicio")}</th>
+      <th data-sort="Unidad de medida">Unidad ${sortIcon("Unidad de medida")}</th>
+      <th class="num" data-sort="Precio">Precio ${sortIcon("Precio")}</th>
+    </tr></thead><tbody>`;
+    const rows = data.map((item) => `
+      <tr>
+        <td>${item["Codigo/SKU"] ?? ""}</td>
+        <td>${item["Producto/Servicio"] ?? ""}</td>
+        <td>${item["Unidad de medida"] ?? ""}</td>
+        <td class="num">${formatCurrency(item["Precio"])}</td>
+      </tr>
+    `).join("");
+    resultsContainer.innerHTML = head + rows + "</tbody></table>";
+    resultsContainer.querySelectorAll("th[data-sort]").forEach((th) => th.addEventListener("click", handleSort));
+  };
+
+  const updateDisplay = () => {
+    const searchTerm = searchInput.value.toLowerCase().trim();
+    let filteredData = catalogData.filter((item) => {
+      const name = (item["Producto/Servicio"] || "").toLowerCase();
+      const code = (item["Codigo/SKU"] || "").toLowerCase();
+      return name.includes(searchTerm) || code.includes(searchTerm);
+    });
+
+    if (sortState.column) {
+      filteredData.sort((a, b) => {
+        const valA = a[sortState.column], valB = b[sortState.column];
+        const comparison = sortState.column === "Precio"
+          ? (getPriceAsNumber(valA) > getPriceAsNumber(valB) ? 1 : -1)
+          : String(valA).localeCompare(String(valB), "es", { sensitivity: "base" });
+        return sortState.direction === "asc" ? comparison : -comparison;
+      });
+    }
+
+    if (filteredData.length === 0) {
+      noResultsMessage.hidden = false;
+      resultsContainer.innerHTML = "";
+    } else {
+      noResultsMessage.hidden = true;
+      currentView === "cards" ? renderCardView(filteredData) : renderTableView(filteredData);
+    }
+  };
+
+  const handleSort = (e) => {
+    const column = e.currentTarget.dataset.sort;
+    sortState = sortState.column === column
+      ? { column, direction: sortState.direction === "asc" ? "desc" : "asc" }
+      : { column, direction: "asc" };
+    updateDisplay();
+  };
+
+  const switchView = (view) => {
+    if (currentView === view) return;
+    currentView = view;
+    sortState = { column: null, direction: "asc" };
+    cardViewBtn.classList.toggle("on", view === "cards");
+    tableViewBtn.classList.toggle("on", view === "table");
+    updateDisplay();
+  };
+
+  searchInput.addEventListener("input", updateDisplay);
+  cardViewBtn.addEventListener("click", () => switchView("cards"));
+  tableViewBtn.addEventListener("click", () => switchView("table"));
+
+  mainTabs.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-tab]");
+    if (!btn) return;
+    mainTabs.querySelectorAll("button").forEach((b) => b.classList.toggle("on", b === btn));
+    const showCatalog = btn.dataset.tab === "catalog";
+    catalogSection.hidden = !showCatalog;
+    simulatorSection.hidden = showCatalog;
+  });
+
+  exportExcelBtn.addEventListener("click", () => {
+    const dataToExport = catalogData.map((item) => ({
+      "Código/SKU": item["Codigo/SKU"],
+      "Producto/Servicio": item["Producto/Servicio"],
+      "Unidad de medida": item["Unidad de medida"],
+      "Precio": getPriceAsNumber(item["Precio"]),
+    }));
+    const ws = XLSX.utils.json_to_sheet(dataToExport);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Catálogo IAD");
+    XLSX.writeFile(wb, "catalogo-iad-interkont.xlsx");
+  });
+
+  // --- Simulador ---
+  const renderCart = () => {
+    if (cartItems.length === 0) {
+      cartItemsContainer.innerHTML = `<p class="sim-empty">Tu cotización está vacía.</p>`;
+      downloadPdfBtn.disabled = true;
+      clearCartBtn.disabled = true;
+    } else {
+      downloadPdfBtn.disabled = false;
+      clearCartBtn.disabled = false;
+      cartItemsContainer.innerHTML = cartItems.map((item, index) => `
+        <div class="sim-cart-item">
+          <div>
+            <div class="name">${item.name}</div>
+            <div class="qty">${item.quantity} x ${formatCurrency(item.price)}</div>
+          </div>
+          <span class="sub">${formatCurrency(item.subtotal)}</span>
+          <button type="button" data-index="${index}" aria-label="Eliminar"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+        </div>
+      `).join("");
+      cartItemsContainer.querySelectorAll("button[data-index]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          cartItems.splice(Number(btn.dataset.index), 1);
+          renderCart();
+        });
+      });
+    }
+    const total = cartItems.reduce((sum, item) => sum + item.subtotal, 0);
+    grandTotal.textContent = formatCurrency(total);
+  };
+
+  const updateLineItemTotal = () => {
+    const quantity = parseInt(quantityInput.value, 10) || 0;
+    if (selectedProductForSimulator && quantity > 0) {
+      lineItemTotal.textContent = formatCurrency(quantity * selectedProductForSimulator.price);
+      addToCartBtn.disabled = false;
+    } else {
+      lineItemTotal.textContent = formatCurrency(0);
+      addToCartBtn.disabled = true;
+    }
+  };
+
+  productSearchInput.addEventListener("input", () => {
+    const query = productSearchInput.value.toLowerCase();
+    if (query.length < 2) {
+      autocompleteContainer.innerHTML = "";
+      autocompleteContainer.hidden = true;
+      return;
+    }
+    const suggestions = catalogData.filter((item) =>
+      (item["Producto/Servicio"] || "").toLowerCase().includes(query) ||
+      (item["Codigo/SKU"] || "").toLowerCase().includes(query)
+    ).slice(0, 6);
+
+    if (suggestions.length > 0) {
+      autocompleteContainer.innerHTML = suggestions.map((item) =>
+        `<button type="button" data-sku="${item["Codigo/SKU"]}">${item["Producto/Servicio"]}</button>`
+      ).join("");
+      autocompleteContainer.hidden = false;
+    } else {
+      autocompleteContainer.hidden = true;
+    }
+  });
+
+  autocompleteContainer.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-sku]");
+    if (!btn) return;
+    const product = catalogData.find((p) => p["Codigo/SKU"] === btn.dataset.sku);
+    if (!product) return;
+    selectedProductForSimulator = {
+      sku: product["Codigo/SKU"],
+      name: product["Producto/Servicio"],
+      price: getPriceAsNumber(product["Precio"]),
+    };
+    productSearchInput.value = product["Producto/Servicio"];
+    autocompleteContainer.hidden = true;
+    quantityInput.focus();
+    updateLineItemTotal();
+  });
+
+  quantityInput.addEventListener("input", updateLineItemTotal);
+
+  addToCartBtn.addEventListener("click", () => {
+    const quantity = parseInt(quantityInput.value, 10);
+    if (!selectedProductForSimulator || !quantity || quantity <= 0) return;
+    const existing = cartItems.findIndex((item) => item.sku === selectedProductForSimulator.sku);
+    if (existing > -1) {
+      cartItems[existing].quantity += quantity;
+      cartItems[existing].subtotal = cartItems[existing].quantity * cartItems[existing].price;
+    } else {
+      cartItems.push({ ...selectedProductForSimulator, quantity, subtotal: quantity * selectedProductForSimulator.price });
+    }
+    renderCart();
+    productSearchInput.value = "";
+    quantityInput.value = "1";
+    selectedProductForSimulator = null;
+    updateLineItemTotal();
+  });
+
+  clearCartBtn.addEventListener("click", () => {
+    cartItems = [];
+    renderCart();
+  });
+
+  downloadPdfBtn.addEventListener("click", () => {
+    if (cartItems.length === 0) return;
+    const doc = new jsPDF();
+    const today = new Date().toLocaleDateString("es-CO");
+    let y = 20;
+    doc.setFontSize(18);
+    doc.text("Cotización Interkont — Catálogo IAD", 105, y, { align: "center" });
+    y += 10;
+    doc.setFontSize(10);
+    doc.text(`Fecha: ${today}`, 105, y, { align: "center" });
+    y += 15;
+    doc.setFontSize(12);
+    doc.setFont(undefined, "bold");
+    doc.text("Producto/Servicio", 14, y);
+    doc.text("Cant.", 120, y);
+    doc.text("Vlr. Unitario", 145, y);
+    doc.text("Subtotal", 190, y, { align: "right" });
+    doc.setFont(undefined, "normal");
+    y += 7;
+    cartItems.forEach((item) => {
+      doc.setFontSize(10);
+      const splitTitle = doc.splitTextToSize(item.name, 100);
+      doc.text(splitTitle, 14, y);
+      doc.text(item.quantity.toString(), 122, y);
+      doc.text(formatCurrency(item.price), 147, y);
+      doc.text(formatCurrency(item.subtotal), 190, y, { align: "right" });
+      y += splitTitle.length * 5 + 5;
+      if (y > 280) { doc.addPage(); y = 20; }
+    });
+    const total = cartItems.reduce((sum, item) => sum + item.subtotal, 0);
+    y += 10;
+    doc.setLineWidth(0.5);
+    doc.line(14, y, 196, y);
+    y += 7;
+    doc.setFontSize(14);
+    doc.setFont(undefined, "bold");
+    doc.text("TOTAL:", 145, y);
+    doc.text(formatCurrency(total), 190, y, { align: "right" });
+    doc.save("cotizacion-interkont-iad.pdf");
+  });
+
+  if (catalogData.length > 0) updateDisplay();
+  renderCart();
+});
 </script>
 </body>
 </html>
