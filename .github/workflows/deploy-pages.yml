@@ -1,0 +1,67 @@
+name: Deploy preview to GitHub Pages
+
+# Despliegue en paralelo al de Vercel, sin reemplazarlo. Sirve el mismo
+# sitio Astro en https://preview.interkont.co para validar que GitHub
+# Actions + GitHub Pages puede desplegar correctamente antes de
+# considerar un cambio real de hosting. No toca nada de lo que usa Vercel.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: astro-site
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: astro-site/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Evita que Google indexe el sitio de prueba
+        run: printf 'User-agent: *\nDisallow: /\n' > public/robots.txt
+
+      - name: Build
+        env:
+          SITE_URL: https://preview.interkont.co
+        run: npm run build
+
+      - name: Configura el dominio personalizado de Pages
+        run: echo 'preview.interkont.co' > dist/CNAME
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: astro-site/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
