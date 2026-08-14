@@ -1,0 +1,28 @@
+---
+const { isHome = false } = Astro.props;
+const logoHref = isHome ? "#" : "/";
+const ctaHref = isHome ? "#final" : "/#final";
+---
+
+<header id="header">
+  <div class="hbar">
+    <a href={logoHref} class="logo" aria-label="Interkont"><svg class="logo-w" viewBox="0 0 791 185"><use href="#ik-white"></use></svg><svg class="logo-c" viewBox="0 0 777 182"><use href="#ik-color"></use></svg></a>
+    <nav id="nav">
+      <a href="/">Interkont</a>
+      <div class="nav-drop">
+        <button class="nav-dropbtn" type="button">Soluciones <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></button>
+        <div class="drop">
+          <a href="/cobra"><span class="di"><svg class="ico"><use href="#i-activity"></use></svg></span><span><span class="dt">COBRA</span><span class="dd">Monitoreo de inversión pública en tiempo real</span></span></a>
+          <a href="/panal"><span class="di"><svg class="ico"><use href="#i-users"></use></svg></span><span><span class="dt">PANAL</span><span class="dd">Asistencia a necesidades de ayudas localizadas</span></span></a>
+          <a href="/ik-labs"><span class="di"><svg class="ico"><use href="#i-sparkles"></use></svg></span><span><span class="dt">IK Labs</span><span class="dd">Agentes de inteligencia artificial</span></span></a>
+        </div>
+      </div>
+      <a href="/productos">Nuestros productos</a>
+      <a href="/blog">Blog</a>
+      <a href="/catalogo-iad">Catálogo IAD</a>
+      <a href={ctaHref} class="btn btn-dark" style="padding:11px 22px">Contáctanos</a>
+    </nav>
+    <button class="thm" id="thm" type="button" aria-label="Cambiar color de marca" title="Cambiar color de marca"><span class="sw sw-a"></span><span class="sw sw-b"></span></button>
+    <button class="menu-tog" id="tog" aria-label="Menú">≡</button>
+  </div>
+</header>
