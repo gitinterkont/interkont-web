@@ -168,6 +168,99 @@ header.scrolled .nav-dropbtn{color:var(--ink-soft)}
 .core::after{content:""; position:absolute; inset:-12px; border-radius:50%; border:1.5px dashed color-mix(in srgb, var(--mag) 40%, transparent); animation:spin 22s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* ===== Capa agéntica de COBRA ===== */
+.ikag{position:relative; overflow:hidden; border-radius:var(--r-xl); color:#fff;
+  background-color:#0b0910; background-image:var(--bgimg); background-size:cover;
+  background-position:center; background-attachment:fixed; background-repeat:no-repeat;
+  box-shadow:var(--sh-lg); padding:clamp(34px,4.6vw,64px) clamp(22px,3.2vw,52px)}
+.ikag,.ikag:hover{transform:none!important}
+.ikag-head{display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:20px}
+.ikag-head .eyebrow{color:var(--mag-lt)}
+.ikag-head h2{font-size:clamp(26px,3.1vw,40px); font-weight:800; letter-spacing:-.03em; line-height:1.05; margin-top:10px; color:#fff}
+.ikag-head p{font-size:15px; color:rgba(255,255,255,.66); margin-top:12px; max-width:52ch}
+.iklive{display:inline-flex; align-items:center; gap:9px; font-size:12px; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--mag-lt); border:1.25px solid color-mix(in srgb, var(--mag) 30%, transparent);
+  background:rgba(255,255,255,.05); border-radius:100px; padding:9px 16px}
+.iklive i{width:9px; height:9px; border-radius:50%; background:var(--mag); display:block}
+
+.ikflow{margin-top:clamp(28px,3.4vw,44px); display:grid; grid-template-columns:1fr auto 1fr auto 1fr;
+  align-items:stretch; gap:clamp(12px,1.4vw,22px)}
+.ikp{background:rgba(255,255,255,.04); border:1.25px solid rgba(255,255,255,.09); border-radius:var(--r-lg);
+  padding:clamp(20px,2.2vw,28px); display:flex; flex-direction:column; gap:14px}
+.ikp>.k{font-size:12px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#FF5C86}
+.ikp>h3{font-size:clamp(19px,2vw,26px); font-weight:800; letter-spacing:-.02em; color:#fff; line-height:1.15}
+.ikp>h3+p{font-size:13.5px; color:rgba(255,255,255,.6); line-height:1.55; margin-top:-6px}
+.ikitems{display:flex; flex-direction:column; gap:10px; margin-top:auto}
+.ikit{display:flex; align-items:center; gap:12px}
+.ikit .t{width:34px; height:34px; flex:0 0 34px; border-radius:11px; background:rgba(255,255,255,.07);
+  border:1.25px solid rgba(255,255,255,.12); display:grid; place-items:center}
+.ikit .t .ico{width:17px; height:17px; stroke:#FF5C86}
+.ikit b{font-size:14.5px; font-weight:600; color:rgba(255,255,255,.9)}
+.ikchips{display:flex; flex-wrap:wrap; gap:9px; margin-top:auto}
+.ikchips span{font-size:12.5px; font-weight:700; color:#fff; background:color-mix(in srgb, var(--mag) 16%, transparent);
+  border-radius:100px; padding:8px 14px}
+
+.iknuc{position:relative; background:#1A0710; border:2px solid transparent; border-radius:var(--r-lg);
+  background-image:linear-gradient(#1A0710,#1A0710), var(--grad); background-origin:border-box; background-clip:padding-box, border-box;
+  padding:clamp(22px,2.4vw,30px); display:flex; flex-direction:column; gap:14px; text-align:center; align-items:center; justify-content:center}
+.iknuc .k{font-size:11.5px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.55)}
+.iknuc .nm{font-size:clamp(28px,3vw,38px); font-weight:800; letter-spacing:-.03em; line-height:1;
+  background-image:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
+.iknuc p{font-size:13.5px; color:rgba(255,255,255,.66); line-height:1.55; max-width:26ch}
+.iknuc .mets{display:flex; gap:18px; flex-wrap:wrap; justify-content:center; border-top:1px solid rgba(255,255,255,.1); padding-top:14px; width:100%}
+.iknuc .mets div{display:flex; flex-direction:column; gap:2px}
+.iknuc .mets b{font-size:19px; font-weight:800; background-image:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent}
+.iknuc .mets span{font-size:11.5px; color:rgba(255,255,255,.55)}
+.ikarrow{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px}
+.ikarrow em{font-size:10.5px; font-style:normal; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.6)}
+.ikarrow .ln{width:100%; min-width:56px; height:0; border-top:2px dashed color-mix(in srgb, var(--mag) 75%, transparent); position:relative}
+.ikarrow .ln::after{content:""; position:absolute; right:-2px; top:-5px; border-left:8px solid var(--mag); border-top:5px solid transparent; border-bottom:5px solid transparent}
+.iknuc .note{font-size:12.5px; color:rgba(255,255,255,.5)}
+
+.ikag-layer{margin-top:clamp(22px,2.6vw,34px); display:flex; align-items:center; gap:14px}
+.ikag-layer .lb{font-size:12px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--mag-lt); white-space:nowrap}
+.ikag-layer .cap{font-size:13px; color:rgba(255,255,255,.55); white-space:nowrap}
+.ikag-layer .ln{flex:1; height:1px; background:linear-gradient(90deg, color-mix(in srgb, var(--mag) 55%, transparent), rgba(255,255,255,.06))}
+.ikagents{margin-top:16px; display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(12px,1.4vw,20px)}
+.ikagent{background:rgba(255,255,255,.04); border:1.25px solid rgba(255,255,255,.09); border-radius:var(--r-lg);
+  padding:clamp(18px,2vw,26px); display:flex; flex-direction:column; gap:12px}
+.ikagent .top{display:flex; align-items:center; justify-content:space-between; gap:10px}
+.ikagent .ai{width:38px; height:38px; border-radius:12px; background:rgba(255,255,255,.07);
+  border:1.25px solid rgba(255,255,255,.12); display:grid; place-items:center}
+.ikagent .ai .ico{width:19px; height:19px; stroke:#FF5C86}
+.ikagent .stt{font-size:11px; font-weight:700; letter-spacing:.04em; color:var(--mag-lt); display:inline-flex; align-items:center; gap:7px}
+.ikagent .stt i{width:7px; height:7px; border-radius:50%; background:var(--mag)}
+.ikagent h4{font-size:16.5px; font-weight:800; letter-spacing:-.02em; color:#fff}
+.ikagent p{font-size:13px; color:rgba(255,255,255,.6); line-height:1.55}
+.iklog{margin-top:clamp(20px,2.4vw,30px); display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  background:rgba(255,255,255,.04); border:1.25px solid rgba(255,255,255,.09); border-radius:100px; padding:13px 20px;
+  font-size:13px; color:rgba(255,255,255,.72)}
+.iklog b{color:#fff; font-weight:700}
+.iklog .mono{flex:1 1 auto; min-width:0; font-size:13px}
+.iklog .ago{margin-left:auto; white-space:nowrap; font-size:12px; color:rgba(255,255,255,.45)}
+.iklog .dot{width:8px; height:8px; border-radius:50%; background:var(--mag); flex:0 0 8px}
+
+.ikag .st{opacity:1}
+@media (prefers-reduced-motion:no-preference){
+  .iklive i,.ikagent .stt i,.iklog .dot{animation:ikag-pulse 2.4s ease-in-out infinite}
+}
+@keyframes ikag-pulse{0%,100%{opacity:.4; transform:scale(.85)} 50%{opacity:1; transform:scale(1.2)}}
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    .ikag{timeline-scope:--ikflow}
+    .ikag-in{view-timeline-name:--ikflow; view-timeline-axis:block}
+    .ikag .st{animation:ikag-build 1s linear both; animation-timeline:--ikflow;
+      animation-range:entry calc(var(--s,0)*5%) entry calc(46% + var(--s,0)*5%)}
+    @keyframes ikag-build{from{opacity:0; transform:translateY(26px) scale(.965)} to{opacity:1; transform:none}}
+  }
+}
+@media (max-width:1080px){
+  .ikflow{grid-template-columns:1fr; gap:14px}
+  .ikarrow{transform:rotate(90deg); padding:2px 0}
+  .ikagents{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:620px){ .ikagents{grid-template-columns:1fr} }
+
 .func-head{display:flex; align-items:end; justify-content:space-between; gap:30px; flex-wrap:wrap; margin-bottom:34px}
 .func-head .h2{max-width:14ch} .func-head p{color:var(--ink-soft); font-size:16px; max-width:42ch}
 .funcs{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
@@ -791,6 +884,83 @@ body.tp .hero{filter:none}
       <div class="sb"><div class="n" data-count="32" data-suffix="K+">32K+</div><div class="l">Proyectos monitoreados</div></div>
       <div class="sb"><div class="n" data-count="18" data-suffix="K+">18K+</div><div class="l">Contratos supervisados</div></div>
       <div class="sb"><div class="n"><span class="u">$</span><span data-count="6500" data-suffix="M">6.500M</span></div><div class="l">Millones de dólares controlados</div></div>
+    </div>
+  </section>
+
+  <section class="sec ikag-sec" id="capa-agentica" style="padding-bottom:0">
+    <div class="ikag">
+      <div class="ikag-in">
+        <div class="ikag-head st" style="--s:0">
+          <div>
+            <div class="eyebrow">COBRA · Capa agéntica</div>
+            <h2>Agentes que trabajan sobre la ejecución</h2>
+            <p>COBRA registra el dato del terreno. Los agentes lo leen, lo verifican y devuelven una decisión.</p>
+          </div>
+          <span class="iklive"><i></i>En vivo</span>
+        </div>
+
+        <div class="ikflow">
+          <div class="ikp st" style="--s:1">
+            <div class="k">Entra</div>
+            <h3>El dato del terreno</h3>
+            <div class="ikitems">
+              <div class="ikit"><span class="t"><svg class="ico"><use href="#i-clipboard"></use></svg></span><b>Contrato y acta de inicio</b></div>
+              <div class="ikit"><span class="t"><svg class="ico"><use href="#i-refresh"></use></svg></span><b>Cronograma de obra</b></div>
+              <div class="ikit"><span class="t"><svg class="ico"><use href="#i-camera"></use></svg></span><b>Foto georreferenciada</b></div>
+              <div class="ikit"><span class="t"><svg class="ico"><use href="#i-briefcase"></use></svg></span><b>Factura y soporte</b></div>
+            </div>
+          </div>
+
+          <div class="ikarrow st" style="--s:3"><em>Ingesta</em><span class="ln"></span></div>
+
+          <div class="iknuc st" style="--s:2">
+            <div class="k">Núcleo</div>
+            <div class="nm">COBRA</div>
+            <p>Trazabilidad de la ejecución, contrato por contrato.</p>
+            <div class="ikchips" style="justify-content:center"><span>Trazable</span><span>Auditable</span><span>En tiempo real</span></div>
+            <div class="note">Un registro por contrato, no una foto del mes</div>
+          </div>
+
+          <div class="ikarrow st" style="--s:3"><em>Decisión</em><span class="ln"></span></div>
+
+          <div class="ikp st" style="--s:4">
+            <div class="k">Sale</div>
+            <h3>La decisión</h3>
+            <div class="ikitems">
+              <div class="ikit"><span class="t"><svg class="ico"><use href="#i-monitor"></use></svg></span><b>Tablero en tiempo real</b></div>
+              <div class="ikit"><span class="t"><svg class="ico"><use href="#i-bell"></use></svg></span><b>Alerta temprana de atraso</b></div>
+              <div class="ikit"><span class="t"><svg class="ico"><use href="#i-book"></use></svg></span><b>Informe de supervisión</b></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ikag-layer st" style="--s:5"><span class="lb">Capa agéntica</span><span class="cap">opera sobre el núcleo, de forma continua</span><span class="ln"></span></div>
+
+        <div class="ikagents">
+          <div class="ikagent st" style="--s:7">
+            <div class="top"><span class="ai"><svg class="ico"><use href="#i-clipboard"></use></svg></span><span class="stt"><i></i>activo</span></div>
+            <h4>Revisor documental</h4>
+            <p>Contrasta los soportes contra el contrato y marca lo que falta.</p>
+          </div>
+          <div class="ikagent st" style="--s:8">
+            <div class="top"><span class="ai"><svg class="ico"><use href="#i-refresh"></use></svg></span><span class="stt"><i></i>activo</span></div>
+            <h4>Monitor de cronograma</h4>
+            <p>Compara el avance reportado contra la programación vigente.</p>
+          </div>
+          <div class="ikagent st" style="--s:9">
+            <div class="top"><span class="ai"><svg class="ico"><use href="#i-shield-check"></use></svg></span><span class="stt"><i></i>activo</span></div>
+            <h4>Analista de riesgo</h4>
+            <p>Detecta patrones de atraso antes de que venza el plazo.</p>
+          </div>
+          <div class="ikagent st" style="--s:10">
+            <div class="top"><span class="ai"><svg class="ico"><use href="#i-book"></use></svg></span><span class="stt"><i></i>activo</span></div>
+            <h4>Redactor de informes</h4>
+            <p>Redacta la supervisión con la evidencia del periodo.</p>
+          </div>
+        </div>
+
+        <div class="iklog st" style="--s:11"><span class="dot"></span><span class="mono">Redactor de informes generó el informe de supervisión de agosto</span><span class="ago">hace 2 min</span></div>
+      </div>
     </div>
   </section>
 
