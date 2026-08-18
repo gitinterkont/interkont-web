@@ -320,6 +320,95 @@ header.scrolled .nav-dropbtn{color:var(--ink-soft)}
 .iad-cta{display:flex; align-items:center; justify-content:space-between; gap:22px; flex-wrap:wrap; padding-top:30px; border-top:1px solid rgba(255,255,255,.12)}
 .iad-cta h3{font-size:22px; font-weight:800; letter-spacing:-.02em} .iad-cta p{color:rgba(255,255,255,.6); font-size:14px; margin-top:3px}
 
+/* ===== Motor de inteligencia: agentes ===== */
+.eng-band{position:relative; overflow:hidden; border-radius:var(--r-xl); margin:clamp(50px,6vw,84px) 0 clamp(46px,5.5vw,72px);
+  padding:clamp(46px,5.6vw,80px) clamp(28px,3.6vw,56px); box-shadow:var(--sh-lg); color:#fff;
+  background:#0b0910; background-image:var(--bgimg); background-size:cover; background-position:center; background-attachment:fixed}
+.eng-head{position:relative; z-index:2; display:flex; align-items:end; justify-content:space-between; gap:30px; flex-wrap:wrap; margin-bottom:clamp(34px,4vw,52px)}
+.eng-head .h2{max-width:none; color:#fff} .eng-head .h2 span{display:inline-block; white-space:nowrap}
+.eng-head .eyebrow{background:none; -webkit-text-fill-color:var(--g2); color:var(--g2)}
+.eng-head>p{color:rgba(255,255,255,.68); font-size:16px; max-width:40ch; line-height:1.62}
+
+/* Barra de orquestación */
+.orch{position:relative; z-index:2; display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  background:rgba(255,255,255,.07); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.14); border-radius:100px; padding:14px 22px; margin-bottom:16px}
+.orch .live{display:inline-flex; align-items:center; gap:9px; font-size:11.5px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--g2); flex:none}
+.orch .live i{width:8px;height:8px;border-radius:50%;background:var(--g2);display:block;animation:orchp 1.7s ease-in-out infinite}
+@keyframes orchp{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,170,74,.5)}50%{transform:scale(1.35);box-shadow:0 0 0 8px rgba(255,170,74,0)}}
+.orch-flow{display:flex; align-items:center; gap:11px; flex-wrap:wrap; flex:1 1 auto; min-width:0}
+.orch-flow em{font-style:normal; font-size:13px; font-weight:700; color:rgba(255,255,255,.82); white-space:nowrap}
+.orch-flow .ar{width:15px;height:15px;color:rgba(255,255,255,.32);flex:none}
+.orch .cnt{font-size:12.5px; font-weight:800; color:rgba(255,255,255,.55); flex:none; letter-spacing:-.01em}
+.orch .cnt b{color:#fff}
+
+.engs{position:relative; z-index:2; display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+.eng{position:relative; isolation:isolate; overflow:hidden; border-radius:var(--r-lg); padding:26px;
+  background:rgba(255,255,255,.06); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);
+  transition:transform .45s cubic-bezier(.2,.7,.3,1), box-shadow .45s, background .45s;
+  display:flex; flex-direction:column}
+.eng:hover{transform:translateY(-7px); background:rgba(255,255,255,.1);
+  box-shadow:inset 0 0 0 1.5px rgba(255,170,74,.44), 0 30px 60px -26px rgba(0,0,0,.6)}
+.eng-top{display:flex; align-items:center; gap:12px; margin-bottom:18px}
+.eng-ico{width:44px;height:44px;border-radius:13px;background:var(--grad);color:#fff;display:grid;place-items:center;flex:none;
+  transition:transform .45s cubic-bezier(.34,1.56,.64,1), border-radius .35s, box-shadow .35s}
+.eng-ico .ico{width:20px;height:20px}
+.eng:hover .eng-ico{transform:scale(1.08) rotate(-5deg); border-radius:50%; box-shadow:0 14px 30px -12px rgba(231,1,71,.7)}
+.eng-meta{min-width:0; flex:1 1 auto}
+.eng-n{font-size:10.5px; font-weight:800; letter-spacing:.13em; color:rgba(255,255,255,.55); display:block}
+.eng-st{display:inline-flex; align-items:center; gap:7px; font-size:11px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; color:var(--g2); margin-top:4px}
+.eng-st i{width:6px;height:6px;border-radius:50%;background:var(--g2);display:block; animation:orchp 2s ease-in-out infinite}
+.eng h4{font-size:18.5px; font-weight:800; letter-spacing:-.024em; line-height:1.2; color:#fff}
+.eng>p{font-size:14px; color:rgba(255,255,255,.66); line-height:1.6; margin-top:9px}
+
+/* Visual de actividad por agente */
+.eng-viz{margin-top:20px; height:38px; display:flex; align-items:flex-end; gap:4px}
+.eng-viz span{flex:1; border-radius:3px 3px 0 0; background:linear-gradient(0deg,rgba(231,1,71,.7),rgba(255,170,74,.85));
+  transform-origin:bottom; animation:vizb 2.6s ease-in-out infinite; opacity:.75}
+@keyframes vizb{0%,100%{transform:scaleY(.35)}50%{transform:scaleY(1)}}
+.eng:hover .eng-viz span{opacity:1}
+.eng-wave{margin-top:20px; height:38px; position:relative; overflow:hidden}
+.eng-wave svg{width:100%; height:100%; display:block}
+.eng-wave path{stroke:url(#engGrad); stroke-width:2.4; fill:none; stroke-linecap:round}
+.eng-scan{margin-top:20px; height:38px; position:relative; border-radius:9px; overflow:hidden;
+  background:rgba(255,255,255,.05); box-shadow:inset 0 0 0 1px rgba(255,255,255,.09)}
+.eng-scan i{position:absolute; top:0; bottom:0; left:0; width:34%; border-radius:9px; will-change:transform;
+  background:linear-gradient(90deg,transparent,rgba(255,170,74,.5),transparent); animation:scanx 3s ease-in-out infinite}
+@keyframes scanx{0%,100%{transform:translateX(-100%)}50%{transform:translateX(295%)}}
+.eng-scan b{position:absolute; border:1.5px solid rgba(255,170,74,.75); border-radius:5px; top:8px; height:22px}
+.eng-dots{margin-top:20px; height:38px; display:flex; align-items:center; gap:6px}
+.eng-dots i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.22); animation:dotp 1.8s ease-in-out infinite}
+.eng-dots i.hot{background:var(--grad)}
+@keyframes dotp{0%,100%{opacity:.3;transform:scale(.85)}50%{opacity:1;transform:scale(1)}}
+.eng-pipe{margin-top:20px; height:38px; display:flex; align-items:center; gap:7px}
+.eng-pipe u{flex:1; height:6px; border-radius:100px; background:rgba(255,255,255,.14); position:relative; overflow:hidden; text-decoration:none}
+.eng-pipe u::after{content:""; position:absolute; inset:0; width:42%; border-radius:100px; background:var(--grad); animation:pipex 2.4s ease-in-out infinite}
+@keyframes pipex{0%{transform:translateX(-100%)}100%{transform:translateX(240%)}}
+
+.eng-chips{display:flex; gap:7px; flex-wrap:wrap; margin-top:20px; padding-top:20px; border-top:1px solid rgba(255,255,255,.1)}
+.eng-chips span{font-size:11.5px; font-weight:700; padding:7px 13px; border-radius:100px;
+  background:rgba(255,255,255,.09); color:rgba(255,255,255,.76);
+  transition:transform .3s cubic-bezier(.2,.7,.3,1), background .3s, color .3s}
+.eng-chips span:hover{transform:translateY(-3px); background:var(--grad); color:#fff}
+
+.eng-foot{position:relative; z-index:2; display:flex; align-items:center; justify-content:space-between; gap:26px; flex-wrap:wrap;
+  margin-top:16px; border-radius:var(--r-lg); padding:26px 30px; isolation:isolate;
+  background:rgba(255,255,255,.06); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.eng-foot .lb{font-size:11.5px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.5); margin-bottom:12px}
+.eng-prov{display:flex; gap:10px; flex-wrap:wrap}
+.eng-prov span{font-size:14px; font-weight:800; letter-spacing:-.01em; color:#fff; padding:9px 16px; border-radius:100px;
+  background:rgba(255,255,255,.08); box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);
+  transition:transform .3s cubic-bezier(.2,.7,.3,1), box-shadow .3s, background .3s}
+.eng-prov span:hover{transform:translateY(-3px); background:rgba(255,255,255,.14); box-shadow:inset 0 0 0 1.5px rgba(255,170,74,.5)}
+.eng-priv{display:flex; gap:13px; align-items:flex-start; max-width:44ch}
+.eng-priv .ico{width:22px;height:22px;color:var(--g2);flex:none;margin-top:2px}
+.eng-priv p{font-size:14px; color:rgba(255,255,255,.66); line-height:1.55}
+.eng-priv b{color:#fff; font-weight:800}
+@supports (animation-timeline: view()){@media (prefers-reduced-motion:no-preference){
+  .eng,.eng-foot,.orch{animation:ap-in .9s ease forwards; animation-timeline:view(); animation-range:entry 0% entry 88%}
+}}
 
 /* Trayectoria y reconocimientos */
 .trj{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:clamp(30px,4vw,46px)}
@@ -1020,6 +1109,109 @@ body.vmodal-open header{padding-right:var(--sbw,0px)}
         <h3>Analítica con IA</h3><p>Anticipe riesgos y desviaciones con alertas predictivas e inteligencia artificial.</p>
       </div>
     </div>
+
+    <div class="eng-band">
+      <div class="eng-head rv">
+        <div>
+          <div class="eyebrow" style="margin-bottom:12px">Motor de inteligencia</div>
+          <h2 class="h2">{blocks[18]}</h2>
+        </div>
+        <p>{blocks[19]}</p>
+      </div>
+
+      <div class="orch">
+        <span class="live"><i></i>Orquestación activa</span>
+        <div class="orch-flow">
+          <em>Fuentes</em><svg class="ico ar"><use href="#i-arrow-right"></use></svg>
+          <em>Normalización</em><svg class="ico ar"><use href="#i-arrow-right"></use></svg>
+          <em>Agentes</em><svg class="ico ar"><use href="#i-arrow-right"></use></svg>
+          <em>Decisión</em>
+        </div>
+        <span class="cnt"><b>6</b> agentes · <b>4</b> proveedores</span>
+      </div>
+
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="engGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#E70147"></stop><stop offset="1" stop-color="#FFAA4A"></stop></linearGradient></defs></svg>
+
+      <div class="engs">
+        <div class="eng rv">
+          <div class="eng-top">
+            <span class="eng-ico"><svg class="ico"><use href="#i-sparkles"></use></svg></span>
+            <div class="eng-meta"><span class="eng-n">AGENTE 01</span><span class="eng-st"><i></i>Conversando</span></div>
+          </div>
+          <h4>Lenguaje natural</h4>
+          <p>Traduce una pregunta de negocio en una consulta, y la consulta en una respuesta accionable sobre los datos de la entidad.</p>
+          <div class="eng-wave"><svg viewBox="0 0 200 38" preserveAspectRatio="none"><path d="M0 26 Q14 8 28 20 T56 18 T84 12 T112 22 T140 10 T168 20 T200 14"></path></svg></div>
+          <div class="eng-chips"><span>GPT-4o</span><span>GPT-4.1</span><span>API empresarial</span></div>
+        </div>
+
+        <div class="eng rv">
+          <div class="eng-top">
+            <span class="eng-ico"><svg class="ico"><use href="#i-book"></use></svg></span>
+            <div class="eng-meta"><span class="eng-n">AGENTE 02</span><span class="eng-st"><i></i>Recuperando</span></div>
+          </div>
+          <h4>Recuperación aumentada</h4>
+          <p>Responde solo desde las fuentes conectadas —contratos, actas, soportes y bases propias—. Sin inventar, con la fuente a la vista.</p>
+          <div class="eng-dots"><i class="hot"></i><i class="hot" style="animation-delay:.2s"></i><i style="animation-delay:.4s"></i><i class="hot" style="animation-delay:.6s"></i><i style="animation-delay:.8s"></i><i style="animation-delay:1s"></i><i class="hot" style="animation-delay:1.2s"></i><i style="animation-delay:1.4s"></i></div>
+          <div class="eng-chips"><span>RAG</span><span>Repositorios</span><span>Búsqueda semántica</span></div>
+        </div>
+
+        <div class="eng rv">
+          <div class="eng-top">
+            <span class="eng-ico"><svg class="ico"><use href="#i-eye"></use></svg></span>
+            <div class="eng-meta"><span class="eng-n">AGENTE 03</span><span class="eng-st"><i></i>Analizando</span></div>
+          </div>
+          <h4>Visión por computador</h4>
+          <p>Eye Control reconoce objetos en el registro de obra: cascos, chalecos, presencia de personal y calidad de la evidencia.</p>
+          <div class="eng-scan"><i></i><b style="left:14%;width:20%"></b><b style="left:44%;width:16%"></b><b style="left:68%;width:22%"></b></div>
+          <div class="eng-chips"><span>Detección de objetos</span><span>Cámaras IP</span><span>Eye Control</span></div>
+        </div>
+
+        <div class="eng rv">
+          <div class="eng-top">
+            <span class="eng-ico"><svg class="ico"><use href="#i-trending-up"></use></svg></span>
+            <div class="eng-meta"><span class="eng-n">AGENTE 04</span><span class="eng-st"><i></i>Prediciendo</span></div>
+          </div>
+          <h4>Analítica predictiva</h4>
+          <p>Identifica qué proyectos tienen mayor probabilidad de desviarse, antes de que el retraso se materialice.</p>
+          <div class="eng-viz"><span style="animation-delay:0.00s"></span><span style="animation-delay:0.13s"></span><span style="animation-delay:0.26s"></span><span style="animation-delay:0.39s"></span><span style="animation-delay:0.52s"></span><span style="animation-delay:0.65s"></span><span style="animation-delay:0.78s"></span><span style="animation-delay:0.91s"></span><span style="animation-delay:1.04s"></span><span style="animation-delay:1.17s"></span><span style="animation-delay:1.30s"></span></div>
+          <div class="eng-chips"><span>Clustering</span><span>Series de tiempo</span><span>Alertas</span></div>
+        </div>
+
+        <div class="eng rv">
+          <div class="eng-top">
+            <span class="eng-ico"><svg class="ico"><use href="#i-cpu"></use></svg></span>
+            <div class="eng-meta"><span class="eng-n">AGENTE 05</span><span class="eng-st"><i></i>Ejecutando</span></div>
+          </div>
+          <h4>Agentes autónomos</h4>
+          <p>Siete agentes parametrizables que consultan, responden, generan reportes, ejecutan flujos y escalan a un humano cuando corresponde.</p>
+          <div class="eng-dots"><i class="hot"></i><i style="animation-delay:.15s"></i><i class="hot" style="animation-delay:.3s"></i><i class="hot" style="animation-delay:.45s"></i><i style="animation-delay:.6s"></i><i class="hot" style="animation-delay:.75s"></i><i style="animation-delay:.9s"></i></div>
+          <div class="eng-chips"><span>IK Agent Suite</span><span>Orquestación</span><span>Trazabilidad</span></div>
+        </div>
+
+        <div class="eng rv">
+          <div class="eng-top">
+            <span class="eng-ico"><svg class="ico"><use href="#i-refresh"></use></svg></span>
+            <div class="eng-meta"><span class="eng-n">AGENTE 06</span><span class="eng-st"><i></i>Normalizando</span></div>
+          </div>
+          <h4>Calidad de datos</h4>
+          <p>Antes de analizar, ordena: homologa, limpia y valida la información dispersa que llega de múltiples fuentes.</p>
+          <div class="eng-pipe"><u></u><u style="animation-delay:.4s"></u><u style="animation-delay:.8s"></u></div>
+          <div class="eng-chips"><span>ETL</span><span>NLP</span><span>Calidad de datos</span></div>
+        </div>
+      </div>
+
+      <div class="eng-foot rv">
+        <div>
+          <div class="lb">Proveedores de modelos</div>
+          <div class="eng-prov"><span>OpenAI</span><span>Microsoft</span><span>Google</span><span>AWS</span></div>
+        </div>
+        <div class="eng-priv">
+          <svg class="ico"><use href="#i-shield-check"></use></svg>
+          <p><b>Sus datos no entrenan modelos públicos.</b> Control de acceso por rol y proyecto, cifrado TLS 1.3 en tránsito y AES-256 en reposo.</p>
+        </div>
+      </div>
+    </div>
+
     <div class="awards rv">
       <div class="awards-head">
         <div>
