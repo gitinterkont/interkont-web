@@ -44,6 +44,7 @@ const POSTS_QUERY = `
         title
         date
         excerpt
+        content
         categories { nodes { name } }
       }
     }
@@ -76,8 +77,27 @@ const CATEGORY_META = {
 };
 const metaFor = (name) => CATEGORY_META[name] ?? { icon: "i-book", filter: (name || "otros").toLowerCase().replace(/[^a-z0-9]+/g, "-") };
 
+// Icono por articulo (mas expresivo que el de la categoria); si un slug
+// no esta aqui, se usa el icono de su categoria como respaldo.
+const ICON_BY_SLUG = {
+  "eye-control": "i-sparkles",
+  "trazabilidad": "i-shield-check",
+  "catalogo-iad": "i-dollar",
+  "ministerio-interior": "i-activity",
+  "onpremise-saas": "i-cloud",
+  "datawiz": "i-cpu",
+  "vivienda": "i-home",
+  "bpm": "i-workflow",
+  "participacion": "i-users",
+};
+
 const monthYear = (iso) =>
   iso ? new Date(iso).toLocaleDateString("es-CO", { year: "numeric", month: "long" }) : "";
+
+const readingTime = (html) => {
+  const words = (html ?? "").replace(/<[^>]*>/g, " ").trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200));
+};
 
 const featured = posts.find((p) => p.slug === "once-anos") ?? posts[0] ?? null;
 const gridPosts = posts.filter((p) => p !== featured);
@@ -802,10 +822,17 @@ body.tp .hero{filter:none}
     {featured && (
       <a href={`/articulo/${featured.slug}/`} class="bfeat rv">
         <div class="bfeat-txt">
-          <div class="tagrow"><span class="btag">Destacado</span><span class="bmeta">{monthYear(featured.date)}</span></div>
+          <div class="tagrow"><span class="btag">Destacado</span><span class="bmeta">{readingTime(featured.content)} min · {monthYear(featured.date)}</span></div>
           <h2>{featured.title}</h2>
           <div set:html={featured.excerpt ?? ""} />
           <span class="more">Leer el artículo <span class="circ"><svg class="ico"><use href="#i-arrow-right"></use></svg></span></span>
+        </div>
+        <div class="bfeat-vis">
+          <div class="bfeat-chip">
+            <div class="bn">50<span class="u">K+</span></div>
+            <div class="bl">Proyectos analizados</div>
+            <div class="bar"><span style="height:38%"></span><span style="height:56%"></span><span style="height:45%"></span><span style="height:72%"></span><span style="height:60%"></span><span class="hot" style="height:100%"></span><span style="height:78%"></span></div>
+          </div>
         </div>
       </a>
     )}
@@ -820,14 +847,15 @@ body.tp .hero{filter:none}
     <div class="bgrid" id="bgrid">
       {gridPosts.map((p) => {
         const cat = p.categories?.nodes?.[0]?.name ?? "";
-        const { icon, filter } = metaFor(cat);
+        const { icon: catIcon, filter } = metaFor(cat);
+        const icon = ICON_BY_SLUG[p.slug] ?? catIcon;
         return (
           <a href={`/articulo/${p.slug}/`} class="bcard rv" data-cat={filter}>
             <div class="bi"><svg class="ico"><use href={`#${icon}`}></use></svg></div>
             <span class="cat">{cat}</span>
             <h3>{p.title}</h3>
             <div set:html={p.excerpt ?? ""} />
-            <div class="foot"><span class="m">{monthYear(p.date)}</span><span class="circ"><svg class="ico"><use href="#i-arrow-right"></use></svg></span></div>
+            <div class="foot"><span class="m">{readingTime(p.content)} min · {monthYear(p.date)}</span><span class="circ"><svg class="ico"><use href="#i-arrow-right"></use></svg></span></div>
           </a>
         );
       })}
