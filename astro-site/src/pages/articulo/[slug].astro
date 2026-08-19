@@ -852,7 +852,25 @@ body.tp .hero{filter:none}
               return <Tag set:html={b.attributes?.content ?? ""} />;
             }
             if (b.__typename === "CoreParagraph") {
-              return <p class={i === 0 ? "lead" : undefined} set:html={b.attributes?.content ?? ""} />;
+              const raw = b.attributes?.content ?? "";
+              // Convencion de autor: un parrafo que empieza con "[KPI]" y trae
+              // hasta 3 grupos "cifra::etiqueta" separados por "|" se renderiza
+              // como la fila de 3 estadisticas (.kpirow), no como texto corrido.
+              const plain = raw.replace(/<[^>]*>/g, "").trim();
+              if (plain.startsWith("[KPI]")) {
+                const items = plain.slice(5).split("|").map((chunk) => {
+                  const [n, l] = chunk.split("::").map((s) => s?.trim() ?? "");
+                  return { n, l };
+                });
+                return (
+                  <div class="kpirow">
+                    {items.map((it) => (
+                      <div class="kpibox"><div class="n">{it.n}</div><div class="l">{it.l}</div></div>
+                    ))}
+                  </div>
+                );
+              }
+              return <p class={i === 0 ? "lead" : undefined} set:html={raw} />;
             }
             if (b.__typename === "CoreList") {
               return <ul class="wp-block-list" set:html={b.attributes?.values ?? ""} />;
