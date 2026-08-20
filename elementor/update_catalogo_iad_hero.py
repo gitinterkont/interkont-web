@@ -18,6 +18,7 @@ Uso:
   python3 update_catalogo_iad_hero.py
 """
 import os
+import re
 import sys
 import json
 import base64
@@ -33,25 +34,20 @@ if not all([WP_URL, WP_USER, WP_APP_PASS]):
 
 AUTH_TOKEN = base64.b64encode(f"{WP_USER}:{WP_APP_PASS}".encode()).decode()
 
-OLD_H1 = "Esta sección está en obra"
-OLD_P = (
-    "Estamos preparando el contenido del <b>Catálogo IAD</b> para que pueda cotizar nuestras "
-    "soluciones directamente desde la Tienda Virtual del Estado Colombiano. Muy pronto disponible."
-)
+# Se busca por el texto en si (con un regex tolerante a atributos/clases
+# distintos en el tag), no por el bloque completo con su comentario de
+# Gutenberg -- asi funciona aunque WordPress haya guardado el bloque con
+# una forma ligeramente distinta a la que uso el script que creo la pagina.
+OLD_H1_TEXT = "Esta sección está en obra"
+OLD_P_MARKER = "Estamos preparando el contenido"
 NEW_H1 = "Explore el catálogo y arme su cotización"
 NEW_P = (
     "Todos nuestros productos y servicios con su código, unidad de medida y precio. Simule la "
     "cotización de su entidad y descárguela en PDF, lista para la Tienda Virtual del Estado."
 )
 
-
-def heading_block(text, level=1):
-    attrs = "" if level == 2 else f' {{"level":{level}}}'
-    return f'<!-- wp:heading{attrs} -->\n<h{level} class="wp-block-heading">{text}</h{level}>\n<!-- /wp:heading -->'
-
-
-def paragraph_block(text):
-    return f'<!-- wp:paragraph -->\n<p>{text}</p>\n<!-- /wp:paragraph -->'
+H1_PATTERN = re.compile(r"(<h1\b[^>]*>)(.*?)(</h1>)", re.DOTALL)
+P_PATTERN = re.compile(r"(<p\b[^>]*>)(.*?)(</p>)", re.DOTALL)
 
 
 def request(path, method="GET", body=None):
@@ -73,19 +69,32 @@ def main():
     page = pages[0]
     content = page["content"]["raw"]
 
-    old_h1_block = heading_block(OLD_H1)
-    old_p_block = paragraph_block(OLD_P)
+    h1_replaced = [False]
+    def h1_sub(m):
+        if OLD_H1_TEXT in m.group(2):
+            h1_replaced[0] = True
+            return m.group(1) + NEW_H1 + m.group(3)
+        return m.group(0)
 
-    if old_h1_block not in content or old_p_block not in content:
-        sys.exit(
-            "ERROR: no se encontraron los bloques exactos de 'en obra' -- puede que ya se hayan "
-            "editado a mano en wp-admin. No se modifico nada."
-        )
+    p_replaced = [False]
+    def p_sub(m):
+        if OLD_P_MARKER in m.group(2):
+            p_replaced[0] = True
+            return m.group(1) + NEW_P + m.group(3)
+        return m.group(0)
 
-    content = content.replace(old_h1_block, heading_block(NEW_H1), 1)
-    content = content.replace(old_p_block, paragraph_block(NEW_P), 1)
+    new_content = H1_PATTERN.sub(h1_sub, content, count=1)
+    new_content = P_PATTERN.sub(p_sub, new_content, count=1)
 
-    result = request(f"/wp-json/wp/v2/pages/{page['id']}", method="POST", body={"content": content})
+    if not h1_replaced[0] or not p_replaced[0]:
+        print("ERROR: no se encontro el texto esperado -- no se modifico nada. Diagnostico:")
+        h1s = H1_PATTERN.findall(content)
+        ps = P_PATTERN.findall(content)
+        print(f"  H1 encontrado en la pagina ({len(h1s)}): {[h[1][:80] for h in h1s]}")
+        print(f"  Primeros parrafos ({len(ps)}): {[p[1][:80] for p in ps[:3]]}")
+        sys.exit(1)
+
+    result = request(f"/wp-json/wp/v2/pages/{page['id']}", method="POST", body={"content": new_content})
     print(f"OK  catalogo-iad (id={page['id']}) actualizado -> {result.get('link')}")
     print(f"  H1: {NEW_H1!r}")
     print(f"  P:  {NEW_P!r}")
