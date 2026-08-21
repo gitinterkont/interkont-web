@@ -1,4 +1,5 @@
 ---
+import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 
 const WP_GRAPHQL_ENDPOINT = import.meta.env.WP_GRAPHQL_ENDPOINT || "https://cms.interkont.co/graphql";
@@ -37,31 +38,7 @@ const pageDescription = seo?.metaDesc || "Toda la familia de productos Interkont
 const noindex = seo?.metaRobotsNoindex === "noindex";
 ---
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{pageTitle}</title>
-<meta name="description" content={pageDescription}>
-{noindex && <meta name="robots" content="noindex, nofollow">}
-<link rel="canonical" href="https://interkont.co/productos/">
-<meta name="theme-color" content="#EA215E">
-<meta property="og:type" content="website">
-<meta property="og:locale" content="es_CO">
-<meta property="og:site_name" content="Interkont">
-<meta property="og:title" content={pageTitle}>
-<meta property="og:description" content={pageDescription}>
-<meta property="og:image" content="https://interkont.co/assets/hero-poster.jpg">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="preload" href="/assets/fonts/mulish-latin-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/fonts/mulish-latin-800.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/assets/fonts/mulish.css">
-<script is:inline>window.__resources={"https://unpkg.com/react@18.3.1/umd/react.production.min.js":"/vendor/react.production.min.js","https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js":"/vendor/react-dom.production.min.js"};</script>
-<script src="/vendor/dc-runtime.js" is:inline></script>
-</head>
-<body>
+<Layout pageTitle={pageTitle} pageDescription={pageDescription} noindex={noindex} canonical="https://interkont.co/productos/">
 <x-dc>
 <helmet>
 <link rel="preload" as="image" href="/assets/hero-poster.jpg" fetchpriority="high">
@@ -1096,5 +1073,4 @@ class Component extends DCLogic {
   }
 }
 </script>
-</body>
-</html>
+</Layout>
