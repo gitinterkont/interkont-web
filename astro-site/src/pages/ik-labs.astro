@@ -100,6 +100,24 @@ header.scrolled .nav-dropbtn{color:var(--ink-soft)}
 .drop .di .ico{width:20px;height:20px}
 .drop .dt{font-size:15px;font-weight:800;letter-spacing:-.01em;line-height:1.2;display:block}
 .drop .dd{font-size:12.5px;color:var(--ink-soft);margin-top:3px;line-height:1.4;display:block}
+/* Grafo agéntico: núcleo, pulsos y agentes por nodo */
+.orbit .pulses line{stroke-dasharray:8 220; stroke-opacity:.85}
+@media (prefers-reduced-motion:no-preference){
+  .orbit .pulses line{animation:orb-flow 3.4s linear infinite; animation-delay:var(--d,0s)}
+}
+@keyframes orb-flow{from{stroke-dashoffset:228} to{stroke-dashoffset:0}}
+.core{flex-direction:column; gap:5px; padding:0 14px; text-align:center; line-height:1}
+.core .ck{font-size:8.5px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; opacity:.8; line-height:1.25; white-space:nowrap}
+.core .cn{font-size:23px; font-weight:800; letter-spacing:-.02em; line-height:1}
+.node{align-items:center}
+.node .nt{display:flex; flex-direction:column; gap:4px; align-items:flex-start}
+.node .nt b{font-weight:700; line-height:1.15}
+.node .na{display:inline-flex; align-items:center; gap:6px; font-size:10.5px; font-weight:800;
+  letter-spacing:.05em; text-transform:uppercase; color:var(--mag); white-space:nowrap}
+.node .na i{width:6px; height:6px; border-radius:50%; background:var(--mag); flex:none}
+@media (prefers-reduced-motion:no-preference){ .node .na i{animation:core-dot 2.4s ease-in-out infinite} }
+@keyframes core-dot{0%,100%{opacity:.4; transform:scale(.85)} 50%{opacity:1; transform:scale(1.2)}}
+
 @media (max-width:960px){
   .nav-drop{width:100%;flex-direction:column;align-items:stretch}
   .nav-dropbtn{color:var(--ink-soft);justify-content:space-between;width:100%}
@@ -344,7 +362,7 @@ header.scrolled nav a{color:var(--ink-soft)} header.scrolled nav a:hover{color:v
 .node{position:absolute; transform:translate(-50%,-50%); z-index:2; background:#fff; box-shadow:var(--sh); border-radius:100px; padding:11px 17px; display:flex; align-items:center; gap:10px; font-size:13.5px; font-weight:700; white-space:nowrap}
 .node .ni{width:30px;height:30px;border-radius:9px;background:var(--grad);color:#fff;display:grid;place-items:center;flex:none}
 .node .ni .ico{width:15px;height:15px}
-.core{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:3; width:138px; height:138px; border-radius:50%; background:linear-gradient(120deg,var(--g1),var(--g2)); color:#fff; display:grid; place-items:center; text-align:center; font-weight:900; font-size:19px; letter-spacing:-.02em; line-height:1.1; box-shadow:0 20px 44px -14px color-mix(in srgb, var(--g1) 66%, transparent)}
+.core{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:3; width:150px; height:150px; border-radius:50%; background:linear-gradient(120deg,var(--g1),var(--g2)); color:#fff; display:flex; align-items:center; justify-content:center; text-align:center; font-weight:900; font-size:19px; letter-spacing:-.02em; line-height:1.1; box-shadow:0 20px 44px -14px color-mix(in srgb, var(--g1) 66%, transparent)}
 .core::after{content:""; position:absolute; inset:-12px; border-radius:50%; border:1.5px dashed color-mix(in srgb, var(--g2) 50%, transparent); animation:spin 22s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .agents{display:grid; grid-template-columns:repeat(4,1fr); gap:14px}
@@ -400,7 +418,7 @@ header.scrolled nav a{color:var(--ink-soft)} header.scrolled nav a:hover{color:v
 .srcs span{font-size:12.5px; font-weight:700; padding:8px 14px; border-radius:100px; background:#fff; color:var(--ink-soft); box-shadow:inset 0 0 0 1px var(--line)}
 @media (max-width:960px){ .stat-band{grid-template-columns:1fr;gap:26px} .sb{padding:0} .sb+.sb{border-left:none;border-top:1px solid rgba(255,255,255,.14);padding-top:24px}
   .funcs,.agents,.steps,.inv,.ux,.tool{grid-template-columns:1fr}
-  .orbit{height:auto;display:flex;flex-wrap:wrap;gap:10px;justify-content:center} .orbit svg.lines{display:none} .node,.core{position:static;transform:none} .core{width:auto;height:auto;border-radius:100px;padding:14px 24px} }
+  .orbit{height:auto;display:flex;flex-wrap:wrap;gap:10px;justify-content:center} .orbit svg.lines{display:none} .node,.core{position:static;transform:none} .core::after{display:none!important} .core .cn{font-size:20px} .core{width:auto;height:auto;border-radius:100px;padding:14px 24px} }
 @media (min-width:961px) and (max-width:1200px){ .agents{grid-template-columns:repeat(2,1fr)} .funcs{grid-template-columns:repeat(2,1fr)} }
 
 @media (max-width:960px){
@@ -757,10 +775,10 @@ footer{padding:clamp(88px,11vw,150px) clamp(28px,4vw,56px) 52px!important}
 /* ===== Luz del cursor sobre las tarjetas ===== */
 @media (hover:hover) and (pointer:fine){
   .card,.prod,.func,.fcard,.agent,.bcard,.step,.invc,.svcx,.iad-item,.mv-card,.model,.plan,
-  .kpibox,.sc,.aw,.tr,.tst,.cs,.mt-card,.acard,.pcard-wrap,.chat{position:relative; isolation:isolate}
+  .kpibox,.sc,.awd,.trc,.eng-foot,.cx,.eng,.acard,.pcard-wrap,.chat{position:relative; isolation:isolate}
   .card::before,.prod::before,.func::before,.fcard::before,.agent::before,.bcard::before,.step::before,
   .invc::before,.svcx::before,.iad-item::before,.mv-card::before,.model::before,.plan::before,
-  .kpibox::before,.sc::before,.aw::before,.tr::before,.tst::before,.cs::before,.mt-card::before,
+  .kpibox::before,.sc::before,.awd::before,.trc::before,.eng-foot::before,.cx::before,.eng::before,
   .acard::before,.chat::before{
     content:""; position:absolute; inset:0; border-radius:inherit; z-index:0; pointer-events:none;
     opacity:0; transition:opacity .45s cubic-bezier(.2,.7,.3,1);
@@ -769,17 +787,17 @@ footer{padding:clamp(88px,11vw,150px) clamp(28px,4vw,56px) 52px!important}
   .card:hover::before,.prod:hover::before,.func:hover::before,.fcard:hover::before,.agent:hover::before,
   .bcard:hover::before,.step:hover::before,.invc:hover::before,.svcx:hover::before,.iad-item:hover::before,
   .mv-card:hover::before,.model:hover::before,.plan:hover::before,.kpibox:hover::before,.sc:hover::before,
-  .aw:hover::before,.tr:hover::before,.tst:hover::before,.cs:hover::before,.mt-card:hover::before,
+  .awd:hover::before,.trc:hover::before,.eng-foot:hover::before,.cx:hover::before,.eng:hover::before,
   .acard:hover::before,.chat:hover::before{opacity:1}
   /* Sobre fondos oscuros la luz es más cálida y visible */
   .card.dk::before,.prod.dk::before,.invc.dk::before,.agent.count::before,.model.dk::before,
   .plan.hot::before,.fcard.tier.hot::before,.mv-card::before,.iad-item::before,.sc::before,
-  .aw::before,.mt-card::before{
+  .awd::before,.eng::before{
     background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),
       rgba(255,170,74,.2) 0%, rgba(231,1,71,.12) 36%, transparent 68%)}
   /* El contenido se mantiene por encima de la luz */
   .card>*,.prod>*,.func>*,.fcard>*,.agent>*,.bcard>*,.step>*,.invc>*,.svcx>*,.iad-item>*,
-  .mv-card>*,.model>*,.plan>*,.kpibox>*,.sc>*,.aw>*,.tr>*,.tst>*,.cs>*,.mt-card>*,
+  .mv-card>*,.model>*,.plan>*,.kpibox>*,.sc>*,.awd>*,.trc>*,.eng-foot>*,.cx>*,.eng>*,
   .acard>*,.chat>*{position:relative; z-index:1}
 }
 
@@ -795,7 +813,7 @@ header nav .btn-dark .ico{color:currentColor}
 
 .hero-vid{opacity:0; transition:opacity .6s ease}
 .hero-vid.ready{opacity:1}
-.hero{background-image:url("/assets/hero-poster.jpg"); background-size:cover; background-position:center}
+.hero{background-color:#0c0a10; background-image:url("/assets/hero-poster.jpg"); background-size:cover; background-position:center}
 body.tp .hero{filter:none}
 </style>
 </helmet>
@@ -809,7 +827,7 @@ body.tp .hero{filter:none}
   <div class="hero-grid"></div>
   <div class="hero-inner">
     <div class="hero-content">
-      <span class="eyebrow">Unidad AI-first de Interkont</span>
+      <span class="eyebrow">Unidad IA-first de Interkont</span>
       <h1 set:html={blocks[0]} />
       <p class="sub" set:html={blocks[1]} />
       <div class="hero-cta">
@@ -829,9 +847,9 @@ body.tp .hero{filter:none}
 <div class="wrap">
   <section class="sec" style="padding-bottom:0">
     <div class="stat-band rv">
-      <div class="sb"><div class="n">02</div><div class="l">Líneas de servicio</div></div>
-      <div class="sb"><div class="n">07</div><div class="l">Agentes parametrizables</div></div>
-      <div class="sb"><div class="n">12<span class="u">+</span></div><div class="l">Servicios de la Software Factory</div></div>
+      <div class="sb"><div class="n" data-count="200" data-suffix="K">200K</div><div class="l">Proyectos monitoreados</div></div>
+      <div class="sb"><div class="n" data-count="100" data-suffix="K">100K</div><div class="l">Contratos supervisados</div></div>
+      <div class="sb"><div class="n"><span class="u">$</span><span data-count="20" data-suffix="B">20B</span></div><div class="l">USD controlados</div></div>
     </div>
   </section>
 
@@ -839,25 +857,32 @@ body.tp .hero{filter:none}
     <div class="split" style="margin-bottom:clamp(40px,5vw,64px)">
       <div class="rv">
         <div class="line-tag" style="margin-bottom:16px">01 · Quiénes somos</div>
-        <h2 class="h2">{blocks[2]}</h2>
+        <h2 class="h2" set:html={blocks[2]} />
       </div>
       <div class="rv"><p class="big">{blocks[3]}</p></div>
     </div>
     <div class="tool">
       <div class="orbit rv">
         <svg class="lines" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <g class="pulses" stroke="var(--mag)" stroke-width="1.6" stroke-linecap="round" vector-effect="non-scaling-stroke" fill="none">
+            <line x1="16" y1="16" x2="50" y2="50" style="--d:0s"></line>
+            <line x1="84" y1="16" x2="50" y2="50" style="--d:.7s"></line>
+            <line x1="10" y1="60" x2="50" y2="50" style="--d:1.4s"></line>
+            <line x1="90" y1="60" x2="50" y2="50" style="--d:2.1s"></line>
+            <line x1="50" y1="94" x2="50" y2="50" style="--d:2.8s"></line>
+          </g>
           <line x1="50" y1="50" x2="16" y2="16" stroke="var(--mag)" stroke-width="1" stroke-opacity=".4" vector-effect="non-scaling-stroke"></line>
           <line x1="50" y1="50" x2="84" y2="16" stroke="var(--mag)" stroke-width="1" stroke-opacity=".4" vector-effect="non-scaling-stroke"></line>
           <line x1="50" y1="50" x2="10" y2="60" stroke="var(--mag)" stroke-width="1" stroke-opacity=".4" vector-effect="non-scaling-stroke"></line>
           <line x1="50" y1="50" x2="90" y2="60" stroke="var(--mag)" stroke-width="1" stroke-opacity=".4" vector-effect="non-scaling-stroke"></line>
           <line x1="50" y1="50" x2="50" y2="94" stroke="var(--mag)" stroke-width="1" stroke-opacity=".4" vector-effect="non-scaling-stroke"></line>
         </svg>
-        <div class="core">IK Labs</div>
-        <div class="node" style="left:16%;top:16%"><span class="ni"><svg class="ico"><use href="#i-zap"></use></svg></span>Desarrollo acelerado</div>
-        <div class="node" style="left:84%;top:16%"><span class="ni"><svg class="ico"><use href="#i-cpu"></use></svg></span>Automatización</div>
-        <div class="node" style="left:10%;top:60%"><span class="ni"><svg class="ico"><use href="#i-sparkles"></use></svg></span>Inteligencia artificial</div>
-        <div class="node" style="left:90%;top:60%"><span class="ni"><svg class="ico"><use href="#i-server"></use></svg></span>Arquitectura de datos</div>
-        <div class="node" style="left:50%;top:94%"><span class="ni"><svg class="ico"><use href="#i-users"></use></svg></span>Conocimiento de negocio</div>
+        <div class="core"><span class="ck">Núcleo agéntico</span><span class="cn">IK Labs</span></div>
+        <div class="node" style="left:16%;top:16%"><span class="ni"><svg class="ico"><use href="#i-zap"></use></svg></span><span class="nt"><b>Desarrollo acelerado</b><span class="na"><i></i>Copiloto de ingeniería</span></span></div>
+        <div class="node" style="left:84%;top:16%"><span class="ni"><svg class="ico"><use href="#i-cpu"></use></svg></span><span class="nt"><b>Automatización</b><span class="na"><i></i>Orquestador de procesos</span></span></div>
+        <div class="node" style="left:10%;top:60%"><span class="ni"><svg class="ico"><use href="#i-sparkles"></use></svg></span><span class="nt"><b>Inteligencia artificial</b><span class="na"><i></i>Agentes especializados</span></span></div>
+        <div class="node" style="left:90%;top:60%"><span class="ni"><svg class="ico"><use href="#i-server"></use></svg></span><span class="nt"><b>Arquitectura de datos</b><span class="na"><i></i>Curador de datos</span></span></div>
+        <div class="node" style="left:50%;top:94%"><span class="ni"><svg class="ico"><use href="#i-users"></use></svg></span><span class="nt"><b>Conocimiento de negocio</b><span class="na"><i></i>Analista de dominio</span></span></div>
       </div>
       <div class="rv">
         <p class="big" style="font-size:19px">{blocks[4]}</p>
@@ -1012,7 +1037,7 @@ class Component extends DCLogic {
 
     (() => {
       if (!matchMedia('(hover:hover) and (pointer:fine)').matches) return;
-      const SEL = '.card,.prod,.func,.fcard,.agent,.bcard,.step,.invc,.svcx,.iad-item,.mv-card,.model,.plan,.kpibox,.sc,.aw,.tr,.tst,.cs,.mt-card,.acard,.chat';
+      const SEL = '.card,.prod,.func,.fcard,.agent,.bcard,.step,.invc,.svcx,.iad-item,.mv-card,.model,.plan,.kpibox,.sc,.awd,.trc,.eng-foot,.cx,.eng,.acard,.chat';
       let last = null;
       addEventListener('mousemove', (e) => {
         const el = e.target instanceof Element ? e.target.closest(SEL) : null;
@@ -1031,10 +1056,17 @@ class Component extends DCLogic {
       const show = () => v.classList.add('ready');
       const p = () => { const r = v.play(); if (r && r.catch) r.catch(() => {}); };
       v.addEventListener('loadeddata', () => { show(); p(); }, { once: true });
+      v.addEventListener('loadedmetadata', p, { once: true });
       v.addEventListener('canplay', p, { once: true });
       v.addEventListener('playing', show, { once: true });
       document.addEventListener('click', p, { once: true });
       if (v.readyState >= 2) { show(); p(); } else { p(); }
+      let onScreen = true;
+      const sync = () => { if (onScreen && !document.hidden) p(); else v.pause(); };
+      if (window.IntersectionObserver) {
+        new IntersectionObserver(es => { onScreen = es[0].isIntersecting; sync(); }, { threshold: 0.01 }).observe(v);
+      }
+      document.addEventListener('visibilitychange', sync);
     });
     this.applyTheme();
     const thm = document.getElementById('thm');

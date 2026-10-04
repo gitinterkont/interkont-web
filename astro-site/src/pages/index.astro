@@ -144,7 +144,7 @@ header.scrolled .nav-dropbtn{color:var(--ink-soft)}
 @media (max-height:860px){ .dash-head .h2{font-size:clamp(26px,3.4vw,38px)} .dash-head p{display:none} }
 .dash-head .h2{margin-top:12px}
 .dash-head p{color:var(--ink-soft); font-size:16px; margin-top:12px}
-.stage{position:relative; flex:none; width:min(1240px,94vw); height:min(660px, calc(100vh - 300px)); min-height:470px}
+.stage{position:relative; flex:none; width:min(1480px,96vw); height:min(780px, calc(100vh - 250px)); min-height:520px}
 .pz{position:absolute; will-change:transform,opacity; opacity:0}
 .panel{background:#fff; border-radius:20px; box-shadow:var(--sh-lg)}
 .pz-main{left:15.32%; top:3.64%; width:58.87%; padding:0; overflow:hidden}
@@ -386,6 +386,15 @@ header.scrolled .nav-dropbtn{color:var(--ink-soft)}
 @supports (animation-timeline: view()){@media (prefers-reduced-motion:no-preference){
   .eng,.eng-foot,.orch{animation:ap-in .9s ease forwards; animation-timeline:view(); animation-range:entry 0% entry 88%}
 }}
+@media (max-width:1100px){ .engs{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:760px){
+  .engs{grid-template-columns:1fr} .eng-foot{padding:24px}
+  .orch{border-radius:var(--r-lg); padding:18px 22px}
+  .orch-flow em{font-size:12px}
+}
+@media (prefers-reduced-motion:reduce){
+  .eng-viz span,.eng-scan i,.eng-dots i,.eng-pipe u::after,.orch .live i,.eng-st i{animation:none!important}
+}
 
 /* Trayectoria y reconocimientos */
 .trj{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:clamp(30px,4vw,46px)}
@@ -418,13 +427,12 @@ body.tp .awards{background-image:var(--bgimg)}
   background:rgba(255,255,255,.06); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.12); transition:box-shadow .4s, background .4s}
 .awd:hover{background:rgba(255,255,255,.11); box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--g2) 60%, transparent)}
-.awd .ai{width:44px; height:44px; border-radius:12px; display:grid; place-items:center; background:var(--grad); color:#fff; flex:none}
-.awd .ai .ico{width:21px;height:21px}
+.awd .ai{width:auto; height:88px; display:flex; align-items:center; justify-content:flex-start; flex:none}
+.awd .ai img{height:88px; width:auto; max-width:100%; object-fit:contain; display:block}
 .awd .nm{font-size:17px; font-weight:800; letter-spacing:-.02em; line-height:1.18; color:#fff}
 .awd .org{font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--g2); margin-top:7px}
 .awd .dsc{font-size:13.5px; color:rgba(255,255,255,.6); line-height:1.5; margin-top:10px}
-.awd .wr{position:absolute; right:14px; bottom:12px; width:76px; opacity:.09; pointer-events:none; z-index:0}
-.awd>*:not(.wr){position:relative; z-index:1}
+.awd>*{position:relative; z-index:1}
 .awards-foot{display:flex; align-items:center; gap:18px; flex-wrap:wrap; margin-top:clamp(26px,3vw,38px); padding-top:26px; border-top:1px solid rgba(255,255,255,.16)}
 .awards-foot img{height:38px; width:auto; opacity:.9}
 .awards-foot span{font-size:14px; color:rgba(255,255,255,.6); line-height:1.5; max-width:52ch}
@@ -435,7 +443,7 @@ body.tp .awards{background-image:var(--bgimg)}
 .cxs{position:relative; border-radius:var(--r-xl); overflow:hidden; box-shadow:var(--sh-lg); color:#fff; margin-top:clamp(30px,4vw,46px);
   background:#0b0910 url("/assets/fondo-2-611aff76.png") center/cover no-repeat fixed}
 body.tp .cxs{background-image:var(--bgimg)}
-.cxs-view{position:relative; min-height:clamp(430px,46vw,520px)}
+.cxs-view{position:relative}
 .cx{position:absolute; inset:0; display:grid; grid-template-columns:minmax(260px,.82fr) 1.18fr; align-items:center; gap:clamp(24px,4vw,58px);
   padding:clamp(30px,4vw,58px); opacity:0; visibility:hidden; transition:opacity .7s cubic-bezier(.2,.7,.3,1), visibility .7s; pointer-events:none}
 .cx.on{opacity:1; visibility:visible; pointer-events:auto; position:relative}
@@ -471,7 +479,7 @@ body.tp .cxs{background-image:var(--bgimg)}
 @media (max-width:860px){
   .cx{grid-template-columns:1fr; align-content:start; gap:22px}
   .cx-logo{min-height:120px; padding:24px} .cx-logo img{max-height:64px; max-width:190px}
-  .cxs-view{min-height:0}
+  .cxs-view{min-height:0!important}
   .cxs-bar{padding:16px 24px 26px} .cxs-tabs button{font-size:11.5px; padding:8px 13px}
 }
 
@@ -827,7 +835,7 @@ body{overflow-x:clip}
 .ux{min-height:clamp(430px,46vw,620px)}
 .ux-txt{padding:clamp(52px,6.5vw,88px) clamp(34px,4.5vw,58px)!important}
 .ux-vis{padding:clamp(40px,5vw,64px)!important}
-.cx{min-height:clamp(500px,52vw,660px)}
+.cxs-view{min-height:clamp(470px,48vw,600px)}
 .cx-in{padding:clamp(48px,6vw,86px) clamp(30px,4vw,60px)!important}
 .news{padding:clamp(52px,6.5vw,92px) clamp(30px,4vw,58px)!important}
 .bfeat-txt{padding:clamp(48px,5.5vw,80px) clamp(32px,4vw,58px)!important}
@@ -956,10 +964,10 @@ footer{padding:clamp(88px,11vw,150px) clamp(28px,4vw,56px) 52px!important}
 /* ===== Luz del cursor sobre las tarjetas ===== */
 @media (hover:hover) and (pointer:fine){
   .card,.prod,.func,.fcard,.agent,.bcard,.step,.invc,.svcx,.iad-item,.mv-card,.model,.plan,
-  .kpibox,.sc,.aw,.tr,.tst,.cs,.mt-card,.acard,.pcard-wrap,.chat{position:relative; isolation:isolate}
+  .kpibox,.sc,.awd,.trc,.cx.on,.acard,.pcard-wrap,.chat{position:relative; isolation:isolate}
   .card::before,.prod::before,.func::before,.fcard::before,.agent::before,.bcard::before,.step::before,
   .invc::before,.svcx::before,.iad-item::before,.mv-card::before,.model::before,.plan::before,
-  .kpibox::before,.sc::before,.aw::before,.tr::before,.tst::before,.cs::before,.mt-card::before,
+  .kpibox::before,.sc::before,.awd::before,.trc::before,.cx::before,
   .acard::before,.chat::before{
     content:""; position:absolute; inset:0; border-radius:inherit; z-index:0; pointer-events:none;
     opacity:0; transition:opacity .45s cubic-bezier(.2,.7,.3,1);
@@ -968,17 +976,17 @@ footer{padding:clamp(88px,11vw,150px) clamp(28px,4vw,56px) 52px!important}
   .card:hover::before,.prod:hover::before,.func:hover::before,.fcard:hover::before,.agent:hover::before,
   .bcard:hover::before,.step:hover::before,.invc:hover::before,.svcx:hover::before,.iad-item:hover::before,
   .mv-card:hover::before,.model:hover::before,.plan:hover::before,.kpibox:hover::before,.sc:hover::before,
-  .aw:hover::before,.tr:hover::before,.tst:hover::before,.cs:hover::before,.mt-card:hover::before,
+  .awd:hover::before,.trc:hover::before,.cx:hover::before,.eng:hover::before,.eng-foot:hover::before,.orch:hover::before,
   .acard:hover::before,.chat:hover::before{opacity:1}
   /* Sobre fondos oscuros la luz es más cálida y visible */
   .card.dk::before,.prod.dk::before,.invc.dk::before,.agent.count::before,.model.dk::before,
   .plan.hot::before,.fcard.tier.hot::before,.mv-card::before,.iad-item::before,.sc::before,
-  .aw::before,.mt-card::before{
+  .awd::before,.eng::before,.eng-foot::before,.orch::before{
     background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),
       rgba(255,170,74,.2) 0%, rgba(231,1,71,.12) 36%, transparent 68%)}
   /* El contenido se mantiene por encima de la luz */
   .card>*,.prod>*,.func>*,.fcard>*,.agent>*,.bcard>*,.step>*,.invc>*,.svcx>*,.iad-item>*,
-  .mv-card>*,.model>*,.plan>*,.kpibox>*,.sc>*,.aw>*,.tr>*,.tst>*,.cs>*,.mt-card>*,
+  .mv-card>*,.model>*,.plan>*,.kpibox>*,.sc>*,.awd>*,.trc>*,.cx>*,
   .acard>*,.chat>*{position:relative; z-index:1}
 }
 
@@ -1005,7 +1013,7 @@ header nav .btn-dark .ico{color:currentColor}
 
 .hero-vid{opacity:0; transition:opacity .6s ease}
 .hero-vid.ready{opacity:1}
-.hero{background-image:url("/assets/hero-poster.jpg"); background-size:cover; background-position:center}
+.hero{background-color:#0c0a10; background-image:url("/assets/hero-poster.jpg"); background-size:cover; background-position:center}
 body.tp .hero{filter:none}
 
 /* Modal de video */
@@ -1199,28 +1207,24 @@ body.vmodal-open header{padding-right:var(--sbw,0px)}
       </div>
       <div class="awd-grid">
         <div class="awd">
-          <span class="ai"><svg class="ico"><use href="#i-medal"></use></svg></span>
+          <span class="ai"><img src="/assets/banco-de-exito.png" alt="Banco de Éxitos" loading="lazy" decoding="async"></span>
           <div><div class="nm">Banco de Éxitos</div><div class="org">Administración pública</div><p class="dsc">Distinción a las experiencias de gestión pública con resultados demostrables.</p></div>
-          <img class="wr" src="/assets/premios/image2.png" alt="">
         </div>
         <div class="awd">
-          <span class="ai"><svg class="ico"><use href="#i-lightbulb"></use></svg></span>
+          <span class="ai"><img src="/assets/red-innova.png" alt="Red Innova" loading="lazy" decoding="async"></span>
           <div><div class="nm">Red Innova</div><div class="org">Innovación</div><p class="dsc">Reconocimiento a la innovación tecnológica con impacto en la región.</p></div>
-          <img class="wr" src="/assets/premios/image2.png" alt="">
         </div>
         <div class="awd">
-          <span class="ai"><svg class="ico"><use href="#i-zap"></use></svg></span>
+          <span class="ai"><img src="/assets/destapa-futuro.png" alt="Destapa Futuro" loading="lazy" decoding="async"></span>
           <div><div class="nm">Destapa Futuro</div><div class="org">Emprendimiento</div><p class="dsc">Programa que impulsa a las empresas colombianas de alto potencial.</p></div>
-          <img class="wr" src="/assets/premios/image2.png" alt="">
         </div>
         <div class="awd">
-          <span class="ai"><svg class="ico"><use href="#i-scale"></use></svg></span>
-          <div><div class="nm">Corrupción Cero</div><div class="org">Transparencia</div><p class="dsc">Iniciativa que premia las herramientas que fortalecen el control de lo público.</p></div>
-          <img class="wr" src="/assets/premios/image2.png" alt="">
+          <span class="ai"><img src="/assets/caf.png" alt="CAF" loading="lazy" decoding="async"></span>
+          <div><div class="nm">CAF</div><div class="org">Banca de desarrollo</div><p class="dsc">Respaldo del banco de desarrollo de América Latina y el Caribe.</p></div>
         </div>
       </div>
       <div class="awards-foot">
-        <img src="/assets/premios/image3.png" alt="Corrupción Cero">
+        <img src="/assets/premios/image3.png" alt="Corrupción Cero" loading="lazy" decoding="async">
         <span>Quince años de experiencia en desarrollo tecnológico, especializados en el seguimiento masivo y transparente de proyectos de alto impacto.</span>
       </div>
     </div>
@@ -1229,7 +1233,7 @@ body.vmodal-open header{padding-right:var(--sbw,0px)}
 </div>
 
 <div class="partners">
-      <div class="mband"><span class="l">Confían en nosotros para vigilar lo público</span><div class="marquee" aria-label="Clientes"><div class="mtrack"><div class="mset"><img src="/assets/marcas/m19-w.png" alt="Banco Interamericano de Desarrollo"><img src="/assets/marcas/m24-w.png" alt="Naciones Unidas"><img src="/assets/marcas/m21-w.png" alt="UNGRD"><img src="/assets/marcas/m30-w.png" alt="INVIAS"><img src="/assets/marcas/m7-w.png" alt="Findeter"><img src="/assets/marcas/m14-w.png" alt="Colombia Humanitaria"><img src="/assets/marcas/m1-w.png" alt="Contraloría General de Santiago de Cali"><img src="/assets/marcas/m18-w.png" alt="Fiduciaria Bogotá"><img src="/assets/marcas/m15-w.png" alt="Fiduprevisora"><img src="/assets/marcas/m17-w.png" alt="Pontificia Universidad Javeriana"><img src="/assets/marcas/m3-w.png" alt="Federación Colombiana de Municipios"><img src="/assets/marcas/m13-w.png" alt="Cundinamarca"><img src="/assets/marcas/m20-w.png" alt="Alcaldía de Manizales"><img src="/assets/marcas/m23-w.png" alt="Caja de la Vivienda Popular de Bogotá"><img src="/assets/marcas/m11-w.png" alt="Manuelita"><img src="/assets/marcas/m29-w.png" alt="Fundación Nacional Batuta"><img src="/assets/marcas/m4-w.png" alt="Empresas Públicas de Cundinamarca"><img src="/assets/marcas/m31-w.png" alt="Aldesarrollo"><img src="/assets/marcas/m27-w.png" alt="Red Summa"><img src="/assets/marcas/m25-w.png" alt="Esguerra Asesores Jurídicos"></div><div class="mset" aria-hidden="true"><img src="/assets/marcas/m19-w.png" alt="Banco Interamericano de Desarrollo"><img src="/assets/marcas/m24-w.png" alt="Naciones Unidas"><img src="/assets/marcas/m21-w.png" alt="UNGRD"><img src="/assets/marcas/m30-w.png" alt="INVIAS"><img src="/assets/marcas/m7-w.png" alt="Findeter"><img src="/assets/marcas/m14-w.png" alt="Colombia Humanitaria"><img src="/assets/marcas/m1-w.png" alt="Contraloría General de Santiago de Cali"><img src="/assets/marcas/m18-w.png" alt="Fiduciaria Bogotá"><img src="/assets/marcas/m15-w.png" alt="Fiduprevisora"><img src="/assets/marcas/m17-w.png" alt="Pontificia Universidad Javeriana"><img src="/assets/marcas/m3-w.png" alt="Federación Colombiana de Municipios"><img src="/assets/marcas/m13-w.png" alt="Cundinamarca"><img src="/assets/marcas/m20-w.png" alt="Alcaldía de Manizales"><img src="/assets/marcas/m23-w.png" alt="Caja de la Vivienda Popular de Bogotá"><img src="/assets/marcas/m11-w.png" alt="Manuelita"><img src="/assets/marcas/m29-w.png" alt="Fundación Nacional Batuta"><img src="/assets/marcas/m4-w.png" alt="Empresas Públicas de Cundinamarca"><img src="/assets/marcas/m31-w.png" alt="Aldesarrollo"><img src="/assets/marcas/m27-w.png" alt="Red Summa"><img src="/assets/marcas/m25-w.png" alt="Esguerra Asesores Jurídicos"></div></div></div></div></div>
+      <div class="mband"><span class="l">Confían en nosotros para vigilar lo público</span><div class="marquee" aria-label="Clientes"><div class="mtrack"><div class="mset"><img src="/assets/marcas/m19-w.png" alt="Banco Interamericano de Desarrollo" loading="lazy" decoding="async"><img src="/assets/marcas/m24-w.png" alt="Naciones Unidas" loading="lazy" decoding="async"><img src="/assets/marcas/m21-w.png" alt="UNGRD" loading="lazy" decoding="async"><img src="/assets/marcas/m30-w.png" alt="INVIAS" loading="lazy" decoding="async"><img src="/assets/marcas/m7-w.png" alt="Findeter" loading="lazy" decoding="async"><img src="/assets/marcas/m14-w.png" alt="Colombia Humanitaria" loading="lazy" decoding="async"><img src="/assets/marcas/m1-w.png" alt="Contraloría General de Santiago de Cali" loading="lazy" decoding="async"><img src="/assets/marcas/m18-w.png" alt="Fiduciaria Bogotá" loading="lazy" decoding="async"><img src="/assets/marcas/m15-w.png" alt="Fiduprevisora" loading="lazy" decoding="async"><img src="/assets/marcas/m17-w.png" alt="Pontificia Universidad Javeriana" loading="lazy" decoding="async"><img src="/assets/marcas/m3-w.png" alt="Federación Colombiana de Municipios" loading="lazy" decoding="async"><img src="/assets/marcas/m13-w.png" alt="Cundinamarca" loading="lazy" decoding="async"><img src="/assets/marcas/m20-w.png" alt="Alcaldía de Manizales" loading="lazy" decoding="async"><img src="/assets/marcas/m23-w.png" alt="Caja de la Vivienda Popular de Bogotá" loading="lazy" decoding="async"><img src="/assets/marcas/m11-w.png" alt="Manuelita" loading="lazy" decoding="async"><img src="/assets/marcas/m29-w.png" alt="Fundación Nacional Batuta" loading="lazy" decoding="async"><img src="/assets/marcas/m4-w.png" alt="Empresas Públicas de Cundinamarca" loading="lazy" decoding="async"><img src="/assets/marcas/m31-w.png" alt="Aldesarrollo" loading="lazy" decoding="async"><img src="/assets/marcas/m27-w.png" alt="Red Summa" loading="lazy" decoding="async"><img src="/assets/marcas/m25-w.png" alt="Esguerra Asesores Jurídicos" loading="lazy" decoding="async"></div><div class="mset" aria-hidden="true"><img src="/assets/marcas/m19-w.png" alt="Banco Interamericano de Desarrollo" loading="lazy" decoding="async"><img src="/assets/marcas/m24-w.png" alt="Naciones Unidas" loading="lazy" decoding="async"><img src="/assets/marcas/m21-w.png" alt="UNGRD" loading="lazy" decoding="async"><img src="/assets/marcas/m30-w.png" alt="INVIAS" loading="lazy" decoding="async"><img src="/assets/marcas/m7-w.png" alt="Findeter" loading="lazy" decoding="async"><img src="/assets/marcas/m14-w.png" alt="Colombia Humanitaria" loading="lazy" decoding="async"><img src="/assets/marcas/m1-w.png" alt="Contraloría General de Santiago de Cali" loading="lazy" decoding="async"><img src="/assets/marcas/m18-w.png" alt="Fiduciaria Bogotá" loading="lazy" decoding="async"><img src="/assets/marcas/m15-w.png" alt="Fiduprevisora" loading="lazy" decoding="async"><img src="/assets/marcas/m17-w.png" alt="Pontificia Universidad Javeriana" loading="lazy" decoding="async"><img src="/assets/marcas/m3-w.png" alt="Federación Colombiana de Municipios" loading="lazy" decoding="async"><img src="/assets/marcas/m13-w.png" alt="Cundinamarca" loading="lazy" decoding="async"><img src="/assets/marcas/m20-w.png" alt="Alcaldía de Manizales" loading="lazy" decoding="async"><img src="/assets/marcas/m23-w.png" alt="Caja de la Vivienda Popular de Bogotá" loading="lazy" decoding="async"><img src="/assets/marcas/m11-w.png" alt="Manuelita" loading="lazy" decoding="async"><img src="/assets/marcas/m29-w.png" alt="Fundación Nacional Batuta" loading="lazy" decoding="async"><img src="/assets/marcas/m4-w.png" alt="Empresas Públicas de Cundinamarca" loading="lazy" decoding="async"><img src="/assets/marcas/m31-w.png" alt="Aldesarrollo" loading="lazy" decoding="async"><img src="/assets/marcas/m27-w.png" alt="Red Summa" loading="lazy" decoding="async"><img src="/assets/marcas/m25-w.png" alt="Esguerra Asesores Jurídicos" loading="lazy" decoding="async"></div></div></div></div></div>
 
 <div class="wrap">
   <section class="sec" id="trayectoria" style="padding-bottom:0">
@@ -1353,19 +1357,19 @@ body.vmodal-open header{padding-right:var(--sbw,0px)}
     </div>
     <div class="prods">
       <div class="prod lite rv">
-        <span class="tag">Plataforma insignia</span><h3>COBRA</h3>
-        <p>Monitoreo de inversión pública en tiempo real, con trazabilidad total y alertas predictivas. Opera hoy en entidades como el Ministerio del Interior.</p>
+        <span class="tag">Plataforma insignia IA-first</span><h3>COBRA</h3>
+        <p>Monitoreo de inversión pública en tiempo real: agentes de IA leen la evidencia del terreno y devuelven trazabilidad total y alertas predictivas. Opera hoy en entidades como el Ministerio del Interior.</p>
         <a href="/cobra/" class="more">Ver COBRA <span class="circ"><svg class="ico"><use href="#i-arrow-up-right"></use></svg></span></a>
         <div class="pvis"><div class="pvis-row"><span style="height:45%"></span><span style="height:68%"></span><span style="height:52%"></span><span style="height:82%"></span><span style="height:60%"></span><span style="height:95%"></span><span style="height:72%"></span></div></div>
       </div>
       <div class="prod lite rv">
-        <span class="tag">Ayuda social</span><h3>PANAL</h3>
-        <p>Canaliza con rapidez y transparencia las ayudas que una población necesita, con validación en tiempo real y evidencia de entrega georreferenciada.</p>
+        <span class="tag">Ayuda social IA-first</span><h3>PANAL</h3>
+        <p>Canaliza con rapidez y transparencia las ayudas que una población necesita, con agentes de IA que validan y priorizan cada caso y evidencia de entrega georreferenciada.</p>
         <a href="/panal/" class="more">Ver PANAL <span class="circ"><svg class="ico"><use href="#i-arrow-up-right"></use></svg></span></a>
         <div class="pvis"><div class="pvis-chips"><span class="pchip">Registro</span><span class="pchip">Cruce de datos</span><span class="pchip">Priorización</span><span class="pchip">Seguimiento</span></div></div>
       </div>
       <div class="prod dk rv">
-        <span class="tag">Unidad AI-first</span><h3>IK Labs</h3>
+        <span class="tag">Unidad IA-first</span><h3>IK Labs</h3>
         <p>Agentes de inteligencia artificial que automatizan, analizan y aceleran la gestión pública, cotizables por el Catálogo IAD.</p>
         <a href="/ik-labs/" class="more">Ver IK Labs <span class="circ"><svg class="ico"><use href="#i-arrow-up-right"></use></svg></span></a>
         <div class="pvis"><div class="pvis-chips"><span class="pchip">Análisis</span><span class="pchip">Trazabilidad</span><span class="pchip">Documental</span><span class="pchip">Monitoreo</span></div></div>
@@ -1408,7 +1412,7 @@ body.vmodal-open header{padding-right:var(--sbw,0px)}
     <div class="cxs rv" id="cxs">
       <div class="cxs-view">
       <article class="cx on" data-cx="0">
-        <div class="cx-logo"><img src="/assets/logos/image8-w.png" alt="Colombia Humanitaria"></div>
+        <div class="cx-logo"><img src="/assets/logos/image8-w.png" alt="Colombia Humanitaria" loading="lazy" decoding="async"></div>
         <div class="cx-body">
           <span class="yr">2010 – 2011 · Presidencia de la República</span>
           <h3>La respuesta al Fenómeno de la Niña</h3>
@@ -1419,7 +1423,7 @@ body.vmodal-open header{padding-right:var(--sbw,0px)}
         </div>
       </article>
       <article class="cx" data-cx="1">
-        <div class="cx-logo"><img src="/assets/logos/image2-w.png" alt="Fundación Nacional Batuta"></div>
+        <div class="cx-logo"><img src="/assets/logos/image2-w.png" alt="Fundación Nacional Batuta" loading="lazy" decoding="async"></div>
         <div class="cx-body">
           <span class="yr">Sector cultural · Fundación Nacional Batuta</span>
           <h3>Trazabilidad para los proyectos culturales</h3>
@@ -1430,7 +1434,7 @@ body.vmodal-open header{padding-right:var(--sbw,0px)}
         </div>
       </article>
       <article class="cx" data-cx="2">
-        <div class="cx-logo"><img src="/assets/logos/image8-w.png" alt="Colombia Humanitaria"></div>
+        <div class="cx-logo"><img src="/assets/logos/image8-w.png" alt="Colombia Humanitaria" loading="lazy" decoding="async"></div>
         <div class="cx-body">
           <span class="yr">Testimonio</span>
           
@@ -1441,7 +1445,7 @@ body.vmodal-open header{padding-right:var(--sbw,0px)}
         </div>
       </article>
       <article class="cx" data-cx="3">
-        <div class="cx-logo"><img src="/assets/logos/image6-w.png" alt="Banco Interamericano de Desarrollo"></div>
+        <div class="cx-logo"><img src="/assets/logos/image6-w.png" alt="Banco Interamericano de Desarrollo" loading="lazy" decoding="async"></div>
         <div class="cx-body">
           <span class="yr">Testimonio</span>
           
@@ -1452,7 +1456,7 @@ body.vmodal-open header{padding-right:var(--sbw,0px)}
         </div>
       </article>
       <article class="cx" data-cx="4">
-        <div class="cx-logo"><img src="/assets/logos/image4-w.png" alt="Naciones Unidas"></div>
+        <div class="cx-logo"><img src="/assets/logos/image4-w.png" alt="Naciones Unidas" loading="lazy" decoding="async"></div>
         <div class="cx-body">
           <span class="yr">Testimonio</span>
           
@@ -1463,7 +1467,7 @@ body.vmodal-open header{padding-right:var(--sbw,0px)}
         </div>
       </article>
       <article class="cx" data-cx="5">
-        <div class="cx-logo"><img src="/assets/logos/image10-w.png" alt="Fedesarrollo"></div>
+        <div class="cx-logo"><img src="/assets/logos/image10-w.png" alt="Fedesarrollo" loading="lazy" decoding="async"></div>
         <div class="cx-body">
           <span class="yr">Testimonio</span>
           
