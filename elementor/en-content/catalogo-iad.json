@@ -1,0 +1,15 @@
+{
+  "title": "IAD Catalog",
+  "slug": "en-catalogo-iad",
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 1,
+      "content": "IAD Catalog: quote and buy <em>without red tape</em>"
+    },
+    {
+      "type": "paragraph",
+      "content": "Explore the complete Interkont catalog and build your quote online, available to public entities through the Demand Aggregation Instrument (IAD), with no bidding process."
+    }
+  ]
+}

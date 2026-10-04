@@ -5,6 +5,8 @@ interface Props {
   noindex?: boolean;
   canonical: string;
   ogImage?: string;
+  lang?: "es" | "en";
+  alternates?: { es?: string; en?: string };
 }
 
 const {
@@ -13,11 +15,13 @@ const {
   noindex = false,
   canonical,
   ogImage = "https://interkont.co/assets/hero-poster.jpg",
+  lang = "es",
+  alternates,
 } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang={lang}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,9 +29,11 @@ const {
 <meta name="description" content={pageDescription}>
 {noindex && <meta name="robots" content="noindex, nofollow">}
 <link rel="canonical" href={canonical}>
+{alternates?.es && <link rel="alternate" hreflang="es" href={alternates.es}>}
+{alternates?.en && <link rel="alternate" hreflang="en" href={alternates.en}>}
 <meta name="theme-color" content="#EA215E">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="es_CO">
+<meta property="og:locale" content={lang === "en" ? "en_US" : "es_CO"}>
 <meta property="og:site_name" content="Interkont">
 <meta property="og:title" content={pageTitle}>
 <meta property="og:description" content={pageDescription}>
