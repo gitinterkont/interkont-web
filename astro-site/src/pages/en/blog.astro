@@ -65,7 +65,9 @@ try {
   // descarta posts sin categoria asignada (ej. el "Hola mundo" de ejemplo
   // que trae WordPress instalado por defecto) -- todo el contenido real
   // del blog tiene categoria, asi que esto no filtra articulos legitimos
-  posts = posts.filter((p) => (p.categories?.nodes?.length ?? 0) > 0 && p.slug !== "hola-mundo" && !p.categories.nodes.some((c) => c.name === "Sin categoría"));
+  posts = posts
+    .filter((p) => p.slug.startsWith("en-") && (p.categories?.nodes?.length ?? 0) > 0)
+    .map((p) => ({ ...p, base: p.slug.replace(/^en-/, "") }));
 } catch (err) {
   console.error("Could not read WPGraphQL posts for /en/blog:", err);
 }
@@ -101,20 +103,6 @@ const readingTime = (html) => {
   return Math.max(1, Math.round(words / 200));
 };
 
-const EN_POSTS = {
-  "eye-control": { title: "How Eye Control detects safety violations on construction sites", excerpt: "IK Labs' visual recognition analyzes inspectors' photo records and verifies hard hats, vests and workforce presence with no extra manual work." },
-  "trazabilidad": { title: "Full traceability: what it really means for a public entity", excerpt: "Beyond the rhetoric, traceability means being able to answer three questions about every dollar invested: who approved it, what it was spent on and what evidence supports it." },
-  "catalogo-iad": { title: "Quoting through the IAD Catalog: the fast track to procuring technology", excerpt: "Colombia Compra Eficiente's Demand Aggregation Instrument lets entities procure solutions from the Government Virtual Store without a lengthy bidding process." },
-  "ministerio-interior": { title: "Ministry of the Interior: live investment monitoring", excerpt: "How a national entity moved from monthly spreadsheet reports to a dashboard with real-time alerts on projects and contracts." },
-  "onpremise-saas": { title: "On-Premise or SaaS: how to choose a COBRA licensing model", excerpt: "Data sovereignty, predictable costs and scalability. A practical guide to choosing the option that best fits your entity." },
-  "datawiz": { title: "DataWiz AI: asking your data questions in natural language", excerpt: "Enterprise conversational AI removes the dependence on technical teams to get answers about projects, contracts and budget execution." },
-  "vivienda": { title: "Housing: unit-by-unit tracking with on-site evidence", excerpt: "COBRA Housing verifies the progress of each home improvement with geotagged photo records and subsidy control." },
-  "bpm": { title: "From paper-based procedures to traceable digital processes with COBRA BPM", excerpt: "Automating pre-contract workflows cuts turnaround times, eliminates errors and records who did what at every stage." },
-  "participacion": { title: "Citizen participation: oversight that multiplies transparency", excerpt: "When citizens can check the progress of public works in their area, oversight is no longer the government's alone; it becomes collective." },
-  "once-anos": { title: "Over fifteen years monitoring the public sector: what we've learned about government investment", excerpt: "More than 200,000 projects and USD 20 billion under supervision led us to an uncomfortable conclusion: the problem is rarely a lack of data; it is a lack of visibility into it." },
-  "quince-anos": { title: "Over fifteen years monitoring the public sector: what we've learned about government investment", excerpt: "More than 200,000 projects and USD 20 billion under supervision led us to an uncomfortable conclusion: the problem is rarely a lack of data; it is a lack of visibility into it." },
-};
-
 // English UI names for the (Spanish) WP categories
 const CAT_EN = {
   "GovTech": "GovTech",
@@ -124,10 +112,10 @@ const CAT_EN = {
   "Compra pública": "Public procurement",
 };
 const catEn = (name) => CAT_EN[name] ?? name;
-const titleOf = (p) => EN_POSTS[p.slug]?.title ?? p.title;
-const excerptOf = (p) => EN_POSTS[p.slug]?.excerpt ?? p.excerpt ?? "";
+const titleOf = (p) => p.title;
+const excerptOf = (p) => p.excerpt ?? "";
 
-const featured = posts.find((p) => p.slug === "quince-anos" || p.slug === "once-anos") ?? posts[0] ?? null;
+const featured = posts.find((p) => p.base === "once-anos" || p.base === "quince-anos") ?? posts[0] ?? null;
 const gridPosts = posts.filter((p) => p !== featured);
 const usedCategories = [...new Set(posts.flatMap((p) => p.categories?.nodes?.map((c) => c.name) ?? []))];
 ---
@@ -825,7 +813,7 @@ body.tp .hero{filter:none}
 <div class="wrap">
   <section class="sec">
     {featured && (
-      <a href={`/articulo/${featured.slug}/`} class="bfeat rv">
+      <a href={`/en/article/${featured.base}/`} class="bfeat rv">
         <div class="bfeat-txt">
           <div class="tagrow"><span class="btag">Featured</span><span class="bmeta">{readingTime(featured.content)} min · {monthYear(featured.date)}</span></div>
           <h2>{titleOf(featured)}</h2>
@@ -853,9 +841,9 @@ body.tp .hero{filter:none}
       {gridPosts.map((p) => {
         const cat = p.categories?.nodes?.[0]?.name ?? "";
         const { icon: catIcon, filter } = metaFor(cat);
-        const icon = ICON_BY_SLUG[p.slug] ?? catIcon;
+        const icon = ICON_BY_SLUG[p.base] ?? catIcon;
         return (
-          <a href={`/articulo/${p.slug}/`} class="bcard rv" data-cat={filter}>
+          <a href={`/en/article/${p.base}/`} class="bcard rv" data-cat={filter}>
             <div class="bi"><svg class="ico"><use href={`#${icon}`}></use></svg></div>
             <span class="cat">{catEn(cat)}</span>
             <h3>{titleOf(p)}</h3>
@@ -865,7 +853,6 @@ body.tp .hero{filter:none}
         );
       })}
     </div>
-    <p class="bnote rv">Articles are currently available in Spanish.</p>
 
     <div class="news rv">
       <div>
