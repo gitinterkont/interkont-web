@@ -100,7 +100,7 @@ const readingTime = (html) => {
   return Math.max(1, Math.round(words / 200));
 };
 
-const featured = posts.find((p) => p.slug === "once-anos") ?? posts[0] ?? null;
+const featured = posts.find((p) => p.slug === "quince-anos" || p.slug === "once-anos") ?? posts[0] ?? null;
 const gridPosts = posts.filter((p) => p !== featured);
 const usedCategories = [...new Set(posts.flatMap((p) => p.categories?.nodes?.map((c) => c.name) ?? []))];
 ---
@@ -734,10 +734,10 @@ footer{padding:clamp(88px,11vw,150px) clamp(28px,4vw,56px) 52px!important}
 /* ===== Luz del cursor sobre las tarjetas ===== */
 @media (hover:hover) and (pointer:fine){
   .card,.prod,.func,.fcard,.agent,.bcard,.step,.invc,.svcx,.iad-item,.mv-card,.model,.plan,
-  .kpibox,.sc,.aw,.tr,.tst,.cs,.mt-card,.acard,.pcard-wrap,.chat{position:relative; isolation:isolate}
+  .kpibox,.sc,.awd,.trc,.eng-foot,.cx,.eng,.acard,.pcard-wrap,.chat{position:relative; isolation:isolate}
   .card::before,.prod::before,.func::before,.fcard::before,.agent::before,.bcard::before,.step::before,
   .invc::before,.svcx::before,.iad-item::before,.mv-card::before,.model::before,.plan::before,
-  .kpibox::before,.sc::before,.aw::before,.tr::before,.tst::before,.cs::before,.mt-card::before,
+  .kpibox::before,.sc::before,.awd::before,.trc::before,.eng-foot::before,.cx::before,.eng::before,
   .acard::before,.chat::before{
     content:""; position:absolute; inset:0; border-radius:inherit; z-index:0; pointer-events:none;
     opacity:0; transition:opacity .45s cubic-bezier(.2,.7,.3,1);
@@ -746,17 +746,17 @@ footer{padding:clamp(88px,11vw,150px) clamp(28px,4vw,56px) 52px!important}
   .card:hover::before,.prod:hover::before,.func:hover::before,.fcard:hover::before,.agent:hover::before,
   .bcard:hover::before,.step:hover::before,.invc:hover::before,.svcx:hover::before,.iad-item:hover::before,
   .mv-card:hover::before,.model:hover::before,.plan:hover::before,.kpibox:hover::before,.sc:hover::before,
-  .aw:hover::before,.tr:hover::before,.tst:hover::before,.cs:hover::before,.mt-card:hover::before,
+  .awd:hover::before,.trc:hover::before,.eng-foot:hover::before,.cx:hover::before,.eng:hover::before,
   .acard:hover::before,.chat:hover::before{opacity:1}
   /* Sobre fondos oscuros la luz es más cálida y visible */
   .card.dk::before,.prod.dk::before,.invc.dk::before,.agent.count::before,.model.dk::before,
   .plan.hot::before,.fcard.tier.hot::before,.mv-card::before,.iad-item::before,.sc::before,
-  .aw::before,.mt-card::before{
+  .awd::before,.eng::before{
     background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%),
       rgba(255,170,74,.2) 0%, rgba(231,1,71,.12) 36%, transparent 68%)}
   /* El contenido se mantiene por encima de la luz */
   .card>*,.prod>*,.func>*,.fcard>*,.agent>*,.bcard>*,.step>*,.invc>*,.svcx>*,.iad-item>*,
-  .mv-card>*,.model>*,.plan>*,.kpibox>*,.sc>*,.aw>*,.tr>*,.tst>*,.cs>*,.mt-card>*,
+  .mv-card>*,.model>*,.plan>*,.kpibox>*,.sc>*,.awd>*,.trc>*,.eng-foot>*,.cx>*,.eng>*,
   .acard>*,.chat>*{position:relative; z-index:1}
 }
 
@@ -772,7 +772,7 @@ header nav .btn-dark .ico{color:currentColor}
 
 .hero-vid{opacity:0; transition:opacity .6s ease}
 .hero-vid.ready{opacity:1}
-.hero{background-image:url("/assets/hero-poster.jpg"); background-size:cover; background-position:center}
+.hero{background-color:#0c0a10; background-image:url("/assets/hero-poster.jpg"); background-size:cover; background-position:center}
 body.tp .hero{filter:none}
 </style>
 </helmet>
@@ -806,7 +806,7 @@ body.tp .hero{filter:none}
         </div>
         <div class="bfeat-vis">
           <div class="bfeat-chip">
-            <div class="bn">50<span class="u">K+</span></div>
+            <div class="bn">200<span class="u">K</span></div>
             <div class="bl">Proyectos analizados</div>
             <div class="bar"><span style="height:38%"></span><span style="height:56%"></span><span style="height:45%"></span><span style="height:72%"></span><span style="height:60%"></span><span class="hot" style="height:100%"></span><span style="height:78%"></span></div>
           </div>
@@ -877,7 +877,7 @@ class Component extends DCLogic {
 
     (() => {
       if (!matchMedia('(hover:hover) and (pointer:fine)').matches) return;
-      const SEL = '.card,.prod,.func,.fcard,.agent,.bcard,.step,.invc,.svcx,.iad-item,.mv-card,.model,.plan,.kpibox,.sc,.aw,.tr,.tst,.cs,.mt-card,.acard,.chat';
+      const SEL = '.card,.prod,.func,.fcard,.agent,.bcard,.step,.invc,.svcx,.iad-item,.mv-card,.model,.plan,.kpibox,.sc,.awd,.trc,.eng-foot,.cx,.eng,.acard,.chat';
       let last = null;
       addEventListener('mousemove', (e) => {
         const el = e.target instanceof Element ? e.target.closest(SEL) : null;
@@ -896,10 +896,17 @@ class Component extends DCLogic {
       const show = () => v.classList.add('ready');
       const p = () => { const r = v.play(); if (r && r.catch) r.catch(() => {}); };
       v.addEventListener('loadeddata', () => { show(); p(); }, { once: true });
+      v.addEventListener('loadedmetadata', p, { once: true });
       v.addEventListener('canplay', p, { once: true });
       v.addEventListener('playing', show, { once: true });
       document.addEventListener('click', p, { once: true });
       if (v.readyState >= 2) { show(); p(); } else { p(); }
+      let onScreen = true;
+      const sync = () => { if (onScreen && !document.hidden) p(); else v.pause(); };
+      if (window.IntersectionObserver) {
+        new IntersectionObserver(es => { onScreen = es[0].isIntersecting; sync(); }, { threshold: 0.01 }).observe(v);
+      }
+      document.addEventListener('visibilitychange', sync);
     });
     this.applyTheme();
     const thm = document.getElementById('thm');
