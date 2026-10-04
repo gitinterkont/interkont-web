@@ -1,0 +1,72 @@
+{
+  "title": "About us",
+  "slug": "en-nosotros",
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 1,
+      "content": "Passionate about technology for transparency"
+    },
+    {
+      "type": "paragraph",
+      "content": "We develop high-value technology solutions. Fifteen years of experience focused on high-impact projects have earned us tangible success stories and national and international recognition."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "A <span class=\"accent\">global</span> software company"
+    },
+    {
+      "type": "paragraph",
+      "content": "Interkont provides software products for every area of an organization. We develop comprehensive, industry-specific cloud suites and implement technology efficiently, prioritizing user experience, leveraging data science and integrating seamlessly with existing systems."
+    },
+    {
+      "type": "paragraph",
+      "content": "More than 50,000 client projects rely on Interkont to overcome disruptions in oversight and monitoring."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "A team that sets the <span class=\"accent\">standard</span>"
+    },
+    {
+      "type": "paragraph",
+      "content": "Interkont's multidisciplinary leadership team sets the standard for more than 20 team members worldwide, showing how transparency, collaboration and accountability drive better business results."
+    },
+    {
+      "type": "paragraph",
+      "content": "We drive continuous progress through passion and problem-solving."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Fifteen years of measurable impact"
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "Alejandro Gutiérrez"
+    },
+    {
+      "type": "paragraph",
+      "content": "We are INTERKONT, and we like to think of ourselves as an idea factory: we continuously build our capacity to turn ideas into reality. We believe any development is possible. We don't limit ourselves, we don't back down, and we push our capabilities to the limit."
+    },
+    {
+      "type": "paragraph",
+      "content": "We reward and value excellence and always going the extra mile. We pay special attention to giving our products the “Wow effect”: beautiful, functional and always delivering something more."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Let's turn your next idea into reality"
+    },
+    {
+      "type": "paragraph",
+      "content": "Discover how Interkont's technology brings clarity and transparency to public management."
+    },
+    {
+      "type": "paragraph",
+      "content": "The professional, creative and innovative technology partner for public-sector transparency."
+    }
+  ]
+}

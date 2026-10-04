@@ -1,0 +1,91 @@
+{
+  "title": "IK Labs",
+  "slug": "en-ik-labs",
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 1,
+      "content": "IK Labs — software, agents and data to operate better"
+    },
+    {
+      "type": "paragraph",
+      "content": "We are not a traditional software factory; we are agentic and AI-first. We design, build and deploy enterprise software, intelligent agents and conversational data solutions."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "We are <span class=\"accent\">agentic and AI-first</span>"
+    },
+    {
+      "type": "paragraph",
+      "content": "We combine accelerated development, automation, artificial intelligence, data architecture and business expertise to deliver functional, measurable and sustainable solutions. We turn complex processes into real digital capabilities."
+    },
+    {
+      "type": "paragraph",
+      "content": "We build intelligent technology so organizations can operate better, decide faster and reduce manual work."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "AI Software Factory"
+    },
+    {
+      "type": "paragraph",
+      "content": "We develop technology in less time, without relying on long traditional development cycles."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "IK Agent Suite"
+    },
+    {
+      "type": "paragraph",
+      "content": "These are not generic chatbots. Each agent retrieves information, responds, generates reports, runs workflows, escalates to humans and keeps a traceable record of its activity."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Just ask. The agent answers."
+    },
+    {
+      "type": "paragraph",
+      "content": "No more digging through scattered reports. Users ask and the agent answers from connected sources, in text, tables, summaries, visualizations, alerts or executive reports."
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "Connected sources"
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Agent business model"
+    },
+    {
+      "type": "paragraph",
+      "content": "Three clear stages, from launch to continuous evolution."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Flexible and scalable"
+    },
+    {
+      "type": "paragraph",
+      "content": "Your investment combines a project-based launch with monthly support: immediate value and continuous evolution."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Let's build intelligent technology"
+    },
+    {
+      "type": "paragraph",
+      "content": "Let's talk about your challenge and design the agent or solution your organization needs."
+    },
+    {
+      "type": "paragraph",
+      "content": "The professional, creative and innovative technology partner for public-sector transparency."
+    }
+  ]
+}

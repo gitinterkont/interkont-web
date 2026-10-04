@@ -1,0 +1,118 @@
+{
+  "title": "Our products",
+  "slug": "en-productos",
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 1,
+      "content": "The entire COBRA family in one place"
+    },
+    {
+      "type": "paragraph",
+      "content": "From cloud deployment to artificial intelligence: explore every Interkont product and service for overseeing and monitoring public-sector projects, contracts and works."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Choose your product"
+    },
+    {
+      "type": "paragraph",
+      "content": "Nine solutions covering the entire lifecycle: from the cloud platform to AI analytics, support and user governance."
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "COBRA Cloud"
+    },
+    {
+      "type": "paragraph",
+      "content": "The entry-level edition of the COBRA platform, ready to run the moment the license is activated thanks to its preconfigured features."
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "COBRA Corporate"
+    },
+    {
+      "type": "paragraph",
+      "content": "A robust solution for comprehensive project and contract management, available in three licensing models."
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "COBRA Housing"
+    },
+    {
+      "type": "paragraph",
+      "content": "A specialized COBRA edition for managing housing improvement projects (construction, renovation and upgrades), available in two deployment options."
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "Implementation Levels"
+    },
+    {
+      "type": "paragraph",
+      "content": "Five scalable levels for COBRA Corporate, COBRA Housing, COBRA BPM and the AI SaaS service. Choose based on your entity's scope and maturity."
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "Support Service"
+    },
+    {
+      "type": "paragraph",
+      "content": "Three support tiers, based on the number of users, projects and contracts in the license. Available for both SaaS and On-Premise deployments."
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "COBRA BPM"
+    },
+    {
+      "type": "paragraph",
+      "content": "A SaaS module that adds business process and workflow automation (BPM) to COBRA Corporate: from pre-contract procedures to any workflow the organization needs, with remote, real-time access and no additional infrastructure investment."
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "Artificial Intelligence"
+    },
+    {
+      "type": "paragraph",
+      "content": "DataWiz AI is an enterprise conversational solution powered by generative AI that securely connects the organization's structured and unstructured data with advanced natural language models. It eliminates dependence on technical teams, fragmented information and gut-feeling decisions."
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "Other Services and Modules"
+    },
+    {
+      "type": "paragraph",
+      "content": "Modules and services that extend COBRA and PANAL to fit every operation, from the field to the boardroom."
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "User Policy"
+    },
+    {
+      "type": "paragraph",
+      "content": "The User Management Policy is part of the License Agreement with Interkont S.A.S. and defines the proper use of each named user of the platform."
+    },
+    {
+      "type": "heading",
+      "level": 2,
+      "content": "Not sure which product you need?"
+    },
+    {
+      "type": "paragraph",
+      "content": "Tell us about your challenge and we'll help you choose the ideal combination of products and implementation level for your entity."
+    },
+    {
+      "type": "paragraph",
+      "content": "The professional, creative and innovative technology partner for public-sector transparency."
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Blog",
+  "slug": "en-blog",
+  "blocks": [
+    {
+      "type": "heading",
+      "level": 1,
+      "content": "Insights on the public sector, technology and data"
+    },
+    {
+      "type": "paragraph",
+      "content": "Analysis, success stories and best practices on public investment monitoring, artificial intelligence and transparency, written by the Interkont team."
+    },
+    {
+      "type": "heading",
+      "level": 3,
+      "content": "Get our insights"
+    },
+    {
+      "type": "paragraph",
+      "content": "One email a month with what we're learning about transparency, data and public investment. No noise."
+    },
+    {
+      "type": "paragraph",
+      "content": "The professional, creative and innovative technology partner for public-sector transparency."
+    }
+  ]
+}
