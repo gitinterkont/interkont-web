@@ -41,7 +41,7 @@ const noindex = seo?.metaRobotsNoindex === "noindex";
 <Layout pageTitle={pageTitle} pageDescription={pageDescription} noindex={noindex} canonical="https://interkont.co" alternates={{ es: "https://interkont.co/", en: "https://interkont.co/en/" }}>
 <x-dc>
 <helmet>
-<link rel="preload" as="image" href="/assets/hero-poster.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="/assets/hero-loop-poster.jpg" fetchpriority="high">
 <style is:global>
 :root{
   --sheet:#F4F3F5; --white:#FFF; --ink:#131117; --ink-soft:#66646E; --dark:#17151D; --dark-2:#221F2A;
@@ -1013,7 +1013,7 @@ header nav .btn-dark .ico{color:currentColor}
 
 .hero-vid{opacity:0; transition:opacity .6s ease}
 .hero-vid.ready{opacity:1}
-.hero{background-color:#0c0a10; background-image:url("/assets/hero-poster.jpg"); background-size:cover; background-position:center}
+.hero{background-color:#0c0a10; background-image:url("/assets/hero-loop-poster.jpg"); background-size:cover; background-position:center}
 body.tp .hero{filter:none}
 
 /* Modal de video */
@@ -1050,8 +1050,8 @@ body.vmodal-open header{padding-right:var(--sbw,0px)}
 
 <section class="hero">
   <div class="hero-bg"></div>
-  <video id="herovid" autoplay muted loop playsinline preload="metadata" poster="/assets/hero-poster.jpg">
-    <source src="/assets/loop.mp4" type="video/mp4">
+  <video id="herovid" autoplay muted loop playsinline preload="metadata" poster="/assets/hero-loop-poster.jpg">
+    <source src="/assets/hero-loop.mp4" type="video/mp4">
   </video>
   <div class="veil"></div>
   <div class="hero-inner">
