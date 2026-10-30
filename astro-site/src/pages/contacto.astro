@@ -40,7 +40,7 @@ const pageDescription = seo?.metaDesc || "Escríbenos y cuéntanos qué necesita
 const noindex = seo?.metaRobotsNoindex === "noindex";
 ---
 
-<Layout pageTitle={pageTitle} pageDescription={pageDescription} noindex={noindex} canonical="https://interkont.co/contacto/">
+<Layout contactModal={false} pageTitle={pageTitle} pageDescription={pageDescription} noindex={noindex} canonical="https://interkont.co/contacto/">
 <x-dc>
 <helmet>
 <link rel="preload" as="image" href="/assets/hero-loop-poster.jpg" fetchpriority="high">

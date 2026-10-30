@@ -1,0 +1,349 @@
+---
+// Ventanas emergentes de bienvenida y contacto (EN). El formulario genera un PDF en el
+// navegador y lo envía a WordPress (cms.interkont.co) por POST, que lo reenvía por correo.
+import "../styles/contact-modal.css";
+interface Props { welcome?: boolean }
+const { welcome = false } = Astro.props;
+---
+<div class="ikm" id="ikw" data-auto={welcome ? "1" : "0"} role="dialog" aria-modal="true" aria-labelledby="ikw-t">
+  <div class="ikm-card">
+    <button type="button" class="ikm-x" data-ikm-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+    <div class="ikm-art">
+      <span class="ikm-logo"><svg viewBox="0 0 791 185" role="img" aria-label="Interkont"><use href="#ik-white"></use></svg></span>
+      <div style="display:flex; flex-direction:column; gap:14px">
+        <span class="ikm-k"><i></i>Welcome to Interkont</span>
+        <h2 id="ikw-t">So glad you're <em>here</em></h2>
+        <p>We're Interkont. We help make public spending clear, with technology and artificial intelligence.</p>
+      </div>
+      <div class="ikm-stats">
+        <div><b>200<u>K</u></b><span>Projects</span></div>
+        <div><b>100<u>K</u></b><span>Contracts</span></div>
+        <div><b><u>$</u>20<u>B</u></b><span>USD controlled</span></div>
+      </div>
+    </div>
+    <div class="ikm-main">
+      <div class="ikm-lb">AI-first solutions</div>
+      <div class="ikm-list">
+        <a href="/en/cobra/"><span class="tile"><svg class="ico"><use href="#i-activity"></use></svg></span><span><b>COBRA</b><span class="d">Works and contract control</span></span><svg class="ico go"><use href="#i-arrow-right"></use></svg></a>
+        <a href="/en/panal/"><span class="tile"><svg class="ico"><use href="#i-shield-check"></use></svg></span><span><b>PANAL</b><span class="d">Social aid</span></span><svg class="ico go"><use href="#i-arrow-right"></use></svg></a>
+        <a href="/en/ik-labs/"><span class="tile"><svg class="ico"><use href="#i-cpu"></use></svg></span><span><b>IK Labs</b><span class="d">Custom AI and software</span></span><svg class="ico go"><use href="#i-arrow-right"></use></svg></a>
+      </div>
+      <div class="ikm-act">
+        <a href="/en/#final" class="btn btn-mag" data-open-contact>Talk to an advisor <svg class="ico"><use href="#i-arrow-right"></use></svg></a>
+        <button type="button" class="btn btn-light" data-ikm-close>Explore the site</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ikm" id="ikc" role="dialog" aria-modal="true" aria-labelledby="ikc-t">
+  <div class="ikm-card">
+    <button type="button" class="ikm-x" data-ikm-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+    <div class="ikm-art">
+      <span class="ikm-logo"><svg viewBox="0 0 791 185" role="img" aria-label="Interkont"><use href="#ik-white"></use></svg></span>
+      <div style="display:flex; flex-direction:column; gap:14px">
+        <span class="ikm-k"><i></i>We respond within 24 hours</span>
+        <h2 id="ikc-t">See your investment with <em>complete clarity</em></h2>
+        <p>Get to know us or request a quote for our AI solutions.</p>
+      </div>
+      <div class="ikm-chips"><span>COBRA</span><span>PANAL</span><span>IK Labs</span></div>
+    </div>
+    <div class="ikm-main ikf" id="ikf">
+      <form id="ikf-form" novalidate>
+        <div class="fld"><label for="ikf-name">Full name</label><span class="iw"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><input id="ikf-name" name="name" type="text" autocomplete="name" required data-focus aria-required="true"></span><span class="err">Required field</span></div>
+        <div class="fld"><label for="ikf-mail">Work email</label><span class="iw"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="3"></rect><path d="m22 7-10 5L2 7"></path></svg><input id="ikf-mail" name="mail" type="email" autocomplete="email" required></span><span class="err">Enter a valid email</span></div>
+        <div class="fld org-fld"><label for="ikf-org">Agency or company</label><span class="iw"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"></path><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"></path><path d="M10 6h4M10 10h4M10 14h4M10 18h4"></path></svg><input id="ikf-org" name="org" type="text" autocomplete="organization" required aria-required="true"></span><span class="err">Required field</span></div>
+        <div class="fld ph-fld"><label for="ikf-tel">Mobile phone</label>
+          <div class="ph" id="ikf-ph">
+            <button type="button" class="ph-b" aria-haspopup="listbox" aria-expanded="false" aria-label="Country"><img class="fl" src="https://flagcdn.com/w40/co.png" alt="" width="22" height="16"><span class="cc">+57</span><svg class="ico ch" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg></button>
+            <input id="ikf-tel" name="tel" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="300 000 0000" maxlength="18" required aria-required="true">
+            <input type="hidden" name="cc" value="+57">
+            <ul class="ph-l" role="listbox" tabindex="-1" aria-label="Country"><li role="option" id="ikf-c0" data-iso="co" data-cc="+57" data-flag="https://flagcdn.com/w40/co.png" aria-selected="true"><img class="fl" src="https://flagcdn.com/w40/co.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Colombia</span><span class="cd">+57</span></li><li role="option" id="ikf-c1" data-iso="ar" data-cc="+54" data-flag="https://flagcdn.com/w40/ar.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/ar.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Argentina</span><span class="cd">+54</span></li><li role="option" id="ikf-c2" data-iso="bo" data-cc="+591" data-flag="https://flagcdn.com/w40/bo.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/bo.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Bolivia</span><span class="cd">+591</span></li><li role="option" id="ikf-c3" data-iso="br" data-cc="+55" data-flag="https://flagcdn.com/w40/br.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/br.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Brazil</span><span class="cd">+55</span></li><li role="option" id="ikf-c4" data-iso="cl" data-cc="+56" data-flag="https://flagcdn.com/w40/cl.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/cl.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Chile</span><span class="cd">+56</span></li><li role="option" id="ikf-c5" data-iso="cr" data-cc="+506" data-flag="https://flagcdn.com/w40/cr.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/cr.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Costa Rica</span><span class="cd">+506</span></li><li role="option" id="ikf-c6" data-iso="cu" data-cc="+53" data-flag="https://flagcdn.com/w40/cu.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/cu.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Cuba</span><span class="cd">+53</span></li><li role="option" id="ikf-c7" data-iso="ec" data-cc="+593" data-flag="https://flagcdn.com/w40/ec.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/ec.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Ecuador</span><span class="cd">+593</span></li><li role="option" id="ikf-c8" data-iso="sv" data-cc="+503" data-flag="https://flagcdn.com/w40/sv.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/sv.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">El Salvador</span><span class="cd">+503</span></li><li role="option" id="ikf-c9" data-iso="gt" data-cc="+502" data-flag="https://flagcdn.com/w40/gt.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/gt.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Guatemala</span><span class="cd">+502</span></li><li role="option" id="ikf-c10" data-iso="ht" data-cc="+509" data-flag="https://flagcdn.com/w40/ht.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/ht.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Haiti</span><span class="cd">+509</span></li><li role="option" id="ikf-c11" data-iso="hn" data-cc="+504" data-flag="https://flagcdn.com/w40/hn.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/hn.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Honduras</span><span class="cd">+504</span></li><li role="option" id="ikf-c12" data-iso="mx" data-cc="+52" data-flag="https://flagcdn.com/w40/mx.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/mx.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Mexico</span><span class="cd">+52</span></li><li role="option" id="ikf-c13" data-iso="ni" data-cc="+505" data-flag="https://flagcdn.com/w40/ni.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/ni.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Nicaragua</span><span class="cd">+505</span></li><li role="option" id="ikf-c14" data-iso="pa" data-cc="+507" data-flag="https://flagcdn.com/w40/pa.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/pa.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Panama</span><span class="cd">+507</span></li><li role="option" id="ikf-c15" data-iso="py" data-cc="+595" data-flag="https://flagcdn.com/w40/py.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/py.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Paraguay</span><span class="cd">+595</span></li><li role="option" id="ikf-c16" data-iso="pe" data-cc="+51" data-flag="https://flagcdn.com/w40/pe.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/pe.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Peru</span><span class="cd">+51</span></li><li role="option" id="ikf-c17" data-iso="pr" data-cc="+1" data-flag="https://flagcdn.com/w40/pr.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/pr.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Puerto Rico</span><span class="cd">+1</span></li><li role="option" id="ikf-c18" data-iso="do" data-cc="+1" data-flag="https://flagcdn.com/w40/do.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/do.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Dominican Rep.</span><span class="cd">+1</span></li><li role="option" id="ikf-c19" data-iso="uy" data-cc="+598" data-flag="https://flagcdn.com/w40/uy.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/uy.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Uruguay</span><span class="cd">+598</span></li><li role="option" id="ikf-c20" data-iso="ve" data-cc="+58" data-flag="https://flagcdn.com/w40/ve.png" aria-selected="false"><img class="fl" src="https://flagcdn.com/w40/ve.png" alt="" width="22" height="16" loading="lazy" decoding="async"><span class="nm">Venezuela</span><span class="cd">+58</span></li></ul>
+          </div>
+          <span class="err">Required field</span></div>
+        <div class="fld full"><span class="lg" id="ikf-int-l">What are you interested in?</span>
+          <div class="dd" id="ikf-dd" data-ph="Select an option">
+            <input type="hidden" name="int" id="ikf-int" value="">
+            <span class="iw" style="display:contents"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"></path><path d="M19 17v4M17 19h4"></path></svg></span><button type="button" class="dd-b" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="ikf-int-l ikf-dd-v"><span class="v ph" id="ikf-dd-v">Select an option</span><svg class="ico ch" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"></path></svg></button>
+            <ul class="dd-l" role="listbox" tabindex="-1" aria-labelledby="ikf-int-l"><li role="option" id="ikf-o0" data-v="COBRA · Works and contract control" aria-selected="false"><span class="ot"><svg class="ico"><use href="#i-activity"></use></svg></span><span><b>COBRA</b><span class="od">Works and contract control</span></span><svg class="ico ck" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></li><li role="option" id="ikf-o1" data-v="PANAL · Social aid" aria-selected="false"><span class="ot"><svg class="ico"><use href="#i-shield-check"></use></svg></span><span><b>PANAL</b><span class="od">Social aid</span></span><svg class="ico ck" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></li><li role="option" id="ikf-o2" data-v="IK Labs · Custom AI and software" aria-selected="false"><span class="ot"><svg class="ico"><use href="#i-cpu"></use></svg></span><span><b>IK Labs</b><span class="od">Custom AI and software</span></span><svg class="ico ck" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></li><li role="option" id="ikf-o3" data-v="Other" aria-selected="false"><span class="ot"><svg class="ico"><use href="#i-sparkles"></use></svg></span><span><b>Other</b></span><svg class="ico ck" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></li></ul>
+          </div>
+          <span class="err">Required field</span></div>
+        <div class="fld full"><label for="ikf-msg">Message</label><span class="iw ta"><svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><textarea id="ikf-msg" name="msg" rows="3" required aria-required="true"></textarea></span><span class="err">Required field</span></div>
+        <button type="submit" class="btn btn-mag send">Send request <svg class="ico"><use href="#i-arrow-right"></use></svg></button>
+      </form>
+      <div class="ikf-ok" tabindex="-1" role="status">
+        <div class="okw"><span class="rg"></span><span class="rg"></span><span class="tile"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg></span><div class="burst" aria-hidden="true"><i style="--x:78px;--y:0px;--r:0deg;--c:var(--g1);--t:0s"></i><i style="--x:89px;--y:45px;--r:47deg;--c:var(--g2);--t:0.03s"></i><i style="--x:93px;--y:78px;--r:94deg;--c:var(--mag-lt);--t:0.06s"></i><i style="--x:31px;--y:72px;--r:141deg;--c:#131117;--t:0.09s"></i><i style="--x:17px;--y:98px;--r:188deg;--c:var(--g1);--t:0.12s"></i><i style="--x:-35px;--y:117px;--r:235deg;--c:var(--g2);--t:0s"></i><i style="--x:-39px;--y:68px;--r:282deg;--c:var(--mag-lt);--t:0.03s"></i><i style="--x:-84px;--y:55px;--r:329deg;--c:#131117;--t:0.06s"></i><i style="--x:-115px;--y:42px;--r:16deg;--c:var(--g1);--t:0.09s"></i><i style="--x:-77px;--y:-9px;--r:63deg;--c:var(--g2);--t:0.12s"></i><i style="--x:-94px;--y:-34px;--r:110deg;--c:var(--mag-lt);--t:0s"></i><i style="--x:-83px;--y:-89px;--r:157deg;--c:#131117;--t:0.03s"></i><i style="--x:-39px;--y:-68px;--r:204deg;--c:var(--g1);--t:0.06s"></i><i style="--x:-5px;--y:-100px;--r:251deg;--c:var(--g2);--t:0.09s"></i><i style="--x:21px;--y:-120px;--r:298deg;--c:var(--mag-lt);--t:0.12s"></i><i style="--x:47px;--y:-62px;--r:345deg;--c:#131117;--t:0s"></i><i style="--x:77px;--y:-64px;--r:32deg;--c:var(--g1);--t:0.03s"></i><i style="--x:119px;--y:-28px;--r:79deg;--c:var(--g2);--t:0.06s"></i></div></div>
+        <h3>Request sent successfully!</h3>
+        <p>We received your information. Our team will review it and contact you within 24 hours.</p>
+        <div class="acts">
+          <button type="button" class="btn btn-wa wa">Send via WhatsApp <svg class="ico"><use href="#i-whatsapp"></use></svg></button>
+          <button type="button" class="btn btn-dark gm">Send via Gmail <svg class="ico" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="3"></rect><path d="m22 7-10 5L2 7"></path></svg></button>
+        </div>
+        <button type="button" class="again" id="ikf-again">Send another</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script is:inline>
+(function () {
+  function initWelcomeForm() {
+    const w = document.getElementById('ikw'), c = document.getElementById('ikc');
+    let active = null, last = null;
+    const onKey = e => { if (e.key === 'Escape' && active) close(active); };
+    const open = el => {
+      if (!el) return;
+      last = document.activeElement; el.classList.add('open'); active = el;
+      document.addEventListener('keydown', onKey); document.body.style.overflow = 'hidden';
+      const f = el.querySelector('[data-focus]') || el.querySelector('.ikm-x');
+      if (f) setTimeout(() => f.focus(), 60);
+    };
+    const close = (el, silent) => {
+      el.classList.remove('open'); if (active === el) active = null;
+      if (!active) { document.removeEventListener('keydown', onKey); document.body.style.overflow = ''; }
+      if (!silent && last && last.focus) last.focus();
+    };
+    [w, c].forEach(el => {
+      if (!el) return;
+      el.addEventListener('click', e => { if (e.target === el) close(el); });
+      el.querySelectorAll('[data-ikm-close]').forEach(b => b.addEventListener('click', () => close(el)));
+    });
+    document.addEventListener('click', e => {
+      const a = e.target instanceof Element && e.target.closest('[data-open-contact], a[href$="#final"], a[href="/contacto/"], a[href="/en/contacto/"]');
+      if (!a || !c) return;
+      e.preventDefault();
+      if (w && w.classList.contains('open')) close(w, true);
+      open(c);
+    });
+    const dd = document.getElementById('ikf-dd');
+    let ddReset = () => {};
+    if (dd) {
+      const btn = dd.querySelector('.dd-b'), list = dd.querySelector('.dd-l'), val = dd.querySelector('#ikf-dd-v'), hid = dd.querySelector('input[type=hidden]');
+      const opts = [...list.querySelectorAll('li')]; let hi = -1;
+      const setHi = i => { hi = i; opts.forEach((o, k) => o.classList.toggle('hi', k === i)); if (opts[i]) btn.setAttribute('aria-activedescendant', opts[i].id); };
+      const place = () => {
+        dd.classList.remove('up', 'flow');
+        const card = dd.closest('.ikm-card'), r = dd.getBoundingClientRect(), c = card.getBoundingClientRect(), h = list.offsetHeight + 8;
+        if (r.bottom + h > c.bottom - 6) {
+          if (r.top - h > c.top + 6) dd.classList.add('up'); else dd.classList.add('flow');
+        }
+      };
+      const openDd = () => { dd.classList.add('open'); place(); btn.setAttribute('aria-expanded', 'true'); setHi(Math.max(0, opts.findIndex(o => o.getAttribute('aria-selected') === 'true'))); };
+      const closeDd = () => { dd.classList.remove('open', 'up', 'flow'); btn.setAttribute('aria-expanded', 'false'); btn.removeAttribute('aria-activedescendant'); };
+      const pick = o => {
+        opts.forEach(x => x.setAttribute('aria-selected', String(x === o)));
+        hid.value = o.dataset.v; val.textContent = o.dataset.v; val.classList.remove('ph');
+        dd.closest('.fld').classList.remove('bad'); closeDd(); btn.focus();
+      };
+      ddReset = () => { opts.forEach(x => x.setAttribute('aria-selected', 'false')); hid.value = ''; val.textContent = dd.dataset.ph; val.classList.add('ph'); closeDd(); };
+      btn.addEventListener('click', () => dd.classList.contains('open') ? closeDd() : openDd());
+      opts.forEach((o, i) => { o.addEventListener('click', () => pick(o)); o.addEventListener('mousemove', () => setHi(i)); });
+      dd.addEventListener('keydown', e => {
+        const isOpen = dd.classList.contains('open');
+        if (e.key === 'Escape' && isOpen) { e.stopPropagation(); closeDd(); btn.focus(); return; }
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); if (!isOpen) { openDd(); return; } setHi((hi + (e.key === 'ArrowDown' ? 1 : -1) + opts.length) % opts.length); }
+        else if ((e.key === 'Enter' || e.key === ' ') && isOpen && hi >= 0) { e.preventDefault(); pick(opts[hi]); }
+        else if (e.key === 'Tab' && isOpen) closeDd();
+      });
+      document.addEventListener('click', e => { if (!dd.contains(e.target)) closeDd(); });
+    }
+    const phEl = document.getElementById('ikf-ph');
+    let phReset = () => {};
+    let getPhone = () => ({ cc: '+57', iso: 'co', digits: '', pretty: '' });
+    if (phEl) {
+      const btn = phEl.querySelector('.ph-b'), list = phEl.querySelector('.ph-l'), tel = phEl.querySelector('input[type=tel]'), ccIn = phEl.querySelector('input[name=cc]');
+      const opts = [...list.querySelectorAll('li')]; let hi = -1, cur = opts[0];
+      const digits = () => tel.value.replace(/\D/g, '');
+      getPhone = () => { const g = digits(); return { cc: cur.dataset.cc, iso: cur.dataset.iso, digits: g, pretty: cur.dataset.cc + ' ' + g.replace(/^(\d{3})(\d{3})(\d+)$/, '$1 $2 $3') }; };
+      const setHi = i => { hi = i; opts.forEach((o, k) => o.classList.toggle('hi', k === i)); const o = opts[i]; if (o) { if (o.offsetTop < list.scrollTop) list.scrollTop = o.offsetTop - 8; else if (o.offsetTop + o.offsetHeight > list.scrollTop + list.clientHeight) list.scrollTop = o.offsetTop + o.offsetHeight - list.clientHeight + 8; } };
+      const place = () => {
+        phEl.classList.remove('up', 'flow');
+        const card = phEl.closest('.ikm-card'), r = phEl.getBoundingClientRect(), c = card.getBoundingClientRect(), h = Math.min(list.scrollHeight, 264) + 8;
+        if (r.bottom + h > c.bottom - 6) { if (r.top - h > c.top + 6) phEl.classList.add('up'); else phEl.classList.add('flow'); }
+      };
+      const openL = () => { phEl.classList.add('open'); place(); btn.setAttribute('aria-expanded', 'true'); setHi(Math.max(0, opts.indexOf(cur))); };
+      const closeL = () => { phEl.classList.remove('open', 'up', 'flow'); btn.setAttribute('aria-expanded', 'false'); };
+      const pick = o => {
+        cur = o; opts.forEach(x => x.setAttribute('aria-selected', String(x === o)));
+        const im = btn.querySelector('.fl'); im.src = o.dataset.flag; im.alt = '';
+        btn.querySelector('.cc').textContent = o.dataset.cc; ccIn.value = o.dataset.cc; closeL(); tel.focus();
+      };
+      phReset = () => { pick(opts[0]); tel.blur(); closeL(); };
+      btn.addEventListener('click', () => phEl.classList.contains('open') ? closeL() : openL());
+      opts.forEach((o, i) => { o.addEventListener('click', () => pick(o)); o.addEventListener('mousemove', () => setHi(i)); });
+      phEl.addEventListener('keydown', e => {
+        const isOpen = phEl.classList.contains('open');
+        if (e.key === 'Escape' && isOpen) { e.stopPropagation(); closeL(); btn.focus(); return; }
+        if (e.target === btn) {
+          if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); if (!isOpen) { openL(); return; } setHi((hi + (e.key === 'ArrowDown' ? 1 : -1) + opts.length) % opts.length); }
+          else if ((e.key === 'Enter' || e.key === ' ') && isOpen && hi >= 0) { e.preventDefault(); pick(opts[hi]); }
+          else if (e.key === 'Tab' && isOpen) closeL();
+        }
+      });
+      tel.addEventListener('input', () => { const v = tel.value.replace(/[^\d\s\-().]/g, ''); if (v !== tel.value) tel.value = v; });
+      document.addEventListener('click', e => { if (!phEl.contains(e.target)) closeL(); });
+    }
+    const form = document.getElementById('ikf-form'), box = document.getElementById('ikf');
+    if (form && box) {
+
+    const WA = '573008506232';
+    const MAILS = 'german.zaldua@interkont.co,andres.lopez@interkont.co,alejandro.gutierrez@interkont.co';
+    const ENDPOINT = 'https://cms.interkont.co/wp-json/interkont/v1/contacto';
+    const DEMO = false;
+    let pdfP = null, sent = null;
+    const loadPdf = () => window.jspdf ? Promise.resolve() : (pdfP = pdfP || new Promise((ok, no) => {
+      const sc = document.createElement('script');
+      sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+      sc.onload = ok; sc.onerror = () => { pdfP = null; no(new Error('jspdf')); };
+      document.head.appendChild(sc);
+    }));
+    const logoPng = () => new Promise(res => {
+      try {
+        const sym = document.getElementById('ik-white'); if (!sym) return res(null);
+        const vb = sym.getAttribute('viewBox') || '0 0 791 185';
+        const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + vb + '" width="1582" height="370" fill="#fff">' + sym.innerHTML + '</svg>';
+        const img = new Image();
+        img.onload = () => { const cv = document.createElement('canvas'); cv.width = 1582; cv.height = 370; cv.getContext('2d').drawImage(img, 0, 0, 1582, 370); res(cv.toDataURL('image/png')); };
+        img.onerror = () => res(null);
+        img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+      } catch (e) { res(null); }
+    });
+    const hex = h => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+    const buildPdf = (d, ref, when, logo) => {
+      const doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4' });
+      const fill = h => doc.setFillColor.apply(doc, hex(h)), ink = h => doc.setTextColor.apply(doc, hex(h));
+      fill('#0b0910'); doc.rect(0, 0, 210, 70, 'F');
+      [['#E70147', 190, 18, 46], ['#FFAA4A', 206, 40, 30]].forEach(g => {
+        for (let i = 0; i < 7; i++) { doc.setGState(new doc.GState({ opacity: 0.06 })); fill(g[0]); doc.circle(g[1], g[2], g[3] - i * (g[3] / 8), 'F'); }
+      });
+      doc.setGState(new doc.GState({ opacity: 1 }));
+      const a = hex('#E70147'), b = hex('#FFAA4A'), n = 90;
+      for (let i = 0; i < n; i++) { const k = i / (n - 1); doc.setFillColor(Math.round(a[0] + (b[0] - a[0]) * k), Math.round(a[1] + (b[1] - a[1]) * k), Math.round(a[2] + (b[2] - a[2]) * k)); doc.rect(i * 210 / n, 70, 210 / n + 0.3, 2.2, 'F'); }
+      if (logo) doc.addImage(logo, 'PNG', 16, 15, 40, 9.35); else { ink('#ffffff'); doc.setFont('helvetica', 'bold'); doc.setFontSize(18); doc.text('INTERKONT', 16, 23); }
+      ink('#FF5C86'); doc.setFont('helvetica', 'bold'); doc.setFontSize(8); try { doc.setCharSpace(0.8); } catch (e) {}
+      doc.text("CONTACT REQUEST", 16, 41); try { doc.setCharSpace(0); } catch (e) {}
+      ink('#ffffff'); doc.setFontSize(27); doc.text("New request", 16, 52);
+      ink('#B9B6C2'); doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5);
+      doc.text(ref + '   ·   ' + "Received on" + ' ' + when, 16, 61);
+
+      let y = 86;
+      ink('#EA215E'); doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); try { doc.setCharSpace(0.7); } catch (e) {}
+      doc.text("REQUESTER DETAILS", 16, y); try { doc.setCharSpace(0); } catch (e) {}
+      y += 5;
+      const card = (x, w, label, val, hot, minLines) => {
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(11);
+        const lines = doc.splitTextToSize(val, w - 12).slice(0, 2);
+        return { x, w, label, lines, hot, h: 17 + 5.2 * Math.max(lines.length, minLines || 1) };
+      };
+      const draw = c => {
+        fill('#F4F3F5'); doc.roundedRect(c.x, y, c.w, c.h, 3.5, 3.5, 'F');
+        ink('#66646E'); doc.setFont('helvetica', 'bold'); doc.setFontSize(6.5); try { doc.setCharSpace(0.6); } catch (e) {}
+        doc.text(c.label, c.x + 6, y + 8); try { doc.setCharSpace(0); } catch (e) {}
+        ink(c.hot ? '#EA215E' : '#131117'); doc.setFontSize(11); doc.setFont('helvetica', 'bold');
+        c.lines.forEach((l, i) => doc.text(l, c.x + 6, y + 15 + i * 5.2));
+      };
+      const row = (c1, c2) => { const h = Math.max(c1.h, c2.h); c1.h = h; c2.h = h; draw(c1); draw(c2); y += h + 6; };
+      row(card(16, 85, "FULL NAME", d.name), card(109, 85, "WORK EMAIL", d.mail));
+      row(card(16, 85, "AGENCY OR COMPANY", d.org), card(109, 85, "MOBILE", d.tel));
+      const ci = card(16, 178, "INTEREST", d.int, true); draw(ci); y += ci.h + 6;
+
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(10.5);
+      const room = Math.floor((236 - y - 17) / 5.4);
+      let ml = doc.splitTextToSize(d.msg, 166);
+      if (ml.length > room) { ml = ml.slice(0, room); ml[room - 1] = ml[room - 1].replace(/.{0,3}$/, '') + '…'; }
+      const mh = 17 + 5.4 * ml.length;
+      fill('#F4F3F5'); doc.roundedRect(16, y, 178, mh, 3.5, 3.5, 'F');
+      ink('#66646E'); doc.setFont('helvetica', 'bold'); doc.setFontSize(6.5); try { doc.setCharSpace(0.6); } catch (e) {}
+      doc.text("MESSAGE", 22, y + 8); try { doc.setCharSpace(0); } catch (e) {}
+      ink('#131117'); doc.setFont('helvetica', 'normal'); doc.setFontSize(10.5);
+      ml.forEach((l, i) => doc.text(l, 22, y + 15 + i * 5.4));
+      y += mh + 10;
+
+      fill('#0b0910'); doc.roundedRect(16, y, 178, 32, 5, 5, 'F');
+      for (let i = 0; i < 40; i++) { const k = i / 39; doc.setFillColor(Math.round(a[0] + (b[0] - a[0]) * k), Math.round(a[1] + (b[1] - a[1]) * k), Math.round(a[2] + (b[2] - a[2]) * k)); doc.rect(22 + i * 0.9, y + 8.5, 1, 1.6, 'F'); }
+      ink('#ffffff'); doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.text("We respond within 24 hours", 22, y + 18);
+      ink('#B9B6C2'); doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.text(doc.splitTextToSize("Our team will review your request and get in touch.", 100), 22, y + 24.5);
+      ink('#FF5C86'); doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.text('WhatsApp  +57 300 850 6232', 188, y + 15, { align: 'right' });
+      ink('#ffffff'); doc.text('interkont.co', 188, y + 22, { align: 'right' });
+
+      doc.setDrawColor.apply(doc, hex('#E8E6EB')); doc.setLineWidth(0.3); doc.line(16, 281, 194, 281);
+      ink('#66646E'); doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5);
+      doc.text('© 2026 Interkont · Powerful Technology', 16, 287); doc.text(ref, 194, 287, { align: 'right' });
+      return doc.output('blob');
+    };
+    const freeText = (d, ref) => ['*Interkont · ' + "New contact request" + '*', ref, '',
+      "Name" + ': ' + d.name, "Email" + ': ' + d.mail, "Agency" + ': ' + d.org, "Mobile" + ': ' + d.tel,
+      "Interest" + ': ' + d.int, "Message" + ': ' + d.msg, '', "I attach the PDF of my request."].join('\n');
+
+      const send = form.querySelector('.send'), sendHtml = send.innerHTML;
+      const checks = [
+        ['name', v => v.trim().length > 1],
+        ['mail', v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim())],
+        ['org', v => v.trim().length > 1],
+        ['tel', v => { const n = v.replace(/\D/g, '').length; return n >= 7 && n <= 12; }],
+        ['int', v => !!v],
+        ['msg', v => v.trim().length > 0]
+      ];
+      const mailErr = form.elements['mail'].closest('.fld').querySelector('.err');
+      form.addEventListener('focusin', () => loadPdf().catch(() => {}), { once: true });
+      form.addEventListener('input', e => { const f = e.target.closest('.fld'); if (f) f.classList.remove('bad'); });
+      form.addEventListener('submit', async e => {
+        e.preventDefault();
+        let first = null;
+        checks.forEach(([n, ok]) => {
+          const el = form.elements[n], f = el.closest('.fld'), good = ok(el.value);
+          f.classList.toggle('bad', !good);
+          if (n === 'mail' && mailErr) mailErr.textContent = el.value.trim() ? "Enter a valid email" : "Required field";
+          if (n === 'tel') f.querySelector('.err').textContent = el.value.trim() ? "Enter a valid mobile number" : "Required field";
+          if (!good && !first) first = el;
+        });
+        if (first) { first.type === 'hidden' ? dd.querySelector('.dd-b').focus() : first.focus(); return; }
+        const d = { name: form.elements['name'].value.trim(), mail: form.elements['mail'].value.trim(), org: form.elements['org'].value.trim(), int: form.elements['int'].value, tel: getPhone().pretty, phone: getPhone().cc + getPhone().digits, cc: getPhone().cc, iso: getPhone().iso, msg: form.elements['msg'].value.trim() };
+        const now = new Date(), p = n => String(n).padStart(2, '0');
+        const ref = 'IK-' + String(now.getFullYear()).slice(2) + p(now.getMonth() + 1) + p(now.getDate()) + '-' + Math.random().toString(36).slice(2, 6).toUpperCase();
+        const when = now.toLocaleDateString("en-US", { day: 'numeric', month: 'long', year: 'numeric' }) + ', ' + p(now.getHours()) + ':' + p(now.getMinutes());
+        send.disabled = true; send.textContent = "Sending request…";
+        sent = { text: freeText(d, ref), ref, file: null, url: null, name: "Interkont-Request" + '-' + ref + '.pdf' };
+        try {
+          await loadPdf();
+          const blob = buildPdf(d, ref, when, await logoPng());
+          sent.file = new File([blob], sent.name, { type: 'application/pdf' });
+          sent.url = URL.createObjectURL(blob);
+        } catch (err) { sent.file = null; }
+        if (ENDPOINT && sent.file) {
+          try {
+            const fd = new FormData();
+            const code = /^COBRA/.test(d.int) ? 'cobra' : /^PANAL/.test(d.int) ? 'panal' : /^IK/.test(d.int) ? 'iklabs' : 'other';
+            fd.append('to', MAILS); fd.append('subject', "New contact request" + ' · ' + ref); fd.append('ref', ref); fd.append('lang', "en");
+            fd.append('submitted_at', now.toISOString()); fd.append('page', location.href);
+            fd.append('name', d.name); fd.append('email', d.mail); fd.append('organization', d.org); fd.append('phone', d.phone); fd.append('phone_country_code', d.cc); fd.append('phone_country', d.iso);
+            fd.append('interest', code); fd.append('interest_label', d.int); fd.append('message', d.msg); fd.append('pdf', sent.file, sent.name);
+            const r = await fetch(ENDPOINT, { method: 'POST', body: fd, headers: { Accept: 'application/json' } });
+            sent.auto = r.ok;
+          } catch (err) { sent.auto = false; }
+        }
+        await new Promise(r => setTimeout(r, 900));
+        const ok = !!sent.auto || (DEMO && !ENDPOINT);
+        const h3 = box.querySelector('.ikf-ok h3'), pp = box.querySelector('.ikf-ok p');
+        if (!h3.dataset.ok) { h3.dataset.ok = h3.textContent; pp.dataset.ok = pp.textContent; }
+        h3.textContent = ok ? h3.dataset.ok : "We couldn't send your request"; pp.textContent = ok ? pp.dataset.ok : "Message us on WhatsApp or Gmail and attach the PDF copy.";
+        box.classList.toggle('fail', !ok);
+                send.disabled = false; send.innerHTML = sendHtml;
+        box.classList.add('done'); box.querySelector('.ikf-ok').focus();
+      });
+      box.querySelector('.acts .wa').addEventListener('click', () => {
+        if (!sent) return;
+        if (sent.file && navigator.canShare && navigator.canShare({ files: [sent.file] })) navigator.share({ files: [sent.file], title: "New contact request", text: sent.text }).catch(() => {});
+        else window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(sent.text), '_blank', 'noopener');
+      });
+      box.querySelector('.acts .gm').addEventListener('click', () => {
+        if (!sent) return;
+        window.open('https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(MAILS) + '&su=' + encodeURIComponent("New contact request" + ' · ' + sent.ref) + '&body=' + encodeURIComponent(sent.text), '_blank', 'noopener');
+      });
+      const again = document.getElementById('ikf-again');
+      if (again) again.addEventListener('click', () => { form.reset(); ddReset(); phReset(); box.classList.remove('done'); form.elements['name'].focus(); });
+    }
+    if (w && w.dataset.auto === '1') setTimeout(() => { if (!active) open(w); }, 2200);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initWelcomeForm);
+  else initWelcomeForm();
+})();
+</script>
