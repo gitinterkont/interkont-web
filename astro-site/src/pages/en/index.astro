@@ -63,7 +63,7 @@ const pageDescription = seo?.metaDesc || "GovTech software for public investment
 const noindex = seo?.metaRobotsNoindex === "noindex";
 ---
 
-<Layout pageTitle={pageTitle} pageDescription={pageDescription} noindex={noindex} lang="en" canonical="https://interkont.co/en/" alternates={{ es: "https://interkont.co/", en: "https://interkont.co/en/" }}>
+<Layout welcome={true} pageTitle={pageTitle} pageDescription={pageDescription} noindex={noindex} lang="en" canonical="https://interkont.co/en/" alternates={{ es: "https://interkont.co/", en: "https://interkont.co/en/" }}>
 <x-dc>
 <helmet>
 <link rel="preload" as="image" href="/assets/hero-loop-poster.jpg" fetchpriority="high">
